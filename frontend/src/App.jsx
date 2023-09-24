@@ -1,9 +1,9 @@
-import "./App.css";
-
 function App() {
   return (
     <>
-      <h1>TracksHub</h1>
+      <h1 className="text-violet-500 text-2xl text-center font-bold m-10">
+        TracksHub
+      </h1>
     </>
   );
 }

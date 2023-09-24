@@ -1,1 +1,2 @@
-# TracksHub - A music collaboration and profile-sharing platform, designed exclusively for musicians and artists in the music major. Connect, collaborate, and showcase your musical talents effortlessly. Manage projects, upload audio tracks, and provide feedback in one unified space.
+# TracksHub
+A music collaboration and profile-sharing platform, designed exclusively for musicians and artists in the music major. Connect, collaborate, and showcase your musical talents effortlessly. Manage projects, upload audio tracks, and provide feedback in one unified space.
