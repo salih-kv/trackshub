@@ -2,10 +2,19 @@
   "name": "trackshub",
   "version": "1.0.0",
   "description": "TracksHub is a music collaboration and profile-sharing platform, designed exclusively for musicians and artists in the music major. Connect, collaborate, and showcase your musical talents effortlessly. Manage projects, upload audio tracks, and provide feedback in one unified space.",
-  "main": "index.js",
+  "main": "backend/server.js",
+  "type": "module",
   "scripts": {
+    "dev": "nodemon backend/server.js",
+    "start": "node backend/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "salih-kv",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^7.5.2"
+  }
 }
