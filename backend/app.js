@@ -9,9 +9,5 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 if (process.env.NODE_ENV != "production") {
-  dotenv.config({ path: "backend/config/config.env" });
+  dotenv.config({ path: "../backend/config/config.env" });
 }
-
-app.get("/", (req, res) => {
-  res.json({ test: "success" });
-});
