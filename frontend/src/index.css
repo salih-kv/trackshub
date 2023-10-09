@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.fixed-header {
+  @apply fixed top-0 left-0 w-full bg-white z-50;
+}
+
+.btn {
+  @apply inline-flex justify-center items-center focus:outline-none outline-none;
+}
+
+.btn-fill {
+  @apply bg-primary-500 hover:bg-primary-600 active:bg-primary-700 disabled:bg-primary-200 disabled:text-primary-700 text-white disabled:opacity-90;
+}
+
+.btn-outlined {
+  @apply border  border-primary-700 text-primary-700 hover:bg-primary-50 active:bg-primary-100 disabled:opacity-90;
+}
+
+.btn-gradient {
+  @apply text-white bg-gradient-to-r from-primary-400 to-primary-600  hover:from-primary-500 hover:to-primary-700 active:from-primary-600 active:to-primary-800 disabled:from-primary-100 disabled:to-primary-300 disabled:text-primary-700 disabled:opacity-90;
+}
