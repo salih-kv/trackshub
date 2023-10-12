@@ -20,12 +20,14 @@ export default withMt({
         }, // primary color
         // bg
         "p-light": "#FFFFFF",
-        "s-light": "#EFEFEF",
+        "s-light": "#F1F4F6",
         "p-dark": "#1C1C26",
         "s-dark": "#262831",
         // text
         "b-dark": "#52576F",
         "t-dark": "#B1B1C7",
+        "gray-500": "#7E8999",
+        black: "#282C32",
       },
       fontFamily: {
         display: ["Pacifico", "cursive"],

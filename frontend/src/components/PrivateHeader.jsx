@@ -7,7 +7,7 @@ import Nav from "./Nav";
 
 export const PrivateHeader = () => {
   return (
-    <header className="bg-white py-4 lg:py-6 dark:bg-p-dark dark:text-white fixed top-0 left-0 right-0">
+    <header className="bg-white py-2 lg:py-4 dark:bg-p-dark dark:text-white fixed top-0 left-0 right-0 border-b">
       <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-2xl">
         <Left />
         <div className="hidden sm:block order-2 lg:order-1 mt-4 lg:mt-0 border dark:border-s-dark lg:border-none w-full lg:w-auto">
