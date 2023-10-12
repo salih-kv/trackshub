@@ -3,10 +3,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { PrivateRoute } from "./routes/PrivateRoute";
 
 const Welcome = lazy(() => import("./pages/Welcome"));
-const Home = lazy(() => import("./pages/Home"));
 const Register = lazy(() => import("./pages/Register"));
 const Login = lazy(() => import("./pages/Login"));
-const NotFound = lazy(() => import("./components/Errors/NotFound"));
+const Layout = lazy(() => import("./routes/Layout"));
+const Feed = lazy(() => import("./pages/Feed"));
+const Projects = lazy(() => import("./pages/Projects"));
+const Notifications = lazy(() => import("./pages/Notifications"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 function App() {
   return (
@@ -16,11 +19,13 @@ function App() {
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          {/* protected route */}
-          <Route element={<PrivateRoute />}>
-            <Route index element={<Home />} />
+          {/* <Route element={<PrivateRoute />}> */}
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Feed />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/notifications" element={<Notifications />} />
           </Route>
-          {/* Not Found */}
+          {/* </Route> */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

@@ -18,17 +18,14 @@ export default withMt({
           900: "#40169c",
           950: "#260b6a",
         }, // primary color
-        // light
-        "light-mist": "#FEFEFF",
-        "soft-blue": "#F9FAFF", // light bg
-        "gray-blue": "#DEE5EE",
-        "slate-blue": "#829BB0",
-        "cool-slate": "#74828F",
-        // dark
-        "deep-charcoal": "#1D1E23", // dark bg
-        "midnight-black": "#16171B",
-        "deep-navy": "#25262D",
-        "pastel-green": "#B7EFB5",
+        // bg
+        "p-light": "#FFFFFF",
+        "s-light": "#EFEFEF",
+        "p-dark": "#1C1C26",
+        "s-dark": "#262831",
+        // text
+        "b-dark": "#52576F",
+        "t-dark": "#B1B1C7",
       },
       fontFamily: {
         display: ["Pacifico", "cursive"],

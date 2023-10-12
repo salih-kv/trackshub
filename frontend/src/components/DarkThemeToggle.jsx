@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { MdDarkMode, MdLightMode } from "react-icons/md";
 
 const DarkThemeToggle = () => {
   const [theme, setTheme] = useState(localStorage.theme);
@@ -24,12 +25,19 @@ const DarkThemeToggle = () => {
   };
   return (
     <>
-      <button
-        onClick={toggleDarkMode}
-        className="w-12 h-6 rounded-full p-1 bg-soft-blue relative transition-colors duration-500 ease-in focus:outline-none border "
-      >
-        <div className="rounded-full w-4 h-4 bg-primary-500 relative ml-0 dark:ml-6 pointer-events-none transition-all duration-300 ease-out"></div>
-      </button>
+      <div className="flex justify-center  items-center">
+        <button
+          className="hover:bg-s-light rounded-lg active:outline-none active:ring-2 active:ring-gray-200 dark:text-white dark:hover:bg-s-dark dark:active:ring-gray-600 p-2"
+          id="toggleDark"
+          onClick={toggleDarkMode}
+        >
+          {theme === "light" ? (
+            <MdDarkMode className="text-xl" />
+          ) : (
+            <MdLightMode className="text-xl" />
+          )}
+        </button>
+      </div>
     </>
   );
 };
