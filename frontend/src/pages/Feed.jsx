@@ -1,5 +1,6 @@
 import ProfileCard from "../components/Feed/ProfileCard";
 import ProjectsCard from "../components/Feed/ProjectsCard";
+import UsersCard from "../components/Feed/UsersCard";
 
 const Feed = () => {
   return (
@@ -27,5 +28,9 @@ const Middle = () => {
 };
 
 const Right = () => {
-  return <section className="w-1/4">Right</section>;
+  return (
+    <section className="w-1/4">
+      <UsersCard />
+    </section>
+  );
 };

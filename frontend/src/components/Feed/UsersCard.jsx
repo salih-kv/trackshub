@@ -1,0 +1,41 @@
+import { IoMdPersonAdd } from "react-icons/io";
+
+const UsersCard = () => {
+  return (
+    <div className="flex flex-col w-full">
+      <header className="flex items-center justify-between w-full">
+        <h2 className="font-semibold">People to Follow</h2>
+        <span className="text-sm text-gray-500">Refresh</span>
+      </header>
+      <div className="mt-4 flex flex-col gap-6">
+        <User />
+        <User />
+        <User />
+        <User />
+      </div>
+    </div>
+  );
+};
+
+export default UsersCard;
+
+const User = () => {
+  return (
+    <div className="flex items-center justify-between">
+      <div className="w-10 h-auto mr-6">
+        <img
+          className="w-full h-full rounded-full"
+          src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+          alt="user photo"
+        />
+      </div>
+      <div className="mr-auto">
+        <h4 className="font-semibold text-sm">Versatile Breezy</h4>
+        <p className="text-gray-500 text-xs">567 Followers</p>
+      </div>
+      <div className="bg-black px-4 py-2 rounded-3xl">
+        <IoMdPersonAdd className="text-white" />
+      </div>
+    </div>
+  );
+};
