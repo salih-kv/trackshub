@@ -26,7 +26,7 @@ export default function Login() {
     try {
       const response = await instance.post("/api/v1/auth/login", user);
       response.data.status && login();
-      response.data.status && navigate("/");
+      response.data.status && navigate("/feed");
     } catch (err) {
       console.log("Error: ", err.response.data);
     }
