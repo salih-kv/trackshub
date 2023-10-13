@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import { PrivateHeader } from "../components/PrivateHeader";
-import Nav from "../components/Nav";
+import { PrivateHeader } from "../components/Navbar/PrivateHeader";
+import Nav from "../components/Navbar/Nav";
 
 const Layout = () => {
   return (

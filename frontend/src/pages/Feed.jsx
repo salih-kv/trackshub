@@ -17,7 +17,7 @@ export default Feed;
 
 const Left = () => {
   return (
-    <section className="w-1/4 flex flex-col justify-center items-center">
+    <section className="w-1/4 flex flex-col justify-start items-center">
       <ProfileCard />
       <ProjectsCard />
     </section>
@@ -31,7 +31,7 @@ const Middle = () => {
   ];
 
   return (
-    <section className="w-2/4">
+    <section className="w-2/4 flex flex-col gap-6">
       <header className="flex gap-8">
         {NavLinks?.map(({ to, label }) => (
           <div key={to} className="group/link hover:bg-slate-100">

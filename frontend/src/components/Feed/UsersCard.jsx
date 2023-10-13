@@ -8,10 +8,22 @@ const UsersCard = () => {
         <span className="text-sm text-gray-500">Refresh</span>
       </header>
       <div className="mt-4 flex flex-col gap-6">
-        <User />
-        <User />
-        <User />
-        <User />
+        <User
+          imgUrl="https://picsum.photos/id/64/80/80"
+          name="Alexander Shustov"
+        />
+        <User
+          imgUrl="https://picsum.photos/id/91/80/80"
+          name="Jennifer Trovato"
+        />
+        <User
+          imgUrl="https://picsum.photos/id/65/80/80"
+          name="Jussie Leibnow"
+        />
+        <User
+          imgUrl="https://picsum.photos/id/239/80/80"
+          name="Coley Christine"
+        />
       </div>
     </div>
   );
@@ -19,18 +31,18 @@ const UsersCard = () => {
 
 export default UsersCard;
 
-const User = () => {
+const User = ({ imgUrl, name }) => {
   return (
     <div className="flex items-center justify-between">
       <div className="w-10 h-auto mr-6">
         <img
           className="w-full h-full rounded-full"
-          src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+          src={imgUrl}
           alt="user photo"
         />
       </div>
       <div className="mr-auto">
-        <h4 className="font-semibold text-sm">Versatile Breezy</h4>
+        <h4 className="font-semibold text-sm">{name}</h4>
         <p className="text-gray-500 text-xs">567 Followers</p>
       </div>
       <div className="bg-black px-4 py-2 rounded-3xl">

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const ProfileCard = () => {
   return (
-    <div className="flex items-center justify-center w-full bg-s-light dark:bg-s-dark rounded-lg">
+    <div className="flex items-center justify-start w-full bg-s-light dark:bg-s-dark rounded-lg">
       <div className="p-4 flex flex-col items-center justify-center">
         <header className="flex items-center justify-between pb-4">
           <div className="mr-4 w-14 h-14">
