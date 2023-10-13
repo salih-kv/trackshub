@@ -31,7 +31,7 @@ const CreatePost = () => {
       <div className="w-full">
         <input
           type="text"
-          className="bg-s-light w-full py-3 px-6 rounded-3xl placeholder:text-gray-500"
+          className="bg-s-light dark:bg-s-dark w-full py-3 px-6 rounded-3xl placeholder:text-gray-500"
           placeholder="What's new?"
         />
       </div>
@@ -41,7 +41,7 @@ const CreatePost = () => {
 
 const Post = ({ imgUrl, name }) => {
   return (
-    <div className="border-b pb-6">
+    <div className="border-b dark:border-s-dark pb-6">
       <header className="flex items-center justify-between py-4">
         <div className="w-12 h-auto mr-3">
           <img
@@ -74,7 +74,7 @@ const Post = ({ imgUrl, name }) => {
         <div className="w-full">
           <input
             type="text"
-            className="bg-s-light w-full py-2 pl-10 rounded-3xl placeholder:text-gray-500"
+            className="bg-s-light dark:bg-s-dark w-full py-2 pl-10 rounded-3xl placeholder:text-gray-500"
             placeholder="Leave a comment..."
           />
         </div>

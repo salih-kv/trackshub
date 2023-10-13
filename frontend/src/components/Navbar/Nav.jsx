@@ -19,7 +19,7 @@ const Nav = () => {
           <li key={to}>
             <Link
               to={to}
-              className="flex items-center gap-2 text-black rounded-3xl py-2 px-4 dark:text-white lg:hover:bg-s-light lg:active:bg-s-dark active:text-primary-500 hover:text-primary-500"
+              className="flex items-center gap-2 text-black rounded-3xl py-2 px-4 dark:text-white lg:hover:bg-s-light dark:hover:text-primary-500 lg:active:bg-s-dark active:text-primary-500 hover:text-primary-500"
             >
               <span className="text-xl sm:text-base">{icon}</span>
               <span className="hidden sm:block font-semibold">{label}</span>

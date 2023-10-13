@@ -26,6 +26,7 @@ const App = () => {
             {/* Feed */}
             <Route index element={<Feed />} />
             <Route path="feed" element={<Feed />}>
+              <Route index element={<Following />} />
               <Route path="following" element={<Following />} />
               <Route path="trending" element={<Trending />} />
             </Route>
