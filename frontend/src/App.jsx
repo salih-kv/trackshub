@@ -13,7 +13,7 @@ const Projects = lazy(() => import("./pages/Projects"));
 const Notifications = lazy(() => import("./pages/Notifications"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-function App() {
+const App = () => {
   return (
     <BrowserRouter>
       <Suspense fallback={<>Loading...</>}>
@@ -23,10 +23,13 @@ function App() {
           <Route path="/login" element={<Login />} />
           {/* <Route element={<PrivateRoute />}> */}
           <Route path="/" element={<Layout />}>
+            {/* Feed */}
+            <Route index element={<Feed />} />
             <Route path="feed" element={<Feed />}>
               <Route path="following" element={<Following />} />
               <Route path="trending" element={<Trending />} />
             </Route>
+            {/* Projects */}
             <Route path="/projects" element={<Projects />} />
             <Route path="/notifications" element={<Notifications />} />
           </Route>
@@ -36,6 +39,6 @@ function App() {
       </Suspense>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

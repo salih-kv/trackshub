@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function PublicHeader() {
+function WelcomeHeader() {
   return (
     <header className="text-gray-600 font-body fixed-header">
       <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
@@ -42,4 +42,4 @@ function NavLinkItem({ to, text }) {
   );
 }
 
-export default PublicHeader;
+export default WelcomeHeader;

@@ -1,5 +1,5 @@
-import PublicHeader from "../components/PublicHeader";
-import Footer from "../components/Footer";
+import WelcomeHeader from "../components/Welcome/WelcomeHeader";
+import Footer from "../components/Welcome/Footer";
 import { FiArrowRight, FiChevronRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -7,7 +7,7 @@ import { useState } from "react";
 export default function Welcome() {
   return (
     <main className="overflow-hidden">
-      <PublicHeader />
+      <WelcomeHeader />
       <HeroSection1 />
       <HeroSection2 />
       <Footer />
