@@ -33,7 +33,7 @@ export default UsersCard;
 
 const User = ({ imgUrl, name }) => {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between overflow-hidden">
       <div className="w-10 h-auto mr-6">
         <img
           className="w-full h-full rounded-full"

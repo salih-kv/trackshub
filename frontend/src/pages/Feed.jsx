@@ -5,7 +5,7 @@ import UsersCard from "../components/Feed/UsersCard";
 
 const Feed = () => {
   return (
-    <div className="flex justify-between w-full gap-8 py-4">
+    <div className="flex justify-between w-full gap-8 py-8 lg:py-4 mx-4 lg:mx-0">
       <Left />
       <Middle />
       <Right />
@@ -17,7 +17,7 @@ export default Feed;
 
 const Left = () => {
   return (
-    <section className="w-1/4 flex flex-col justify-start items-center">
+    <section className="md:w-1/3 lg:w-1/4 hidden md:flex flex-col justify-start items-center">
       <ProfileCard />
       <ProjectsCard />
     </section>
@@ -31,7 +31,7 @@ const Middle = () => {
   ];
 
   return (
-    <section className="w-2/4 flex flex-col gap-6">
+    <section className="w-full md:w-2/3 lg:w-2/4 flex flex-col gap-6">
       <header className="flex gap-8">
         {NavLinks?.map(({ to, label }) => (
           <div key={to} className="group/link hover:bg-slate-100">
@@ -54,7 +54,7 @@ const Middle = () => {
 
 const Right = () => {
   return (
-    <section className="w-1/4">
+    <section className="w-1/4 hidden lg:block">
       <UsersCard />
     </section>
   );

@@ -22,7 +22,7 @@ export const PrivateHeader = () => {
 const Left = () => {
   return (
     <div>
-      <Link href="" className="flex items-center pl-4 mr-8">
+      <Link href="" className="flex items-center pl-4 md:mr-8">
         {/* <img src="" className="mr-3 h-6 sm:h-9" alt="TracksHub Logo" /> */}
         <span className="self-center text-2xl font-semibold font-display whitespace-nowrap dark:text-white">
           TracksHub
@@ -38,7 +38,7 @@ const Right = () => {
       <input
         type="text"
         placeholder="search"
-        className="px-2 lg:px-4 py-1 rounded-3xl dark:text-black bg-s-light dark:bg-s-dark focus:border-primary-500 outline-none"
+        className="hidden md:block px-2 lg:px-4 py-1 rounded-3xl dark:text-black bg-s-light dark:bg-s-dark focus:border-primary-500 outline-none"
       />
       <DarkThemeToggle />
       <button className="hover:bg-s-light rounded-lg active:outline-none active:ring-2 active:ring-gray-200 dark:text-white dark:hover:bg-s-dark dark:active:ring-gray-600 p-2">
