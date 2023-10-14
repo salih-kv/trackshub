@@ -4,6 +4,8 @@ import { AiOutlineComment } from "react-icons/ai";
 import DarkThemeToggle from "./DarkThemeToggle";
 import { Link } from "react-router-dom";
 import Nav from "./Nav";
+import UserDropDown from "./UserDropDown";
+import { useState } from "react";
 
 export const PrivateHeader = () => {
   return (
@@ -33,6 +35,7 @@ const Left = () => {
 };
 
 const Right = () => {
+  const [toggle, setToggle] = useState(false);
   return (
     <div className="flex items-center space-x-3 lg:space-x-6 pr-4 order-1 lg:order-2">
       <input
@@ -47,12 +50,16 @@ const Right = () => {
       <button className="hidden sm:block hover:bg-s-light rounded-lg active:outline-none active:ring-2 active:ring-gray-200 dark:text-white dark:hover:bg-s-dark dark:active:ring-gray-600 p-2">
         <AiOutlineComment className="text-xl" />
       </button>
-      <button className="px-2">
+      <button
+        className="px-2 relative"
+        onClick={() => setToggle((prev) => !prev)}
+      >
         <img
           className="w-8 h-8 lg:w-9 lg:h-9 rounded-full"
           src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
           alt="user photo"
         />
+        {toggle && <UserDropDown />}
       </button>
     </div>
   );
