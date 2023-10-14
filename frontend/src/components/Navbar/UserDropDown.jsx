@@ -2,21 +2,18 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { BiHelpCircle } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import ProfileImg from "../ProfileImg";
 
 const UserDropDown = () => {
   return (
-    <div className="absolute top-16 right-0 rounded-lg shadow-lg bg-p-light dark:bg-s-dark">
+    <div
+      className={`absolute top-16 right-0 z-20 rounded-lg shadow-lg bg-p-light dark:bg-s-dark`}
+    >
       <div className="p-4">
         <div className="text-left min-w-[280px]">
           <Link>
             <div className="flex items-center justify-between hover:bg-s-light dark:hover:bg-p-dark rounded-lg p-2">
-              <div className="w-14 h-auto mr-3">
-                <img
-                  className="w-full h-full rounded-full"
-                  src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                  alt="user photo"
-                />
-              </div>
+              <ProfileImg w={10} buttonStyle={`mr-3`} />
               <div className="w-full">
                 <h4 className="font-semibold text-sm">User One</h4>
                 <p className=" text-gray-500">View Profile</p>

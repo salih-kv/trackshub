@@ -7,11 +7,14 @@ import Nav from "./Nav";
 import UserDropDown from "./UserDropDown";
 import { useState } from "react";
 
-// import logo from "../../assets/trackshub.svg";
+import logo from "../../assets/trackshub.svg";
+import ChatDropDown from "./ChatDropDown";
+import NotificationDropDown from "./NotificationDropDown";
+import ProfileImg from "../ProfileImg";
 
 export const PrivateHeader = () => {
   return (
-    <header className="bg-white py-2 lg:py-4 dark:bg-p-dark dark:text-white fixed top-0 left-0 right-0 border-b dark:border-s-dark">
+    <header className="bg-white py-2 dark:bg-p-dark dark:text-white fixed top-0 left-0 right-0 border-b dark:border-s-dark">
       <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-2xl">
         <Left />
         <div className="hidden sm:block order-2 lg:order-1 mt-4 lg:mt-0 border dark:border-s-dark lg:border-none w-full lg:w-auto">
@@ -28,10 +31,7 @@ const Left = () => {
     <div>
       <Link href="" className="flex items-center pl-4 md:mr-8">
         <div className="w-40">
-          {/* <img src={logo} className="w-full" alt="TracksHub Logo" /> */}
-          <span className="self-center text-2xl font-semibold font-display whitespace-nowrap dark:text-white">
-          TracksHub
-        </span>
+          <img src={logo} className="w-full" alt="TracksHub Logo" />
         </div>
       </Link>
     </div>
@@ -39,7 +39,12 @@ const Left = () => {
 };
 
 const Right = () => {
-  const [toggle, setToggle] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+
+  const toggleDropdown = (dropdownName) => {
+    setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
+  };
+
   return (
     <div className="flex items-center space-x-3 lg:space-x-6 pr-4 order-1 lg:order-2">
       <input
@@ -48,23 +53,27 @@ const Right = () => {
         className="hidden md:block px-2 lg:px-4 py-1 rounded-3xl dark:text-black bg-s-light dark:bg-s-dark focus:border-primary-500 outline-none"
       />
       <DarkThemeToggle />
-      <button className="hover:bg-s-light rounded-lg active:outline-none active:ring-2 active:ring-gray-200 dark:text-white dark:hover:bg-s-dark dark:active:ring-gray-600 p-2">
+      <button
+        className="relative hover:bg-s-light rounded-lg active:outline-none active:ring-2 active:ring-gray-200 dark:text-white dark:hover:bg-s-dark dark:active:ring-gray-600 p-2"
+        onClick={() => toggleDropdown("notification")}
+      >
         <IoNotificationsOutline className="text-xl" />
-      </button>
-      <button className="hidden sm:block hover:bg-s-light rounded-lg active:outline-none active:ring-2 active:ring-gray-200 dark:text-white dark:hover:bg-s-dark dark:active:ring-gray-600 p-2">
-        <AiOutlineComment className="text-xl" />
+        {activeDropdown === "notification" && <NotificationDropDown />}
       </button>
       <button
-        className="px-2 relative"
-        onClick={() => setToggle((prev) => !prev)}
+        className="relative hidden sm:block hover:bg-s-light rounded-lg active:outline-none active:ring-2 active:ring-gray-200 dark:text-white dark:hover:bg-s-dark dark:active:ring-gray-600 p-2"
+        onClick={() => toggleDropdown("chat")}
       >
-        <img
-          className="w-8 h-8 lg:w-9 lg:h-9 rounded-full"
-          src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-          alt="user photo"
-        />
-        {toggle && <UserDropDown />}
+        <AiOutlineComment className="text-xl" />
+        {activeDropdown === "chat" && <ChatDropDown />}
       </button>
+      <ProfileImg
+        w={9}
+        buttonStyle="px-2 relative"
+        onClick={() => toggleDropdown("user")}
+      >
+        {activeDropdown === "user" && <UserDropDown />}
+      </ProfileImg>
     </div>
   );
 };
