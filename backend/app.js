@@ -6,6 +6,8 @@ import { error } from "./middlewares/error.js";
 import authRoute from "./routes/auth.route.js";
 import userAccountRoute from "./routes/account.route.js";
 import userProfileRoute from "./routes/profile.route.js";
+import homeRoute from "./routes/home.route.js";
+import projectRoute from "./routes/profile.route.js";
 
 export const app = express();
 
@@ -22,6 +24,8 @@ if (process.env.NODE_ENV != "production") {
 app.use("/api/v1/auth", authRoute); // ✅
 app.use("/api/v1/user", userAccountRoute);
 app.use("/api/v1/profile", userProfileRoute); // ✅
+app.use("/api/v1/home", homeRoute);
+app.use("/api/v1/project", projectRoute);
 
 // error handling middleware
 app.use(error);
