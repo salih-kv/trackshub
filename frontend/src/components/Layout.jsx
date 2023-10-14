@@ -1,8 +1,16 @@
-import { Outlet } from "react-router-dom";
-import { PrivateHeader } from "../components/Navbar/PrivateHeader";
-import Nav from "../components/Navbar/Nav";
+import { Outlet, useNavigate } from "react-router-dom";
+import { PrivateHeader } from "./Navbar/PrivateHeader";
+import Nav from "./Navbar/Nav";
+import { useEffect } from "react";
 
 const Layout = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path === "/" || path === "/feed" || path === "/feed/") {
+      navigate("/feed/following");
+    }
+  }, [navigate]);
   return (
     <div className="relative min-h-screen">
       <PrivateHeader />

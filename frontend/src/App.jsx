@@ -1,17 +1,21 @@
 import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { PrivateRoute } from "./routes/PrivateRoute";
+import { PrivateRoute } from "./components/PrivateRoute";
 
 const Welcome = lazy(() => import("./pages/Welcome"));
 const Register = lazy(() => import("./pages/Register"));
 const Login = lazy(() => import("./pages/Login"));
-const Layout = lazy(() => import("./routes/Layout"));
+const Layout = lazy(() => import("./components/Layout"));
 const Feed = lazy(() => import("./pages/Feed"));
 const Following = lazy(() => import("./components/Feed/Following"));
 const Trending = lazy(() => import("./components/Feed/Trending"));
 const Projects = lazy(() => import("./pages/Projects"));
-const Notifications = lazy(() => import("./pages/Notifications"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+const Settings = lazy(() => import("./pages/Settings"));
+const Profile = lazy(() => import("./components/Settings/Profile"));
+const Account = lazy(() => import("./components/Settings/Account"));
+const Notifications = lazy(() => import("./components/Settings/Notifications"));
+const NotAvailable = lazy(() => import("./components/Error/NotAvailable"));
+const NotFound = lazy(() => import("./components/Error/NotFound"));
 
 const App = () => {
   return (
@@ -23,16 +27,18 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           {/* <Route element={<PrivateRoute />}> */}
           <Route path="/" element={<Layout />}>
-            {/* Feed */}
-            <Route index element={<Feed />} />
             <Route path="feed" element={<Feed />}>
-              <Route index element={<Following />} />
               <Route path="following" element={<Following />} />
-              <Route path="trending" element={<Trending />} />
+              <Route path="trending" element={<NotAvailable />} />
             </Route>
-            {/* Projects */}
+            <Route path="/explore" element={<NotAvailable />} />
             <Route path="/projects" element={<Projects />} />
-            <Route path="/notifications" element={<Notifications />} />
+            <Route path="/library" element={<NotAvailable />} />
+            <Route path="/settings" element={<Settings />}>
+              <Route path="profile" element={<Profile />} />
+              <Route path="account" element={<Account />} />
+              <Route path="notifications" element={<Notifications />} />
+            </Route>
           </Route>
           {/* </Route> */}
           <Route path="*" element={<NotFound />} />

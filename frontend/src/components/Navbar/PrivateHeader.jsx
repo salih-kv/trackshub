@@ -7,6 +7,8 @@ import Nav from "./Nav";
 import UserDropDown from "./UserDropDown";
 import { useState } from "react";
 
+// import logo from "../../assets/trackshub.svg";
+
 export const PrivateHeader = () => {
   return (
     <header className="bg-white py-2 lg:py-4 dark:bg-p-dark dark:text-white fixed top-0 left-0 right-0 border-b dark:border-s-dark">
@@ -25,10 +27,12 @@ const Left = () => {
   return (
     <div>
       <Link href="" className="flex items-center pl-4 md:mr-8">
-        {/* <img src="" className="mr-3 h-6 sm:h-9" alt="TracksHub Logo" /> */}
-        <span className="self-center text-2xl font-semibold font-display whitespace-nowrap dark:text-white">
+        <div className="w-40">
+          {/* <img src={logo} className="w-full" alt="TracksHub Logo" /> */}
+          <span className="self-center text-2xl font-semibold font-display whitespace-nowrap dark:text-white">
           TracksHub
         </span>
+        </div>
       </Link>
     </div>
   );
