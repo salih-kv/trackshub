@@ -24,10 +24,14 @@ const UserDropDown = () => {
             </div>
           </Link>
           <div className="bg-s-light dark:bg-s-dark h-[1px] my-2"></div>
-          <DropDownLink to="" label="Settings" icon={<IoSettingsOutline />} />
+          <DropDownLink
+            to="/settings"
+            label="Settings"
+            icon={<IoSettingsOutline />}
+          />
           <DropDownLink to="" label="Log out" icon={<RiLogoutCircleLine />} />
           <div className="bg-s-light dark:bg-s-dark h-[1px] my-2"></div>
-          <DropDownLink to="" label="Help" icon={<BiHelpCircle />} />
+          <DropDownLink to="/help" label="Help" icon={<BiHelpCircle />} />
         </div>
       </div>
     </div>
