@@ -1,9 +1,9 @@
-import React from 'react'
-
 const Account = () => {
   return (
-    <div>Account</div>
-  )
-}
+    <div className="flex items-start justify-center w-full">
+      <div className="max-w-xl">Account</div>
+    </div>
+  );
+};
 
-export default Account
+export default Account;
