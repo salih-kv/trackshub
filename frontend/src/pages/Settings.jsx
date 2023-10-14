@@ -3,6 +3,7 @@ import { CgProfile } from "react-icons/cg";
 import { FaUserLarge } from "react-icons/fa6";
 import { IoNotifications } from "react-icons/io5";
 import { useEffect } from "react";
+import ProfileImg from "../components/ProfileImg";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const Settings = () => {
     }
   }, [navigate]);
   return (
-    <section className="flex justify-between gap-8">
+    <section className="flex justify-between w-full min-h-screen gap-8 pt-8">
       <LeftNav />
       <Outlet />
     </section>
@@ -41,7 +42,14 @@ const LeftNav = () => {
     },
   ];
   return (
-    <div className="flex flex-col p-2 min-w-[280px] border-r dark:border-s-dark min-h-screen">
+    <div className="flex flex-col min-w-[280px] border-r dark:border-s-dark">
+      <Link className="flex items-center justify-start p-4 gap-4">
+        <ProfileImg w={8} />
+        <div>
+          <h4 className="text-sm">User One</h4>
+          <p className="text-xs text-gray-500">Back to Profile</p>
+        </div>
+      </Link>
       {NavItems?.map(({ to, label, icon, bgcolor }) => (
         <Link
           to={to}

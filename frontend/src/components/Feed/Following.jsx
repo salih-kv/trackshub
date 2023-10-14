@@ -1,4 +1,5 @@
 import { BsThreeDots } from "react-icons/bs";
+import ProfileImg from "../ProfileImg";
 
 const Following = () => {
   return (
@@ -21,13 +22,7 @@ export default Following;
 const CreatePost = () => {
   return (
     <div className="flex items-center justify-between">
-      <div className="w-12 h-auto mr-3">
-        <img
-          className="w-full h-full rounded-full"
-          src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-          alt="user photo"
-        />
-      </div>
+      <ProfileImg w={10} buttonStyle={`mr-3`} />
       <div className="w-full">
         <input
           type="text"
@@ -63,18 +58,11 @@ const Post = ({ imgUrl, name }) => {
         <div>Post content here...</div>
       </div>
       {/* comment */}
-      <div className="relative">
-        <div className="w-6 h-auto absolute left-2 top-2">
-          <img
-            className="w-full h-full rounded-full"
-            src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-            alt="user photo"
-          />
-        </div>
+      <div className="">
         <div className="w-full">
           <input
             type="text"
-            className="bg-s-light dark:bg-s-dark w-full py-2 pl-10 rounded-3xl placeholder:text-gray-500"
+            className="bg-s-light dark:bg-s-dark w-full py-2 pl-10 rounded-3xl placeholder:text-gray-500 text-xs"
             placeholder="Leave a comment..."
           />
         </div>
