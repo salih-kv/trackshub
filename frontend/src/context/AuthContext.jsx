@@ -1,17 +1,22 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const userToken = Cookies.get("userToken");
+  const [isLoggedIn, setIsLoggedIn] = useState(userToken ? true : false);
 
   const login = () => {
-    // Implement your login logic here, e.g., check user credentials
+    // Implement login logic here, e.g., check user credentials
     setIsLoggedIn(true);
   };
 
   const logout = () => {
-    // Implement your logout logic here
+    Cookies.remove("userToken", {
+      sameSite: "None",
+      secure: true,
+    });
     setIsLoggedIn(false);
   };
 

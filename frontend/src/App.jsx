@@ -25,22 +25,22 @@ const App = () => {
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          {/* <Route element={<PrivateRoute />}> */}
-          <Route path="/" element={<Layout />}>
-            <Route path="feed" element={<Feed />}>
-              <Route path="following" element={<Following />} />
-              <Route path="trending" element={<NotAvailable />} />
-            </Route>
-            <Route path="/explore" element={<NotAvailable />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/library" element={<NotAvailable />} />
-            <Route path="/settings" element={<Settings />}>
-              <Route path="profile" element={<Profile />} />
-              <Route path="account" element={<Account />} />
-              <Route path="notifications" element={<NotAvailable />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/" element={<Layout />}>
+              <Route path="feed" element={<Feed />}>
+                <Route path="following" element={<Following />} />
+                <Route path="trending" element={<NotAvailable />} />
+              </Route>
+              <Route path="/explore" element={<NotAvailable />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/library" element={<NotAvailable />} />
+              <Route path="/settings" element={<Settings />}>
+                <Route path="profile" element={<Profile />} />
+                <Route path="account" element={<Account />} />
+                <Route path="notifications" element={<NotAvailable />} />
+              </Route>
             </Route>
           </Route>
-          {/* </Route> */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

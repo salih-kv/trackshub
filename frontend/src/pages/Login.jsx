@@ -5,6 +5,7 @@ import { Form, Formik } from "formik";
 import { InputField } from "../components/InputField";
 import * as Yup from "yup";
 import instance from "../axios/instance";
+import Cookies from "js-cookie";
 
 export default function Login() {
   const { login } = useAuth();
@@ -25,8 +26,13 @@ export default function Login() {
   const handleLogin = async (user) => {
     try {
       const response = await instance.post("/api/v1/auth/login", user);
+      response &&
+        Cookies.set("userToken", response.data.token, {
+          sameSite: "None",
+          secure: true,
+        });
       response.data.status && login();
-      response.data.status && navigate("/feed");
+      response.data.token && navigate("/feed");
     } catch (err) {
       console.log("Error: ", err.response.data);
     }
