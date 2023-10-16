@@ -11,7 +11,7 @@ const generateToken = function (id) {
 
 // Signup
 export const signupUser = async (req, res, next) => {
-  const { email, username, password } = req.body;
+  const { name, email, username, password } = req.body;
   try {
     const user = await Users.findOne({
       $or: [{ email }, { username }],
@@ -25,6 +25,7 @@ export const signupUser = async (req, res, next) => {
     }
 
     const newUser = await Users.create({
+      name,
       email,
       username,
       password,

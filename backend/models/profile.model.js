@@ -5,10 +5,6 @@ const profileSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Users",
   },
-  name: {
-    type: String,
-    required: [true, "Please enter name"],
-  },
   profilePic: {
     type: String,
   },

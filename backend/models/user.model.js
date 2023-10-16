@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 import { compare, hash } from "bcrypt";
 
 const userSchema = mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "Please enter name"],
+  },
   email: {
     type: String,
     required: [true, "Please enter email"],
