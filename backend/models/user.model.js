@@ -2,10 +2,6 @@ import mongoose from "mongoose";
 import { compare, hash } from "bcrypt";
 
 const userSchema = mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "Please enter name"],
-  },
   email: {
     type: String,
     required: [true, "Please enter email"],
@@ -23,7 +19,6 @@ const userSchema = mongoose.Schema({
     minlength: [6, "Password must be of minimum 6 characters"],
     select: false,
   },
-  avatar: { type: String },
 });
 
 userSchema.pre("save", async function (next) {

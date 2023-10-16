@@ -11,11 +11,15 @@ body {
 }
 
 .btn {
-  @apply inline-flex justify-center items-center focus:outline-none outline-none;
+  @apply inline-flex justify-center items-center focus:outline-none outline-none font-medium;
+}
+
+.btn-secondary {
+  @apply bg-s-light dark:bg-s-dark text-red-500;
 }
 
 .btn-fill {
-  @apply bg-primary-500 hover:bg-primary-600 active:bg-primary-700 disabled:bg-primary-200 disabled:text-primary-700 text-white disabled:opacity-90;
+  @apply bg-primary-500 hover:bg-primary-600 active:bg-primary-700 disabled:bg-primary-200 disabled:text-primary-400 text-white disabled:opacity-90;
 }
 
 .btn-outlined {
@@ -23,5 +27,5 @@ body {
 }
 
 .btn-gradient {
-  @apply text-white bg-gradient-to-r from-primary-400 to-primary-600  hover:from-primary-500 hover:to-primary-700 active:from-primary-600 active:to-primary-800 disabled:from-primary-100 disabled:to-primary-300 disabled:text-primary-700 disabled:opacity-90;
+  @apply text-white bg-gradient-to-r from-primary-400 to-primary-600  hover:from-primary-500 hover:to-primary-700 active:from-primary-600 active:to-primary-800 disabled:from-primary-100 disabled:to-primary-300 disabled:text-primary-400 disabled:opacity-90;
 }

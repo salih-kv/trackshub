@@ -37,7 +37,7 @@ const App = () => {
             <Route path="/settings" element={<Settings />}>
               <Route path="profile" element={<Profile />} />
               <Route path="account" element={<Account />} />
-              <Route path="notifications" element={<Notifications />} />
+              <Route path="notifications" element={<NotAvailable />} />
             </Route>
           </Route>
           {/* </Route> */}

@@ -1,16 +1,17 @@
 import ProfileImg from "../ProfileImg";
+import { Input } from "./Input";
 
 const Profile = () => {
   return (
-    <div className="flex items-start justify-center w-full max-w-2xl mx-auto">
-      <div className="w-full">
+    <div className="w-3/4 flex flex-col max-w-2xl mx-auto mb-16">
+      <section className="w-full">
         <header className="pb-8">
           <h1 className="text-2xl">Profile Settings</h1>
         </header>
         <form className="flex flex-col w-full gap-8">
-          <div className="flex gap-8">
-            <ProfileImg w={28} />
-            <div className="flex flex-col">
+          <div className="flex gap-12">
+            <ProfileImg w={40} />
+            <div className="">
               <Input label="Name" />
               <Input label="Location" placeholder="Your City" />
             </div>
@@ -23,6 +24,14 @@ const Profile = () => {
             ></textarea>
           </div>
         </form>
+      </section>
+      <div className="w-full h-[1px] my-12 bg-s-light dark:bg-s-dark"></div>
+      <Interests />
+      <div className="w-full h-[1px] my-12 bg-s-light dark:bg-s-dark"></div>
+      <div>
+        <button className="btn btn-fill py-2 px-6 rounded-3xl" disabled>
+          Update
+        </button>
       </div>
     </div>
   );
@@ -30,16 +39,12 @@ const Profile = () => {
 
 export default Profile;
 
-const Input = ({ label, placeholder, value }) => {
+const Interests = () => {
   return (
-    <>
-      <label>{label}</label>
-      <input
-        type="text"
-        placeholder={placeholder}
-        value={value}
-        className="w-full px-4 py-3 mb-6 mt-2 rounded-lg bg-s-light dark:bg-s-dark focus:border focus:border-primary-500 outline-none"
-      />
-    </>
+    <section className="w-full">
+      <header className="pb-8">
+        <h1 className="text-2xl">Music Interests</h1>
+      </header>
+    </section>
   );
 };

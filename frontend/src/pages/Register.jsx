@@ -11,7 +11,6 @@ export default function Register() {
   // Form Validation
   const initialValues = {
     username: "",
-    name: "",
     email: "",
     password: "",
     cpassword: "",
@@ -35,7 +34,6 @@ export default function Register() {
           return true;
         }
       ),
-    name: Yup.string().required("Required!"),
     email: Yup.string().email("Invalid email").required("Required!"),
     password: Yup.string().min(4).max(12).required("Required!"),
   });
@@ -74,22 +72,13 @@ export default function Register() {
               onSubmit={handleRegister}
             >
               <Form className="mt-6">
-                <div className="flex gap-4 mt-2">
-                  <InputField
-                    type="text"
-                    id="username"
-                    name="username"
-                    placeholder="Username"
-                    autoFocus
-                  />
-                  <InputField
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Enter Name"
-                  />
-                </div>
-
+                <InputField
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder="Username"
+                  autoFocus
+                />
                 <InputField
                   type="email"
                   id="email"

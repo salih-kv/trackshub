@@ -42,7 +42,7 @@ const LeftNav = () => {
     },
   ];
   return (
-    <div className="flex flex-col min-w-[280px] border-r dark:border-s-dark">
+    <div className="flex flex-col min-w-[280px] w-1/4 border-r dark:border-s-dark">
       <Link className="flex items-center justify-start p-4 gap-4">
         <ProfileImg w={8} />
         <div>
