@@ -37,7 +37,7 @@ const Middle = () => {
           <div key={to} className="group/link hover:bg-slate-100">
             <Link
               to={to}
-              className="text-gray-500 font-semibold hover:text-black"
+              className="text-gray-500 font-medium hover:text-black"
             >
               {label}
             </Link>

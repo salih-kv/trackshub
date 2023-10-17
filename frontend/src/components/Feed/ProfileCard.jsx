@@ -15,7 +15,7 @@ const ProfileCard = () => {
       <div className="p-4 flex flex-col items-start w-full">
         <Link>
           <header className="flex items-center pb-4 w-full">
-            <ProfileImg w={12} buttonStyle={`mr-4`} />
+            <ProfileImg w={12} buttonStyle={`mr-4`} name={user?.name} />
             <div>
               <h4 className="font-bold">{user?.name}</h4>
               <p className="text-xs font-semibold text-gray-500">{`@${user?.username}`}</p>

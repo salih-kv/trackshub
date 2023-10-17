@@ -1,18 +1,15 @@
 import { BsThreeDots } from "react-icons/bs";
 import ProfileImg from "../ProfileImg";
+import { useUserState } from "../../context/UserContext";
 
 const Following = () => {
+  const { user } = useUserState();
   return (
     <div className="flex flex-col gap-6">
       <CreatePost />
-      <Post
-        imgUrl="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-        name="User One"
-      />
-      <Post
-        imgUrl="https://picsum.photos/id/319/80/80"
-        name="Kristian Karlsson"
-      />
+      {/* My posts */}
+      <Post name={user?.name} />
+      <div>{/* render following users posts */}</div>
     </div>
   );
 };
@@ -34,17 +31,11 @@ const CreatePost = () => {
   );
 };
 
-const Post = ({ imgUrl, name }) => {
+const Post = ({ name }) => {
   return (
     <div className="border-b dark:border-s-dark pb-6">
       <header className="flex items-center justify-between py-4">
-        <div className="w-12 h-auto mr-3">
-          <img
-            className="w-full h-full rounded-full"
-            src={imgUrl}
-            alt="user photo"
-          />
-        </div>
+        <ProfileImg w={10} buttonStyle={`mr-3`} />
         <div className="mr-auto w-full">
           <h4 className="font-semibold text-base">{name}</h4>
           <p className="text-gray-500 text-xs">1d ago</p>

@@ -10,6 +10,8 @@ const Feed = lazy(() => import("./pages/Feed"));
 const Following = lazy(() => import("./components/Feed/Following"));
 const Trending = lazy(() => import("./components/Feed/Trending"));
 const Projects = lazy(() => import("./pages/Projects"));
+const ProjectsList = lazy(() => import("./components/Projects/ProjectsList"));
+const Tasks = lazy(() => import("./components/Projects/Tasks"));
 const Settings = lazy(() => import("./pages/Settings"));
 const Profile = lazy(() => import("./components/Settings/Profile"));
 const Account = lazy(() => import("./components/Settings/Account"));
@@ -27,13 +29,22 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Layout />}>
+              {/* Feed */}
               <Route path="feed" element={<Feed />}>
                 <Route path="following" element={<Following />} />
                 <Route path="trending" element={<NotAvailable />} />
               </Route>
+              {/* Explore */}
               <Route path="/explore" element={<NotAvailable />} />
-              <Route path="/projects" element={<Projects />} />
+              {/* Projects */}
+              <Route path="/projects" element={<Projects />}>
+                <Route path="all" element={<ProjectsList />} />
+                <Route path="tasks" element={<Tasks />} />
+                <Route path=":projectId" />
+              </Route>
+              {/* Library */}
               <Route path="/library" element={<NotAvailable />} />
+              {/* Settings */}
               <Route path="/settings" element={<Settings />}>
                 <Route path="profile" element={<Profile />} />
                 <Route path="account" element={<Account />} />
