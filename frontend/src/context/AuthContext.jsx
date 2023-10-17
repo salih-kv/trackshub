@@ -1,31 +1,11 @@
 import { createContext, useContext, useState } from "react";
 import Cookies from "js-cookie";
-import instance from "../axios/instance";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [token] = useState(Cookies.get("userToken"));
   const [isLoggedIn, setIsLoggedIn] = useState(token ? true : false);
-  const [user, setUser] = useState({});
-
-  const fetchUser = async () => {
-    try {
-      const responseOne = await instance.get("/api/v1/user/account");
-      setUser((prev) => ({
-        ...prev,
-        ...responseOne.data,
-      }));
-
-      const responseTwo = await instance.get("/api/v1/profile/");
-      setUser((prev) => ({
-        ...prev,
-        ...responseTwo.data,
-      }));
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   const login = (token) => {
     Cookies.set("userToken", token, {
@@ -33,7 +13,6 @@ export const AuthProvider = ({ children }) => {
       secure: true,
       expires: 7,
     });
-    fetchUser();
     setIsLoggedIn(true);
   };
 
@@ -46,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, user }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

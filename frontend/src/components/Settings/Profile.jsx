@@ -1,12 +1,34 @@
-import { useState } from "react";
 import ProfileImg from "../ProfileImg";
 import { Input } from "./Input";
+import { useUserState } from "../../context/UserContext";
 import instance from "../../axios/instance";
-import { useAuth } from "../../context/AuthContext";
+import { useState } from "react";
 
 const Profile = () => {
-  const { user } = useAuth();
-  const [userProfile, setUserProfile] = useState(null);
+  const { user } = useUserState();
+
+  const [userProfile, setUserProfile] = useState({
+    location: "",
+    about: "",
+    interests: [],
+  });
+
+  const handleChange = (field, newValue) => {
+    setUserProfile((prev) => ({ ...prev, [field]: newValue }));
+    setIsDirty(true);
+  };
+
+  const [isDirty, setIsDirty] = useState(false);
+
+  const updateProfile = async (e) => {
+    e.preventDefault();
+    try {
+      await instance.post("/api/v1/user/account", userProfile);
+      setIsDirty(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="w-3/4 flex flex-col max-w-2xl mx-auto mb-16">
@@ -40,7 +62,11 @@ const Profile = () => {
       <Interests />
       <div className="w-full h-[1px] my-12 bg-s-light dark:bg-s-dark"></div>
       <div>
-        <button className="btn btn-fill py-2 px-6 rounded-3xl" disabled>
+        <button
+          className="btn btn-fill py-2 px-6 rounded-3xl"
+          disabled={!isDirty}
+          onClick={updateProfile}
+        >
           Update
         </button>
       </div>

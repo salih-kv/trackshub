@@ -28,7 +28,7 @@ export default function Login() {
       const response = await instance.post("/api/v1/auth/login", user);
       response.data.status && login(response.data.token);
     } catch (err) {
-      console.log("Error: ", err.response.data);
+      console.log("Error: ", err);
     }
   };
 

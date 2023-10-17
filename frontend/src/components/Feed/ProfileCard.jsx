@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import ProfileImg from "../ProfileImg";
-import { useAuth } from "../../context/AuthContext";
+import { useUserState } from "../../context/UserContext.jsx";
+import { useEffect } from "react";
 
 const ProfileCard = () => {
-  const { user } = useAuth();
+  const { user, fetchUser } = useUserState();
 
-  console.log(user);
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <div className="flex items-center justify-start w-full bg-s-light dark:bg-s-dark dark:text-white rounded-lg">

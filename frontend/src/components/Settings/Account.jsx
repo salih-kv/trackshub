@@ -40,12 +40,13 @@ const Account = () => {
     }
   };
 
-  const updateAccount = async () => {
+  const updateAccount = async (e) => {
+    e.preventDefault();
     try {
       await instance.post("/api/v1/user/account", userAccount);
       setIsDirty(false);
     } catch (err) {
-      console.error(err);
+      console.log(err);
     }
   };
 

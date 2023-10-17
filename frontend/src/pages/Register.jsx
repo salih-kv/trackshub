@@ -20,7 +20,7 @@ export default function Register() {
   const validationSchema = Yup.object({
     username: Yup.string()
       .required("Required!")
-      .min(8, "username must be at least 6 characters")
+      .min(6, "username must be at least 6 characters")
       .matches(/^[a-zA-Z][a-zA-Z0-9_-]*[a-zA-Z0-9]$/, {
         message: "Invalid username format",
         excludeEmptyString: true,
