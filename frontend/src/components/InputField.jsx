@@ -9,7 +9,7 @@ export const InputField = ({ type, id, name, placeholder, ...rest }) => {
         name={name}
         placeholder={placeholder}
         {...rest}
-        className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-4 mb-1 border focus:border-primary-500 focus:bg-white focus:outline-none"
+        className="w-full px-4 py-3 rounded-lg bg-gray-200 text-black mt-4 mb-1 border focus:border-primary-500 focus:bg-white focus:outline-none"
       />
       <ErrorMessage name={name}>
         {(msg) => (

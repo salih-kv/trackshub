@@ -64,6 +64,7 @@ export default function Login() {
                   id="userId"
                   name="userId"
                   placeholder="Enter Email / Username"
+                  autoFocus
                 />
                 <InputField
                   type="password"

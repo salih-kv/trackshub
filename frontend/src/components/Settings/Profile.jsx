@@ -56,6 +56,7 @@ const Interests = () => {
       <header className="pb-8">
         <h1 className="text-2xl">Music Interests</h1>
       </header>
+      <Input placeholder={"enter your musical interests..."} />
     </section>
   );
 };

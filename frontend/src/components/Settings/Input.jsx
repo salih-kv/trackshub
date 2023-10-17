@@ -1,9 +1,9 @@
-export const Input = ({ label, placeholder, value, handleChange }) => {
+export const Input = ({ type, label, placeholder, value, handleChange }) => {
   return (
     <>
       <label>{label}</label>
       <input
-        type="text"
+        type={type}
         placeholder={placeholder}
         value={value}
         onChange={(e) => handleChange(e.target.value)}

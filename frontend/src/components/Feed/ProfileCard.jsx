@@ -8,8 +8,8 @@ const ProfileCard = () => {
   console.log(user);
 
   return (
-    <div className="flex items-center justify-start w-full bg-s-light dark:bg-s-dark rounded-lg">
-      <div className="p-4 flex flex-col items-center justify-center w-full">
+    <div className="flex items-center justify-start w-full bg-s-light dark:bg-s-dark dark:text-white rounded-lg">
+      <div className="p-4 flex flex-col items-start w-full">
         <Link>
           <header className="flex items-center pb-4 w-full">
             <ProfileImg w={12} buttonStyle={`mr-4`} />

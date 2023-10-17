@@ -14,7 +14,7 @@ const Layout = () => {
   }, [navigate]);
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative dark:text-white">
       <PrivateHeader />
       <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-2xl mt-24 px-4">
         <Outlet />

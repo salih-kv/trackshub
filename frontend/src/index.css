@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply font-body bg-p-light text-black dark:bg-p-dark dark:text-white;
+  @apply font-body bg-p-light text-black dark:bg-p-dark;
 }
 
 .fixed-header {

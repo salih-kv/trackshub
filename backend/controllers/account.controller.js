@@ -4,7 +4,7 @@ import { errorHandler } from "../utils/errorHandler.js";
 
 // get account details
 export const getAccount = async (req, res, next) => {
-  const userId = req.user.id;
+  const userId = req.user.id; // id retrieved from token
   try {
     const userAccount = await Users.findOne({ _id: userId }).select(
       "email name username"
@@ -18,14 +18,16 @@ export const getAccount = async (req, res, next) => {
 // update user account
 export const updateAccount = async (req, res, next) => {
   const userId = req.user.id;
-  const { email, name } = req.body;
+  const { email, name, username } = req.body;
 
   try {
     let validAccount = await Users.findOne({ _id: userId });
     if (!validAccount) errorHandler(404, "User not found");
 
-    validAccount.email = email;
-    validAccount.name = name;
+    if (email) validAccount.email = email;
+    if (name) validAccount.name = name;
+    if (username) validAccount.username = username;
+
     const response = await validAccount.save();
 
     if (response) {
@@ -39,8 +41,28 @@ export const updateAccount = async (req, res, next) => {
   }
 };
 
-//! forgot password - reset user password
-export const resetPassword = async (req, res, next) => {};
+// reset user password
+export const resetPassword = async (req, res, next) => {
+  const { userId } = req.user.id;
+  const { newPassword } = req.body;
+
+  try {
+    const user = await Users.findOne({ userId });
+    if (!user) errorHandler(400, "Invalid user or expired token");
+
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({
+      status: true,
+      message: "Password reset successful",
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const forgotPassword = async (req, res, next) => {};
 
 // delete user account
 export const deleteAccount = async (req, res, next) => {

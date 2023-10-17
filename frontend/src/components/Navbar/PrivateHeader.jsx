@@ -29,7 +29,7 @@ export const PrivateHeader = () => {
 const Left = () => {
   return (
     <div>
-      <Link href="" className="flex items-center pl-4 md:mr-8">
+      <Link to="/" className="flex items-center pl-4 md:mr-8">
         <div className="w-40">
           <img src={logo} className="w-full" alt="TracksHub Logo" />
         </div>

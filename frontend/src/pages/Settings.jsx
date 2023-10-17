@@ -14,7 +14,7 @@ const Settings = () => {
     }
   }, [navigate]);
   return (
-    <section className="flex justify-between w-full min-h-screen gap-8 pt-8">
+    <section className="flex justify-between w-full gap-8 pt-8">
       <LeftNav />
       <Outlet />
     </section>
