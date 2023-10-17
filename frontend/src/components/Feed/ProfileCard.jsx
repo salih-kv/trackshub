@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 import ProfileImg from "../ProfileImg";
+import { useAuth } from "../../context/AuthContext";
 
 const ProfileCard = () => {
+  const { user } = useAuth();
+
+  console.log(user);
+
   return (
     <div className="flex items-center justify-start w-full bg-s-light dark:bg-s-dark rounded-lg">
       <div className="p-4 flex flex-col items-center justify-center w-full">
@@ -9,10 +14,8 @@ const ProfileCard = () => {
           <header className="flex items-center pb-4 w-full">
             <ProfileImg w={12} buttonStyle={`mr-4`} />
             <div>
-              <h4 className="font-bold">User One</h4>
-              <p className="text-xs font-semibold text-gray-500">
-                @username43252345234
-              </p>
+              <h4 className="font-bold">{user?.name}</h4>
+              <p className="text-xs font-semibold text-gray-500">{`@${user?.username}`}</p>
             </div>
           </header>
         </Link>

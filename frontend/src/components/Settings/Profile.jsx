@@ -1,7 +1,13 @@
+import { useState } from "react";
 import ProfileImg from "../ProfileImg";
 import { Input } from "./Input";
+import instance from "../../axios/instance";
+import { useAuth } from "../../context/AuthContext";
 
 const Profile = () => {
+  const { user } = useAuth();
+  const [userProfile, setUserProfile] = useState(null);
+
   return (
     <div className="w-3/4 flex flex-col max-w-2xl mx-auto mb-16">
       <section className="w-full">
@@ -12,8 +18,12 @@ const Profile = () => {
           <div className="flex gap-12">
             <ProfileImg w={40} />
             <div className="">
-              <Input label="Name" />
-              <Input label="Location" placeholder="Your City" />
+              <Input label="Name" value={user?.name} />
+              <Input
+                label="Location"
+                placeholder="Your City"
+                value={user?.location}
+              />
             </div>
           </div>
           <div>
@@ -21,6 +31,7 @@ const Profile = () => {
             <textarea
               rows="6"
               className="resize-none w-full bg-s-light dark:bg-s-dark rounded-lg mt-2 outline-none p-3"
+              value={user?.about}
             ></textarea>
           </div>
         </form>

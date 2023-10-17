@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { Input } from "./Input";
 import instance from "../../axios/instance";
+import { useAuth } from "../../context/AuthContext";
 
 const Account = () => {
+  const { user } = useAuth();
+
   const [userAccount, setUserAccount] = useState({
     username: "",
     email: "",
@@ -12,12 +15,13 @@ const Account = () => {
     setUserAccount((prev) => ({ ...prev, [field]: newValue }));
   };
 
-  useEffect(() => {
-    instance
-      .get("/api/v1/user/account")
-      .then((res) => setUserAccount(res.data))
-      .catch((err) => console.error(err));
-  }, []);
+  const updateUser = async () => {
+    try {
+      await instance.post("/api/v1/user/account", userAccount);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="w-3/4 flex flex-col max-w-2xl mx-auto mb-16">
@@ -28,12 +32,12 @@ const Account = () => {
         <form>
           <Input
             label={"Username"}
-            value={userAccount?.username}
+            value={user?.username}
             handleChange={(newValue) => handleChange("username", newValue)}
           />
           <Input
             label={"Email"}
-            value={userAccount?.email}
+            value={user?.email}
             handleChange={(newValue) => handleChange("email", newValue)}
           />
         </form>

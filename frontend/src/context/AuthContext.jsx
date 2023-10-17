@@ -1,14 +1,39 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import Cookies from "js-cookie";
+import instance from "../axios/instance";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const userToken = Cookies.get("userToken");
-  const [isLoggedIn, setIsLoggedIn] = useState(userToken ? true : false);
+  const [token] = useState(Cookies.get("userToken"));
+  const [isLoggedIn, setIsLoggedIn] = useState(token ? true : false);
+  const [user, setUser] = useState({});
 
-  const login = () => {
-    // Implement login logic here, e.g., check user credentials
+  const fetchUser = async () => {
+    try {
+      const responseOne = await instance.get("/api/v1/user/account");
+      setUser((prev) => ({
+        ...prev,
+        ...responseOne.data,
+      }));
+
+      const responseTwo = await instance.get("/api/v1/profile/");
+      setUser((prev) => ({
+        ...prev,
+        ...responseTwo.data,
+      }));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const login = (token) => {
+    Cookies.set("userToken", token, {
+      sameSite: "None",
+      secure: true,
+      expires: 7,
+    });
+    fetchUser();
     setIsLoggedIn(true);
   };
 
@@ -21,7 +46,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, user }}>
       {children}
     </AuthContext.Provider>
   );
