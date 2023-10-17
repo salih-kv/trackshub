@@ -18,7 +18,7 @@ export default function Welcome() {
 const HeroSection1 = () => {
   const [alert, setAlert] = useState(true);
   return (
-    <section className="bg-white mt-24">
+    <section className="bg-white mt-16">
       <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
         {alert && <AlertLink />}
         <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl">

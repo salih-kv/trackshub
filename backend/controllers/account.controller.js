@@ -7,7 +7,7 @@ export const getAccount = async (req, res, next) => {
   const userId = req.user.id;
   try {
     const userAccount = await Users.findOne({ _id: userId }).select(
-      "email name username isProfilePublic"
+      "email name username"
     );
     res.status(200).json(userAccount);
   } catch (err) {
@@ -18,7 +18,7 @@ export const getAccount = async (req, res, next) => {
 // update user account
 export const updateAccount = async (req, res, next) => {
   const userId = req.user.id;
-  const { email, name, isProfilePublic } = req.body;
+  const { email, name } = req.body;
 
   try {
     let validAccount = await Users.findOne({ _id: userId });
@@ -26,7 +26,6 @@ export const updateAccount = async (req, res, next) => {
 
     validAccount.email = email;
     validAccount.name = name;
-    validAccount.isProfilePublic = isProfilePublic;
     const response = await validAccount.save();
 
     if (response) {

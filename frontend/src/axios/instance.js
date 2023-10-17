@@ -1,13 +1,21 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const token = Cookies.get("userToken");
-
 const instance = axios.create({
   baseURL: "http://localhost:4000",
-  headers: {
-    Authorization: token ? `Bearer ${token}` : "undefined",
-  },
 });
+
+instance.interceptors.request.use(
+  (config) => {
+    const token = Cookies.get("userToken");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export default instance;

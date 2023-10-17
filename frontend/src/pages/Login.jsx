@@ -5,10 +5,10 @@ import { Form, Formik } from "formik";
 import { InputField } from "../components/InputField";
 import * as Yup from "yup";
 import instance from "../axios/instance";
-import Cookies from "js-cookie";
+import { useEffect } from "react";
 
 export default function Login() {
-  const { login } = useAuth();
+  const { login, isLoggedIn } = useAuth();
 
   const navigate = useNavigate();
 
@@ -26,17 +26,15 @@ export default function Login() {
   const handleLogin = async (user) => {
     try {
       const response = await instance.post("/api/v1/auth/login", user);
-      response &&
-        Cookies.set("userToken", response.data.token, {
-          sameSite: "None",
-          secure: true,
-        });
-      response.data.status && login();
-      response.data.token && navigate("/feed");
+      response.data.status && login(response.data.token);
     } catch (err) {
       console.log("Error: ", err.response.data);
     }
   };
+
+  useEffect(() => {
+    isLoggedIn && navigate("/feed");
+  }, [isLoggedIn, navigate]);
 
   return (
     <div className="p-20 min-h-screen w-screen flex flex-col-reverse gap-8 md:flex-row items-center justify-center bg-gray-200">
