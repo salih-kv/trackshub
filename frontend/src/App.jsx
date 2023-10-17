@@ -15,6 +15,7 @@ const Tasks = lazy(() => import("./components/Projects/Tasks"));
 const Settings = lazy(() => import("./pages/Settings"));
 const Profile = lazy(() => import("./components/Settings/Profile"));
 const Account = lazy(() => import("./components/Settings/Account"));
+const Plans = lazy(() => import("./components/Settings/Plans"));
 const Notifications = lazy(() => import("./components/Settings/Notifications"));
 const NotAvailable = lazy(() => import("./components/Error/NotAvailable"));
 const NotFound = lazy(() => import("./components/Error/NotFound"));
@@ -31,8 +32,8 @@ const App = () => {
             <Route path="/" element={<Layout />}>
               {/* Feed */}
               <Route path="feed" element={<Feed />}>
-                <Route path="following" element={<Following />} />
                 <Route path="trending" element={<NotAvailable />} />
+                <Route path="following" element={<Following />} />
               </Route>
               {/* Explore */}
               <Route path="/explore" element={<NotAvailable />} />
@@ -48,6 +49,7 @@ const App = () => {
               <Route path="/settings" element={<Settings />}>
                 <Route path="profile" element={<Profile />} />
                 <Route path="account" element={<Account />} />
+                <Route path="billing" element={<NotAvailable />} />
                 <Route path="notifications" element={<NotAvailable />} />
               </Route>
             </Route>

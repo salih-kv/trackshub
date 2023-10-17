@@ -1,22 +1,34 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { CgGoogleTasks } from "react-icons/cg";
+import { useEffect } from "react";
+
+const NavLinks = [
+  {
+    to: "all",
+    label: "All Projects",
+  },
+  {
+    to: "tasks",
+    label: "Tasks",
+  },
+];
 
 export default function Projects() {
-  const NavLinks = [
-    {
-      to: "all",
-      label: "All Projects",
-    },
-    {
-      to: "tasks",
-      label: "Tasks",
-    },
-  ];
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path === "/projects" || path === "/projects/") {
+      navigate("/projects/all");
+    }
+  }, [navigate]);
+
   return (
-    <div className="flex justify-between w-full gap-8 py-0 sm:py-8 lg:py-4 mx-4 lg:mx-0">
-      <div className="flex flex-col w-full">
-        <header className="flex gap-8">
+    <div className="flex flex-col w-full py-0 sm:py-8 lg:py-4 mx-4 lg:mx-0">
+      <div className="flex w-full gap-8">
+        <div className="w-1/4 h-auto"></div>
+        <header className="w-3/4 flex gap-8">
           {NavLinks?.map(({ to, label }) => (
             <div key={to} className="group/link hover:bg-slate-100">
               <Link
@@ -29,9 +41,9 @@ export default function Projects() {
             </div>
           ))}
         </header>
-        <div className="mt-8">
-          <Outlet />
-        </div>
+      </div>
+      <div className="mt-8 w-full">
+        <Outlet />
       </div>
     </div>
   );

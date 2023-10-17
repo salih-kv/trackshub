@@ -2,18 +2,44 @@ import { FaPlus } from "react-icons/fa";
 
 const ProjectsList = () => {
   return (
-    <>
-      <div className="flex items-center justify-between">
-        <header>
+    <div className="flex w-full gap-8">
+      <Left />
+      <Right />
+    </div>
+  );
+};
+
+export default ProjectsList;
+
+const Left = () => {
+  return (
+    <div className="w-1/4">
+      <header>
+        <h2>Filter by:</h2>
+      </header>
+      <div>
+        <div>Active</div>
+        <div>Closed</div>
+        <div>All</div>
+      </div>
+    </div>
+  );
+};
+
+const Right = () => {
+  return (
+    <div className="w-3/4">
+      <header className="flex justify-between">
+        <div>
           <h1 className="text-3xl font-bold mb-1">Projects</h1>
           <p>Collaborate with your team</p>
-        </header>
+        </div>
         <div>
           <button className="btn btn-fill px-4 py-3 rounded">
             New Project
           </button>
         </div>
-      </div>
+      </header>
       <div className="py-8 flex gap-4 flex-wrap">
         <button className="w-60 h-40 flex items-center justify-center rounded bg-s-light dark:bg-s-dark">
           <FaPlus className="text-lg text-black dark:text-dark-text" />
@@ -42,8 +68,6 @@ const ProjectsList = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
-
-export default ProjectsList;

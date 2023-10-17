@@ -9,7 +9,7 @@ const Layout = () => {
   useEffect(() => {
     const path = window.location.pathname;
     if (path === "/" || path === "/feed" || path === "/feed/") {
-      navigate("/feed/following");
+      navigate("/feed/trending");
     }
   }, [navigate]);
 

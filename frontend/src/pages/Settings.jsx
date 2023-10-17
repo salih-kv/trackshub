@@ -1,9 +1,10 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import { FaUserLarge } from "react-icons/fa6";
-import { IoNotifications } from "react-icons/io5";
+import { IoNotifications, IoTicket } from "react-icons/io5";
 import { useEffect } from "react";
 import ProfileImg from "../components/ProfileImg";
+import { useUserState } from "../context/UserContext";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -24,6 +25,8 @@ const Settings = () => {
 export default Settings;
 
 const LeftNav = () => {
+  const { user } = useUserState();
+
   const NavItems = [
     {
       to: "profile",
@@ -36,6 +39,11 @@ const LeftNav = () => {
       icon: <FaUserLarge className="text-primary-500" />,
     },
     {
+      to: "billing",
+      label: "Plans",
+      icon: <IoTicket className="text-green-500" />,
+    },
+    {
       to: "notifications",
       label: "Notifications",
       icon: <IoNotifications className="text-blue-500" />,
@@ -44,7 +52,7 @@ const LeftNav = () => {
   return (
     <div className="flex flex-col min-w-[280px] w-1/4 border-r dark:border-s-dark">
       <Link className="flex items-center justify-start p-4 gap-4">
-        <ProfileImg w={8} />
+        <ProfileImg w={8} name={user?.name} />
         <div>
           <h4 className="text-sm">User One</h4>
           <p className="text-xs text-gray-500">Back to Profile</p>

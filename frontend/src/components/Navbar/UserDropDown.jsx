@@ -5,9 +5,11 @@ import { Link } from "react-router-dom";
 import ProfileImg from "../ProfileImg";
 import instance from "../../axios/instance";
 import { useAuth } from "../../context/AuthContext";
+import { useUserState } from "../../context/UserContext";
 
 const UserDropDown = () => {
   const { logout } = useAuth();
+  const { user } = useUserState();
   const logoutUser = async () => {
     instance.post("/api/v1/auth/logout");
     logout();
@@ -21,7 +23,7 @@ const UserDropDown = () => {
         <div className="text-left min-w-[280px]">
           <Link>
             <div className="flex items-center justify-between hover:bg-s-light dark:hover:bg-p-dark rounded-lg p-2">
-              <ProfileImg w={10} buttonStyle={`mr-3`} />
+              <ProfileImg w={10} buttonStyle={`mr-3`} name={user?.name} />
               <div className="w-full">
                 <h4 className="font-semibold text-sm">User One</h4>
                 <p className=" text-gray-500">View Profile</p>

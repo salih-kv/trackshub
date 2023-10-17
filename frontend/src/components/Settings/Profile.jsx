@@ -38,7 +38,7 @@ const Profile = () => {
         </header>
         <form className="flex flex-col w-full gap-8">
           <div className="flex gap-12">
-            <ProfileImg w={40} />
+            <ProfileImg w={40} name={user?.name} />
             <div className="">
               <Input label="Name" value={user?.name} />
               <Input

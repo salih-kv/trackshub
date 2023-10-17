@@ -11,6 +11,7 @@ import logo from "../../assets/trackshub.svg";
 import ChatDropDown from "./ChatDropDown";
 import NotificationDropDown from "./NotificationDropDown";
 import ProfileImg from "../ProfileImg";
+import { useUserState } from "../../context/UserContext";
 
 export const PrivateHeader = () => {
   return (
@@ -28,8 +29,8 @@ export const PrivateHeader = () => {
 
 const Left = () => {
   return (
-    <div>
-      <Link to="/" className="flex items-center pl-4 md:mr-8">
+    <div className="pl-4 md:mr-8">
+      <Link to="/" className="flex items-center">
         <div className="w-40">
           <img src={logo} className="w-full" alt="TracksHub Logo" />
         </div>
@@ -39,8 +40,8 @@ const Left = () => {
 };
 
 const Right = () => {
+  const { user } = useUserState();
   const [activeDropdown, setActiveDropdown] = useState(null);
-
   const toggleDropdown = (dropdownName) => {
     setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
   };
@@ -50,7 +51,7 @@ const Right = () => {
       <input
         type="text"
         placeholder="search"
-        className="hidden md:block px-2 lg:px-4 py-1 rounded-3xl dark:text-black bg-s-light dark:bg-s-dark focus:border-primary-500 outline-none"
+        className="hidden md:block px-2 lg:px-4 py-2 rounded-3xl dark:text-white bg-s-light dark:bg-s-dark focus:border-primary-500 outline-none"
       />
       <DarkThemeToggle />
       <button
@@ -71,6 +72,7 @@ const Right = () => {
         w={9}
         buttonStyle="px-2 relative"
         onClick={() => toggleDropdown("user")}
+        name={user?.name}
       >
         {activeDropdown === "user" && <UserDropDown />}
       </ProfileImg>
