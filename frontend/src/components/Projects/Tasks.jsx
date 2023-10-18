@@ -12,6 +12,11 @@ export default Tasks;
 const Left = () => {
   return (
     <div className="w-1/4">
+      <header>Filter</header>
+      <div>
+        {/* 3 of them */}
+        {/* Drag & Drop */}
+      </div>
       <div>To do</div>
       <div>In progress</div>
       <div>Done</div>

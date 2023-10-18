@@ -6,6 +6,7 @@ import { InputField } from "../components/InputField";
 import * as Yup from "yup";
 import instance from "../axios/instance";
 import { useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Login() {
   const { login, isLoggedIn } = useAuth();
@@ -28,7 +29,7 @@ export default function Login() {
       const response = await instance.post("/api/v1/auth/login", user);
       response.data.status && login(response.data.token);
     } catch (err) {
-      console.log("Error: ", err);
+      toast.error(err.response.data.message);
     }
   };
 
@@ -37,7 +38,7 @@ export default function Login() {
   }, [isLoggedIn, navigate]);
 
   return (
-    <div className="p-20 min-h-screen w-screen flex flex-col-reverse gap-8 md:flex-row items-center justify-center bg-gray-200">
+    <div className="p-20 min-h-screen w-screen flex flex-col-reverse gap-8 md:flex-row items-center justify-center bg-gray-200 relative">
       {/* Left */}
       <div className="text-3xl text-center md:text-left">
         <Link
@@ -101,6 +102,7 @@ export default function Login() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

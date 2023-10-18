@@ -43,11 +43,11 @@ export const updateAccount = async (req, res, next) => {
 
 // reset user password
 export const resetPassword = async (req, res, next) => {
-  const { userId } = req.user.id;
+  const userId = req.user.id;
   const { newPassword } = req.body;
 
   try {
-    const user = await Users.findOne({ userId });
+    const user = await Users.findOne({ _id: userId });
     if (!user) errorHandler(400, "Invalid user or expired token");
 
     user.password = newPassword;

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "./Input";
 import instance from "../../axios/instance";
 import { useAuth } from "../../context/AuthContext";
+import { ToastContainer, toast } from "react-toastify";
 
 const Account = () => {
   const { logout } = useAuth();
@@ -43,10 +44,11 @@ const Account = () => {
   const updateAccount = async (e) => {
     e.preventDefault();
     try {
-      await instance.post("/api/v1/user/account", userAccount);
+      const response = await instance.post("/api/v1/user/account", userAccount);
+      toast.success(response.data.message);
       setIsDirty(false);
     } catch (err) {
-      console.log(err);
+      toast.warning(err.response.data.message);
     }
   };
 
@@ -60,17 +62,20 @@ const Account = () => {
       logout();
       navigate("/welcome");
     } catch (err) {
-      console.error(err);
+      toast.warning(err.response.data.message);
     }
   };
 
-  const resetPassword = async () => {
+  const resetPassword = async (e) => {
+    e.preventDefault();
     try {
-      await instance.post("/api/reset-password", {
+      const response = await instance.post("/api/v1/user/reset-password", {
         newPassword: password.newPassword,
       });
+      toast.success(response.data.message);
+      setPassword((prev) => ({ ...prev, newPassword: "", cNewPassword: "" }));
     } catch (err) {
-      console.error(err);
+      toast.warning(err.response.data.message);
     }
   };
 
@@ -112,6 +117,7 @@ const Account = () => {
           <Input
             label={"New password"}
             placeholder={"Enter at least 6 characters"}
+            value={password.newPassword}
             handleChange={(newValue) =>
               passwordOnChange("newPassword", newValue)
             }
@@ -161,6 +167,7 @@ const Account = () => {
           </div>
         )}
       </div>
+      <ToastContainer />
     </div>
   );
 };
