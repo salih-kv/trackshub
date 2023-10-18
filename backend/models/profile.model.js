@@ -8,16 +8,19 @@ const profileSchema = mongoose.Schema({
   profilePic: {
     type: String,
   },
-  country: {
+  // country: {
+  //   type: String,
+  //   required: [true, "Please choose your country"],
+  // },
+  // state: {
+  //   type: String,
+  // },
+  // city: {
+  //   type: String,
+  //   required: true,
+  // },
+  location: {
     type: String,
-    required: [true, "Please choose your country"],
-  },
-  state: {
-    type: String,
-  },
-  city: {
-    type: String,
-    required: true,
   },
   bio: {
     type: String,

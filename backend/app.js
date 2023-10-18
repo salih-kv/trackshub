@@ -4,10 +4,9 @@ import cors from "cors";
 
 import { error } from "./middlewares/error.js";
 import authRoute from "./routes/auth.route.js";
-import userAccountRoute from "./routes/account.route.js";
-import userProfileRoute from "./routes/profile.route.js";
+import userRoute from "./routes/user.route.js";
 import homeRoute from "./routes/home.route.js";
-import projectRoute from "./routes/profile.route.js";
+import projectRoute from "./routes/project.route.js";
 
 export const app = express();
 
@@ -21,9 +20,8 @@ if (process.env.NODE_ENV != "production") {
 }
 
 // routes
-app.use("/api/v1/auth", authRoute); // ✅
-app.use("/api/v1/user", userAccountRoute);
-app.use("/api/v1/profile", userProfileRoute); // ✅
+app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/user", userRoute);
 app.use("/api/v1/home", homeRoute);
 app.use("/api/v1/project", projectRoute);
 

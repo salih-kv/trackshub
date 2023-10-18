@@ -8,12 +8,12 @@ export const createUserProfile = async (req, res, next) => {
   try {
     const userProfileData = {
       ...req.body,
-      user: userId,
+      _id: userId,
     };
 
     // Create or update the user's profile
     const userProfile = await Profiles.findOneAndUpdate(
-      { user: userId },
+      { _id: userId },
       userProfileData,
       { upsert: true, new: true }
     );
@@ -35,7 +35,7 @@ export const getUserProfile = async (req, res, next) => {
     // find user
     const user = await Users.findOne({ _id: userId });
     if (!user) errorHandler(404, "User not found");
-    const userProfile = await Profiles.findOne({ user: user._id });
+    const userProfile = await Profiles.findOne({ _id: user._id });
     res.status(200).json(userProfile);
   } catch (err) {
     next(err);

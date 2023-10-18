@@ -1,34 +1,45 @@
 import ProfileImg from "../ProfileImg";
 import { Input } from "./Input";
-import { useUserState } from "../../context/UserContext";
 import instance from "../../axios/instance";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 const Profile = () => {
-  const { user } = useUserState();
-
   const [userProfile, setUserProfile] = useState({
-    location: "",
-    about: "",
-    interests: [],
+    location: " ",
+    bio: "",
   });
+
+  const [isDirty, setIsDirty] = useState(false);
 
   const handleChange = (field, newValue) => {
     setUserProfile((prev) => ({ ...prev, [field]: newValue }));
     setIsDirty(true);
   };
 
-  const [isDirty, setIsDirty] = useState(false);
+  const fetchProfile = async () => {
+    try {
+      const response = await instance.get("/api/v1/user/profile");
+      console.log(response);
+      setUserProfile(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const updateProfile = async (e) => {
     e.preventDefault();
     try {
-      await instance.post("/api/v1/user/account", userProfile);
+      const response = await instance.post("/api/v1/user/profile", userProfile);
       setIsDirty(false);
     } catch (err) {
-      console.log(err);
+      toast.warning(err.response.data.message);
     }
   };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
   return (
     <div className="w-3/4 flex flex-col max-w-2xl mx-auto mb-16">
@@ -38,13 +49,15 @@ const Profile = () => {
         </header>
         <form className="flex flex-col w-full gap-8">
           <div className="flex gap-12">
-            <ProfileImg w={40} name={user?.name} />
+            <ProfileImg w={40} name={""} />
             <div className="">
-              <Input label="Name" value={user?.name} />
+              <Input label="Name" value={""} />
               <Input
-                label="Location"
-                placeholder="Your City"
-                value={user?.location}
+                type={`text`}
+                label={`Location`}
+                placeholder={"Your City"}
+                value={userProfile?.location}
+                handleChange={(newValue) => handleChange("location", newValue)}
               />
             </div>
           </div>
@@ -53,7 +66,8 @@ const Profile = () => {
             <textarea
               rows="6"
               className="resize-none w-full bg-s-light dark:bg-s-dark rounded-lg mt-2 outline-none p-3"
-              value={user?.about}
+              value={userProfile?.bio}
+              onChange={(e) => handleChange("bio", e.target.value)}
             ></textarea>
           </div>
         </form>
@@ -70,6 +84,7 @@ const Profile = () => {
           Update
         </button>
       </div>
+      <ToastContainer />
     </div>
   );
 };
