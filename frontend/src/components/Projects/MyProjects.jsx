@@ -1,6 +1,9 @@
 import { FaPlus } from "react-icons/fa";
+import { IoMdCloseCircleOutline } from "react-icons/io";
+import { MdAudiotrack } from "react-icons/md";
 import ProjectCard from "./ProjectCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import instance from "../../axios/instance";
 
 const MyProjects = () => {
   return (
@@ -36,6 +39,20 @@ const Left = () => {
 
 const Right = () => {
   const [toggle, setToggle] = useState(false);
+  const [projects, setProjects] = useState();
+
+  const fetchProjects = async () => {
+    try {
+      const response = await instance.get("/api/v1/project/");
+      setProjects(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
 
   return (
     <div className="w-3/4">
@@ -55,16 +72,27 @@ const Right = () => {
 
       {/* project input modal */}
       {toggle && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
+        <div
+          className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40"
+          onClick={() => setToggle(false)}
+        >
           <div className="bg-white dark:bg-p-dark p-6 rounded-lg">
-            <input type="text" className="input" placeholder="Project Name" />
-            <div className="mt-4 flex justify-end">
-              <button
+            <header className="flex items-center justify-between mb-2">
+              <h2>New Project</h2>
+              <IoMdCloseCircleOutline
                 onClick={() => setToggle(false)}
-                className="btn btn-secondary dark:bg-p-dark py-1.5 px-3 rounded-lg"
-              >
-                close
-              </button>
+                className="text-red-500 text-2xl cursor-pointer"
+              />
+            </header>
+            <div className="relative flex items-center group">
+              <MdAudiotrack className="text-xl absolute left-2 top-[24px] z-30 group-focus-within:text-primary-500" />
+              <input
+                type="text"
+                className="input !pl-10"
+                placeholder="Project Name"
+              />
+            </div>
+            <div className="flex justify-end">
               <button className="btn dark:bg-s-dark ml-4 py-1.5 px-3 rounded-lg">
                 Create
               </button>
@@ -78,9 +106,10 @@ const Right = () => {
         <button className="w-60 h-40 flex items-center justify-center rounded bg-s-light dark:bg-s-dark">
           <FaPlus className="text-lg text-s-dark dark:text-s-light" />
         </button>
-        <ProjectCard />
-        <ProjectCard />
-        <ProjectCard />
+
+        {projects?.map((project) => (
+          <ProjectCard {...project} key={project.name} />
+        ))}
       </div>
     </div>
   );

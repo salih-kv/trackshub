@@ -38,7 +38,7 @@ export default function Login() {
   }, [isLoggedIn, navigate]);
 
   return (
-    <div className="p-20 min-h-screen w-screen flex flex-col-reverse gap-8 md:flex-row items-center justify-center bg-gray-200 relative">
+    <div className="p-20 min-h-screen w-screen flex flex-col-reverse gap-8 md:flex-row items-center justify-center bg-gray-200 dark:bg-p-dark relative">
       {/* Left */}
       <div className="text-3xl text-center md:text-left">
         <Link
@@ -47,11 +47,13 @@ export default function Login() {
         >
           TracksHub
         </Link>
-        <p className="text-base">Welcome, Login to your TracksHub account.</p>
+        <p className="text-base dark:text-white">
+          Welcome, Login to your TracksHub account.
+        </p>
       </div>
       {/* Right */}
       <div className="mx-auto">
-        <div className="bg-gray-100 p-5 flex rounded-2xl ">
+        <div className="bg-gray-100 dark:bg-s-dark p-5 flex rounded-2xl ">
           <div className="px-5 w-[400px]">
             <h2 className="text-2xl font-bold text-primary-700">Login</h2>
             <Formik
@@ -86,7 +88,7 @@ export default function Login() {
               <p className="text-center text-sm">OR</p>
               <hr className="border-gray-500" />
             </div>
-            <button className="bg-white border py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300 ">
+            <button className="bg-white dark:bg-p-dark dark:text-white border dark:border-p-dark py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300 ">
               <FcGoogle className="text-2xl" />
               <span className="ml-4">Login with Google</span>
             </button>
@@ -94,7 +96,7 @@ export default function Login() {
               <p>Don&apos;t have an account?</p>
               <Link
                 to="/register"
-                className="py-2 px-5 ml-3 bg-white border rounded-xl hover:scale-110 duration-300 border-primary-400  "
+                className="py-2 px-5 ml-3 bg-white dark:bg-p-dark dark:text-white border dark:border-p-dark rounded-xl hover:scale-110 duration-300 border-primary-400  "
               >
                 Register
               </Link>

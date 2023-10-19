@@ -11,6 +11,7 @@ const Feed = lazy(() => import("./pages/Feed"));
 const Following = lazy(() => import("./components/Feed/Following"));
 const Trending = lazy(() => import("./components/Feed/Trending"));
 const Projects = lazy(() => import("./pages/Projects"));
+const ProjectPage = lazy(() => import("./components/Projects/ProjectPage"));
 const ProjectsList = lazy(() => import("./components/Projects/ProjectsList"));
 const MyProjects = lazy(() => import("./components/Projects/MyProjects"));
 const Settings = lazy(() => import("./pages/Settings"));
@@ -43,7 +44,15 @@ const App = () => {
                 <Route path="all" element={<ProjectsList />} />
                 <Route path="my-projects" element={<MyProjects />} />
                 <Route path="deleted" element={<NotAvailable />} />
-                <Route path=":projectId" />
+              </Route>
+              {/* dynamic project route */}
+              <Route path="/project/:projectId" element={<ProjectPage />}>
+                <Route path="files" element={<NotAvailable />} />
+                <Route path="collaborators" element={<NotAvailable />} />
+                <Route path="messages" element={<NotAvailable />} />
+                <Route path="tasks" element={<NotAvailable />} />
+                <Route path="settings" element={<NotAvailable />} />
+                <Route path="comments" element={<NotAvailable />} />
               </Route>
               {/* Library */}
               <Route path="/library" element={<NotAvailable />} />

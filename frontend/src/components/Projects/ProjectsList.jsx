@@ -52,9 +52,7 @@ const Right = () => {
         <button className="w-60 h-40 flex items-center justify-center rounded bg-s-light dark:bg-s-dark">
           <FaPlus className="text-lg text-s-dark dark:text-s-light" />
         </button>
-        <ProjectCard />
-        <ProjectCard />
-        <ProjectCard />
+        {/* //! Project List Here */}
       </div>
     </div>
   );
