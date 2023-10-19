@@ -1,7 +1,7 @@
 import { FaPlus } from "react-icons/fa";
 import ProjectCard from "./ProjectCard";
 
-const ProjectsList = () => {
+const MyProjects = () => {
   return (
     <div className="flex w-full gap-8">
       <Left />
@@ -10,11 +10,10 @@ const ProjectsList = () => {
   );
 };
 
-export default ProjectsList;
+export default MyProjects;
 
 const Left = () => {
   const items = ["All", "Active", "Closed"];
-
   return (
     <div className="w-1/4">
       <header className="font-semibold mb-4">
@@ -39,8 +38,7 @@ const Right = () => {
     <div className="w-3/4">
       <header className="flex justify-between">
         <div>
-          {/* <h1 className="text-3xl font-bold mb-1">Projects</h1> */}
-          <p>Collaborate with your team</p>
+          <p>Projects Created by you</p>
         </div>
         <div>
           <button className="btn btn-fill px-4 py-3 rounded-xl">

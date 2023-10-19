@@ -11,7 +11,7 @@ const Following = lazy(() => import("./components/Feed/Following"));
 const Trending = lazy(() => import("./components/Feed/Trending"));
 const Projects = lazy(() => import("./pages/Projects"));
 const ProjectsList = lazy(() => import("./components/Projects/ProjectsList"));
-const Tasks = lazy(() => import("./components/Projects/Tasks"));
+const MyProjects = lazy(() => import("./components/Projects/MyProjects"));
 const Settings = lazy(() => import("./pages/Settings"));
 const Profile = lazy(() => import("./components/Settings/Profile"));
 const Account = lazy(() => import("./components/Settings/Account"));
@@ -40,7 +40,8 @@ const App = () => {
               {/* Projects */}
               <Route path="/projects" element={<Projects />}>
                 <Route path="all" element={<ProjectsList />} />
-                <Route path="tasks" element={<Tasks />} />
+                <Route path="my-projects" element={<MyProjects />} />
+                <Route path="deleted" element={<NotAvailable />} />
                 <Route path=":projectId" />
               </Route>
               {/* Library */}

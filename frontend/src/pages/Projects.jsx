@@ -1,6 +1,4 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { FaPlus } from "react-icons/fa";
-import { CgGoogleTasks } from "react-icons/cg";
 import { useEffect } from "react";
 
 const NavLinks = [
@@ -9,8 +7,12 @@ const NavLinks = [
     label: "All Projects",
   },
   {
-    to: "tasks",
-    label: "Tasks",
+    to: "my-projects",
+    label: "My Projects",
+  },
+  {
+    to: "deleted",
+    label: "Deleted Projects",
   },
 ];
 
