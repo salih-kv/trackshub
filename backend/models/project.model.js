@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 const projectSchema = mongoose.Schema({
   projectId: {
     type: String,
+    required: true,
     default: () => uuidv4().slice(0, 6),
   },
   name: {
@@ -12,6 +13,7 @@ const projectSchema = mongoose.Schema({
     unique: [true, "Project name already exists"],
   },
   owner: {
+    required: true,
     type: String,
     ref: "Users",
   },
@@ -47,10 +49,17 @@ const projectSchema = mongoose.Schema({
   },
   createdAt: {
     type: Date,
+    default: Date.now(),
   },
   updatedAt: {
     type: Date,
   },
+});
+
+// Pre middleware to update the 'updatedAt' field before saving
+projectSchema.pre("save", function (next) {
+  this.updatedAt = new Date();
+  next();
 });
 
 export const Projects = mongoose.model("Projects", projectSchema);
