@@ -21,6 +21,7 @@ export const createProject = async (req, res, next) => {
       name: name,
       owner: userId,
       isClosed: false, // By default, the project is not closed
+      isPrivate: true, // By default, the project is private
     };
 
     const project = new Projects({ ...mandatoryFields, ...rest });
@@ -74,4 +75,11 @@ export const deleteProject = async (req, res, next) => {
 // get user projects
 export const getProjectsByUserId = async (req, res, next) => {
   const userId = req.user.id;
+  try {
+    const projects = await Projects.find({ owner: userId });
+    if (!projects) errorHandler(404, "Projects not found");
+    return res.status(200).json(projects);
+  } catch (err) {
+    next(err);
+  }
 };

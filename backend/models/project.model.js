@@ -44,6 +44,9 @@ const projectSchema = mongoose.Schema({
   files: {
     type: [String],
   },
+  isPrivate: {
+    type: Boolean,
+  },
   isClosed: {
     type: Boolean,
   },
