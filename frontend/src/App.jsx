@@ -1,6 +1,7 @@
 import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { PrivateRoute } from "./components/PrivateRoute";
+import Loading from "./components/Loading";
 
 const Welcome = lazy(() => import("./pages/Welcome"));
 const Register = lazy(() => import("./pages/Register"));
@@ -23,7 +24,7 @@ const NotFound = lazy(() => import("./components/Error/NotFound"));
 const App = () => {
   return (
     <BrowserRouter>
-      <Suspense fallback={<>Loading...</>}>
+      <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/register" element={<Register />} />

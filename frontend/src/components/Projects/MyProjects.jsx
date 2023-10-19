@@ -1,5 +1,6 @@
 import { FaPlus } from "react-icons/fa";
 import ProjectCard from "./ProjectCard";
+import { useState } from "react";
 
 const MyProjects = () => {
   return (
@@ -34,6 +35,8 @@ const Left = () => {
 };
 
 const Right = () => {
+  const [toggle, setToggle] = useState(false);
+
   return (
     <div className="w-3/4">
       <header className="flex justify-between">
@@ -41,11 +44,36 @@ const Right = () => {
           <p>Projects Created by you</p>
         </div>
         <div>
-          <button className="btn btn-fill px-4 py-3 rounded-xl">
+          <button
+            className="btn btn-fill px-4 py-3 rounded-xl"
+            onClick={() => setToggle(true)}
+          >
             New Project
           </button>
         </div>
       </header>
+
+      {/* project input modal */}
+      {toggle && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
+          <div className="bg-white dark:bg-p-dark p-6 rounded-lg">
+            <input type="text" className="input" placeholder="Project Name" />
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => setToggle(false)}
+                className="btn btn-secondary dark:bg-p-dark py-1.5 px-3 rounded-lg"
+              >
+                close
+              </button>
+              <button className="btn dark:bg-s-dark ml-4 py-1.5 px-3 rounded-lg">
+                Create
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* project input modal */}
+
       <div className="py-4 flex gap-4 flex-wrap">
         <button className="w-60 h-40 flex items-center justify-center rounded bg-s-light dark:bg-s-dark">
           <FaPlus className="text-lg text-s-dark dark:text-s-light" />
