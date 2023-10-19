@@ -1,15 +1,16 @@
 import { ErrorMessage, Field } from "formik";
 
-export const InputField = ({ type, id, name, placeholder, ...rest }) => {
+export const InputField = ({ label, type, id, name, placeholder, ...rest }) => {
   return (
     <div>
+      <label htmlFor={id}>{label}</label>
       <Field
         type={type}
         id={id}
         name={name}
         placeholder={placeholder}
         {...rest}
-        className="w-full px-4 py-3 rounded-lg bg-gray-200 text-black mt-4 mb-1 border focus:border-primary-500 focus:bg-white focus:outline-none"
+        className="input"
       />
       <ErrorMessage name={name}>
         {(msg) => (

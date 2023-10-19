@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import instance from "../axios/instance";
 
 const UserContext = createContext();
@@ -8,24 +8,34 @@ export const UserProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const responseOne = await instance.get("/api/v1/user/account");
+      const response = await instance.get("/api/v1/user/");
       setUser((prev) => ({
         ...prev,
-        ...responseOne.data,
-      }));
-
-      const responseTwo = await instance.get("/api/v1/profile/");
-      setUser((prev) => ({
-        ...prev,
-        ...responseTwo.data,
+        ...response.data,
       }));
     } catch (err) {
       console.error(err);
     }
   };
 
+  const updateUser = async (userData) => {
+    try {
+      const response = await instance.post("/api/v1/user/", userData);
+      setUser((prev) => ({
+        ...prev,
+        ...response.data,
+      }));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   return (
-    <UserContext.Provider value={{ fetchUser, user }}>
+    <UserContext.Provider value={{ user, fetchUser, updateUser }}>
       {children}
     </UserContext.Provider>
   );

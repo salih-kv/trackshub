@@ -1,44 +1,32 @@
 import ProfileImg from "../ProfileImg";
-import { Input } from "./Input";
-import instance from "../../axios/instance";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { useUserState } from "../../context/UserContext";
 
 const Profile = () => {
-  const [userProfile, setUserProfile] = useState({
-    location: " ",
+  const { user, updateUser } = useUserState();
+
+  const [userInput, setUserInput] = useState({
+    name: "",
+    location: "",
     bio: "",
   });
 
   const [isDirty, setIsDirty] = useState(false);
 
-  const handleChange = (field, newValue) => {
-    setUserProfile((prev) => ({ ...prev, [field]: newValue }));
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserInput((prev) => ({ ...prev, [name]: value }));
     setIsDirty(true);
   };
 
-  const fetchProfile = async () => {
-    try {
-      const response = await instance.get("/api/v1/user/profile");
-      console.log(response);
-      setUserProfile(response.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const updateProfile = async (e) => {
+  const update = (e) => {
     e.preventDefault();
-    try {
-      const response = await instance.post("/api/v1/user/profile", userProfile);
-      setIsDirty(false);
-    } catch (err) {
-      toast.warning(err.response.data.message);
-    }
+    updateUser(userInput);
   };
 
   useEffect(() => {
-    fetchProfile();
+    setUserInput(user);
   }, []);
 
   return (
@@ -51,13 +39,25 @@ const Profile = () => {
           <div className="flex gap-12">
             <ProfileImg w={40} name={""} />
             <div className="">
-              <Input label="Name" value={""} />
-              <Input
-                type={`text`}
-                label={`Location`}
-                placeholder={"Your City"}
-                value={userProfile?.location}
-                handleChange={(newValue) => handleChange("location", newValue)}
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Display name"
+                className="input"
+                value={userInput?.name}
+                onChange={handleChange}
+              />
+              <label htmlFor="location">Location</label>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                placeholder="Your City"
+                className="input"
+                value={userInput?.location}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -66,8 +66,9 @@ const Profile = () => {
             <textarea
               rows="6"
               className="resize-none w-full bg-s-light dark:bg-s-dark rounded-lg mt-2 outline-none p-3"
-              value={userProfile?.bio}
-              onChange={(e) => handleChange("bio", e.target.value)}
+              name="bio"
+              value={userInput?.bio}
+              onChange={handleChange}
             ></textarea>
           </div>
         </form>
@@ -79,7 +80,7 @@ const Profile = () => {
         <button
           className="btn btn-fill py-2 px-6 rounded-3xl"
           disabled={!isDirty}
-          onClick={updateProfile}
+          onClick={update}
         >
           Update
         </button>
@@ -97,7 +98,7 @@ const Interests = () => {
       <header className="pb-8">
         <h1 className="text-2xl">Music Interests</h1>
       </header>
-      <Input placeholder={"enter your musical interests..."} />
+      <input placeholder="enter your musical interests..." className="input" />
     </section>
   );
 };

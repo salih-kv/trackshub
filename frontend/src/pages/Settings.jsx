@@ -8,6 +8,7 @@ import { useUserState } from "../context/UserContext";
 
 const Settings = () => {
   const navigate = useNavigate();
+
   useEffect(() => {
     const path = window.location.pathname;
     if (path === "/settings") {
@@ -54,7 +55,7 @@ const LeftNav = () => {
       <Link className="flex items-center justify-start p-4 gap-4">
         <ProfileImg w={8} name={user?.name} />
         <div>
-          <h4 className="text-sm">User One</h4>
+          <h4 className="text-sm">{user?.name}</h4>
           <p className="text-xs text-gray-500">Back to Profile</p>
         </div>
       </Link>

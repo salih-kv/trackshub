@@ -23,6 +23,51 @@ const userSchema = mongoose.Schema({
     minlength: [6, "Password must be of minimum 6 characters"],
     select: false,
   },
+  profilePic: {
+    type: String,
+  },
+  followers: [
+    {
+      type: String,
+      ref: "Users",
+    },
+  ],
+
+  following: [
+    {
+      type: String,
+      ref: "Users",
+    },
+  ],
+  isOnline: Boolean,
+  // country: {
+  //   type: String,
+  //   required: [true, "Please choose your country"],
+  // },
+  // state: {
+  //   type: String,
+  // },
+  // city: {
+  //   type: String,
+  //   required: true,
+  // },
+  location: {
+    type: String,
+  },
+  bio: {
+    type: String,
+  },
+  tracks: [String],
+  skills: [String],
+  genres: [String],
+  instruments: [String],
+  tools: [String],
+  languages: [String],
+  links: [String],
+  isProfilePublic: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 userSchema.pre("save", async function (next) {
