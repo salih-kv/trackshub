@@ -26,7 +26,7 @@ const Account = () => {
 export default Account;
 
 const UpdateAccount = () => {
-  const { user, updateUser } = useUserState();
+  const { fetchUser, user, updateUser } = useUserState();
 
   const [userInput, setUserInput] = useState({
     username: "",
@@ -45,10 +45,13 @@ const UpdateAccount = () => {
     e.preventDefault();
     updateUser(userInput);
   };
-
   useEffect(() => {
     setUserInput(user);
   }, []);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
   return (
     <form onSubmit={update}>

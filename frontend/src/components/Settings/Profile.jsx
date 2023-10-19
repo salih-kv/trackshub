@@ -1,10 +1,12 @@
 import ProfileImg from "../ProfileImg";
 import { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { useUserState } from "../../context/UserContext";
 
+// issues to be resolved - not updating input immediately
+
 const Profile = () => {
-  const { user, updateUser } = useUserState();
+  const { fetchUser, user, updateUser } = useUserState();
 
   const [userInput, setUserInput] = useState({
     name: "",
@@ -28,6 +30,10 @@ const Profile = () => {
   useEffect(() => {
     setUserInput(user);
   }, []);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
   return (
     <div className="w-3/4 flex flex-col max-w-2xl mx-auto mb-16">

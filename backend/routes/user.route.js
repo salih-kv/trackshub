@@ -6,6 +6,7 @@ import {
   forgotPassword,
   getUser,
   resetPassword,
+  searchUser,
   unFollowUser,
   updateUser,
 } from "../controllers/user.controller.js";
@@ -19,5 +20,6 @@ router.post("/forgot-password", forgotPassword); // ! pending
 
 router.post("/follow", verifyToken, followUser);
 router.post("/unfollow", verifyToken, unFollowUser);
+router.get("/searchUser", searchUser);
 
 export default router;

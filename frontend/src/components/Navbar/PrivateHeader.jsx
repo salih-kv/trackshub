@@ -5,13 +5,14 @@ import DarkThemeToggle from "./DarkThemeToggle";
 import { Link } from "react-router-dom";
 import Nav from "./Nav";
 import UserDropDown from "./UserDropDown";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import logo from "../../assets/trackshub.svg";
 import ChatDropDown from "./ChatDropDown";
 import NotificationDropDown from "./NotificationDropDown";
 import ProfileImg from "../ProfileImg";
 import { useUserState } from "../../context/UserContext";
+import instance from "../../axios/instance";
 
 export const PrivateHeader = () => {
   return (
@@ -42,17 +43,60 @@ const Left = () => {
 const Right = () => {
   const { user } = useUserState();
   const [activeDropdown, setActiveDropdown] = useState(null);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+
   const toggleDropdown = (dropdownName) => {
     setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
   };
 
+  useEffect(() => {
+    const searchUsers = async () => {
+      try {
+        const response = await instance.get(
+          `/api/v1/user/searchUser?q=${searchQuery}`
+        );
+        setSearchResults(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    searchUsers();
+  }, [searchQuery]);
+
   return (
     <div className="flex items-center space-x-3 lg:space-x-6 pr-4 order-1 lg:order-2">
-      <input
-        type="text"
-        placeholder="search"
-        className="hidden md:block px-2 lg:px-4 py-2 rounded-3xl dark:text-white bg-s-light dark:bg-s-dark focus:border-primary-500 outline-none"
-      />
+      <form className="relative">
+        <input
+          type="text"
+          placeholder="search"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="hidden md:block px-2 lg:px-4 py-2 rounded-3xl dark:text-white bg-s-light dark:bg-s-dark focus:border-primary-500 outline-none"
+        />
+        {searchResults.length > 0 && (
+          <div className="absolute top-16 right-0 z-20">
+            <div className="rounded-lg shadow-lg bg-p-light dark:bg-s-dark min-w-[330px] text-sm p-2">
+              {searchResults.map((result) => (
+                <Link key={result._id}>
+                  <header className="flex items-center p-4 w-full rounded-md dark:hover:bg-p-dark">
+                    <ProfileImg
+                      w={10}
+                      buttonStyle={`mr-4`}
+                      name={result?.name}
+                    />
+                    <div>
+                      <h4 className="font-bold">{result?.name}</h4>
+                      <p className="text-xs font-semibold text-gray-500">{`@${result?.username}`}</p>
+                    </div>
+                  </header>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+      </form>
       <DarkThemeToggle />
       <button
         className="relative hover:bg-s-light rounded-lg active:outline-none active:ring-2 active:ring-gray-200 dark:text-white dark:hover:bg-s-dark dark:active:ring-gray-600 p-2"

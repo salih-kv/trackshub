@@ -30,10 +30,6 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
   return (
     <UserContext.Provider value={{ user, fetchUser, updateUser }}>
       {children}
