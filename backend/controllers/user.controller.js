@@ -62,6 +62,7 @@ export const resetPassword = async (req, res, next) => {
   }
 };
 
+// ! pending
 export const forgotPassword = async (req, res, next) => {};
 
 // delete user account
@@ -71,6 +72,75 @@ export const deleteUser = async (req, res, next) => {
     const deletedUser = await Users.findOneAndDelete({ _id: userId });
     if (!deletedUser) errorHandler(404, "User not found");
     res.status(200).json({ message: "Account deleted successfully" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// follow user
+export const followUser = async (req, res, next) => {
+  const userId = req.user.id; // logged-in user id
+  const { followedId } = req.body; // other user id
+
+  try {
+    const follower = await Users.findOneAndUpdate(
+      { _id: userId },
+      { $addToSet: { following: followedId } }, // $addToSet - avoid duplicate entries
+      { new: true }
+    );
+
+    const followed = await Users.findOneAndUpdate(
+      { _id: followedId },
+      { $addToSet: { followers: userId } },
+      { new: true }
+    );
+
+    if (!follower || !followed) errorHandler(404, "User not found");
+
+    res.send({ message: "Followed successfully!" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// unfollow user
+export const unFollowUser = async (req, res) => {
+  const userId = req.user.id;
+  const { followedId } = req.body;
+
+  try {
+    const follower = await Users.findOneAndUpdate(
+      { _id: userId },
+      { $pull: { following: followedId } },
+      { new: true }
+    );
+
+    const followed = await Users.findOneAndUpdate(
+      { _id: followedId },
+      { $pull: { followers: userId } },
+      { new: true }
+    );
+
+    if (!follower || !followed) errorHandler(404, "User not found");
+
+    res.send({ message: "Unfollowed successfully!" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// search users
+export const searchUser = async (req, res, next) => {
+  const searchQuery = req.query.q;
+
+  if (!searchQuery) {
+    return res.json([]);
+  }
+  try {
+    const result = await Users.find({
+      username: { $regex: new RegExp(searchQuery, "i") }, // case-insensitive regex search
+    }).select("username name profilePic");
+    res.json(result);
   } catch (err) {
     next(err);
   }
