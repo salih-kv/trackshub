@@ -6,12 +6,13 @@ import Loading from "./components/Loading";
 const Welcome = lazy(() => import("./pages/Welcome"));
 const Register = lazy(() => import("./pages/Register"));
 const Login = lazy(() => import("./pages/Login"));
+const UserPage = lazy(() => import("./pages/UserPage"));
 const Layout = lazy(() => import("./components/Layout"));
 const Feed = lazy(() => import("./pages/Feed"));
 const Following = lazy(() => import("./components/Feed/Following"));
 const Trending = lazy(() => import("./components/Feed/Trending"));
 const Projects = lazy(() => import("./pages/Projects"));
-const ProjectPage = lazy(() => import("./components/Projects/ProjectPage"));
+const ProjectPage = lazy(() => import("./pages/ProjectPage"));
 const ProjectsList = lazy(() => import("./components/Projects/ProjectsList"));
 const MyProjects = lazy(() => import("./components/Projects/MyProjects"));
 const Settings = lazy(() => import("./pages/Settings"));
@@ -30,6 +31,13 @@ const App = () => {
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          {/* dynamic user route */}
+          <Route path="/:userId" element={<UserPage />}>
+            <Route path="activity" element={<NotAvailable />} />
+            <Route path="tracks" element={<NotAvailable />} />
+            <Route path="playlists" element={<NotAvailable />} />
+          </Route>
+          {/* // */}
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Layout />}>
               {/* Feed */}
@@ -65,6 +73,7 @@ const App = () => {
               </Route>
             </Route>
           </Route>
+          {/* // */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

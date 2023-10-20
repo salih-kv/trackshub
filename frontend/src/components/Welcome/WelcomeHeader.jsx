@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
-function WelcomeHeader() {
+function WelcomeHeader({ isShow }) {
+  const [show, setShow] = useState(isShow || false);
+
   return (
     <header className="text-gray-600 font-body fixed-header">
       <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
@@ -20,12 +23,17 @@ function WelcomeHeader() {
           <NavLinkItem to="/" text="Features" />
           <NavLinkItem to="/" text="Docs" />
         </nav>
-        {/* <nav>
-          <NavLinkItem to="/login" text="Login" />
-          <Link to="/sign-up" className="btn btn-fill py-2 px-5 rounded ">
-            Sign up
-          </Link>
-        </nav> */}
+        {show && (
+          <nav>
+            <NavLinkItem to="/login" text="Login" />
+            <Link
+              to="/register"
+              className="btn btn-gradient py-2 px-3 rounded "
+            >
+              Sign up
+            </Link>
+          </nav>
+        )}
       </div>
     </header>
   );
