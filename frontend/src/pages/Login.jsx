@@ -55,7 +55,9 @@ export default function Login() {
       <div className="mx-auto">
         <div className="bg-gray-100 dark:bg-s-dark p-5 flex rounded-2xl ">
           <div className="px-5 w-[400px]">
-            <h2 className="text-2xl font-bold text-primary-700">Login</h2>
+            <h2 className="text-2xl font-bold text-primary-700 text-center">
+              Login
+            </h2>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -66,14 +68,14 @@ export default function Login() {
                   type="text"
                   id="userId"
                   name="userId"
-                  placeholder="Enter Email / Username"
+                  placeholder="Email or username"
                   autoFocus
                 />
                 <InputField
                   type="password"
                   id="password"
                   name="password"
-                  placeholder="Enter Password"
+                  placeholder="Password"
                 />
                 <button
                   type="submit"

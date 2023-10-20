@@ -10,7 +10,7 @@ export const InputField = ({ label, type, id, name, placeholder, ...rest }) => {
         name={name}
         placeholder={placeholder}
         {...rest}
-        className="input dark:!bg-p-dark"
+        className="input dark:!bg-p-dark border border-gray-300 dark:border-s-dark !mt-2 !mb-1"
       />
       <ErrorMessage name={name}>
         {(msg) => (
