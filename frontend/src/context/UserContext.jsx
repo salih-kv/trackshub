@@ -1,7 +1,7 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import instance from "../axios/instance";
 
-const UserContext = createContext();
+const userContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({});
@@ -31,12 +31,12 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, fetchUser, updateUser }}>
+    <userContext.Provider value={{ user, fetchUser, updateUser }}>
       {children}
-    </UserContext.Provider>
+    </userContext.Provider>
   );
 };
 
 export const useUserState = () => {
-  return useContext(UserContext);
+  return useContext(userContext);
 };
