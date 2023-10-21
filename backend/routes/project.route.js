@@ -17,5 +17,4 @@ router.get("/:projectId", verifyToken, getProjectById);
 router.patch("/:projectId", verifyToken, updateProject);
 router.delete("/:projectId", verifyToken, deleteProject);
 
-
 export default router;

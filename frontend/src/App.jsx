@@ -19,9 +19,14 @@ const MyProjects = lazy(() => import("./components/Projects/MyProjects"));
 const ProjectsList = lazy(() => import("./components/Projects/ProjectsList"));
 
 const ProjectPage = lazy(() => import("./pages/ProjectPage"));
+const Files = lazy(() => import("./components/Project/Files"));
+const Collaborators = lazy(() => import("./components/Project/Collaborators"));
+const Messages = lazy(() => import("./components/Project/Messages"));
+const Tasks = lazy(() => import("./components/Project/Tasks"));
 const ProjectSettings = lazy(() =>
   import("./components/Project/ProjectSettings")
 );
+const Comments = lazy(() => import("./components/Project/Comments"));
 
 const Settings = lazy(() => import("./pages/Settings"));
 const Profile = lazy(() => import("./components/Settings/Profile"));
@@ -57,18 +62,18 @@ const App = () => {
               <Route path="/explore" element={<NotAvailable />} />
               {/* Projects */}
               <Route path="/projects" element={<Projects />}>
-                <Route path="all" element={<NotAvailable />} />
+                <Route path="all" element={<ProjectsList />} />
                 <Route path="my-projects" element={<MyProjects />} />
                 <Route path="deleted" element={<NotAvailable />} />
               </Route>
               {/* dynamic project route */}
               <Route path="/project/:projectId" element={<ProjectPage />}>
-                <Route path="files" element={<NotAvailable />} />
-                <Route path="collaborators" element={<NotAvailable />} />
-                <Route path="messages" element={<NotAvailable />} />
-                <Route path="tasks" element={<NotAvailable />} />
+                <Route path="files" element={<Files />} />
+                <Route path="collaborators" element={<Collaborators />} />
+                <Route path="messages" element={<Messages />} />
+                <Route path="tasks" element={<Tasks />} />
                 <Route path="settings" element={<ProjectSettings />} />
-                <Route path="comments" element={<NotAvailable />} />
+                <Route path="comments" element={<Comments />} />
               </Route>
               {/* Library */}
               <Route path="/library" element={<NotAvailable />} />

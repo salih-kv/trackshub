@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     Cookies.set("userToken", token, {
       sameSite: "None",
       secure: true,
-      expires: 7,
+      expires: 1,
     });
     setIsLoggedIn(true);
   };

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply font-body bg-p-light text-black dark:bg-p-dark dark:text-white
+  @apply font-body bg-p-light text-black dark:bg-p-dark dark:text-white;
 }
 
 .fixed-header {
@@ -23,7 +23,7 @@ body {
 }
 
 .btn-outlined {
-  @apply border  border-primary-700 text-primary-700 hover:bg-primary-50 active:bg-primary-100 disabled:opacity-90;
+  @apply border  border-primary-700 text-primary-700 dark:text-white hover:bg-primary-50 active:bg-primary-100 disabled:opacity-90;
 }
 
 .btn-gradient {

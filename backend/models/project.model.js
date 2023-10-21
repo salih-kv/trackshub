@@ -10,6 +10,7 @@ const projectSchema = mongoose.Schema({
   title: {
     type: String,
     required: [true, "Please enter project name"],
+    minlength: [3, "title must be of minimum 3 characters"],
     unique: true,
   },
   owner: {
