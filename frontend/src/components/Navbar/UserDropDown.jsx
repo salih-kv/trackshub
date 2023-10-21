@@ -25,7 +25,7 @@ const UserDropDown = () => {
             <div className="flex items-center justify-between hover:bg-s-light dark:hover:bg-p-dark rounded-lg p-2">
               <ProfileImg w={10} buttonStyle={`mr-3`} name={user?.name} />
               <div className="w-full">
-                <h4 className="font-semibold text-sm">User One</h4>
+                <h4 className="font-semibold text-sm">{user?.name}</h4>
                 <p className=" text-gray-500">View Profile</p>
               </div>
             </div>

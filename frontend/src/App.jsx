@@ -32,8 +32,8 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           {/* dynamic user route */}
-          <Route path="/:userId" element={<UserPage />}>
-            <Route path="activity" element={<NotAvailable />} />
+          <Route path="/:username" element={<UserPage />}>
+            <Route index element={<NotAvailable />} />
             <Route path="tracks" element={<NotAvailable />} />
             <Route path="playlists" element={<NotAvailable />} />
           </Route>
@@ -49,7 +49,7 @@ const App = () => {
               <Route path="/explore" element={<NotAvailable />} />
               {/* Projects */}
               <Route path="/projects" element={<Projects />}>
-                <Route path="all" element={<ProjectsList />} />
+                <Route path="all" element={<NotAvailable />} />
                 <Route path="my-projects" element={<MyProjects />} />
                 <Route path="deleted" element={<NotAvailable />} />
               </Route>

@@ -3,7 +3,7 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 import { MdAudiotrack } from "react-icons/md";
 import ProjectCard from "./ProjectCard";
 import { useEffect, useState } from "react";
-import instance from "../../axios/instance";
+import { useProject } from "../../context/ProjectContext";
 
 const MyProjects = () => {
   return (
@@ -39,19 +39,12 @@ const Left = () => {
 
 const Right = () => {
   const [toggle, setToggle] = useState(false);
-  const [projects, setProjects] = useState();
+  const [inputValue, setInputValue] = useState("");
 
-  const fetchProjects = async () => {
-    try {
-      const response = await instance.get("/api/v1/project/");
-      setProjects(response.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const { projects, getProjectsByUserId, createProject } = useProject();
 
   useEffect(() => {
-    fetchProjects();
+    getProjectsByUserId();
   }, []);
 
   return (
@@ -90,10 +83,19 @@ const Right = () => {
                 type="text"
                 className="input !pl-10"
                 placeholder="Project Name"
+                value={inputValue}
+                onClick={(e) => e.stopPropagation()}
+                onChange={(e) => setInputValue(e.target.value)}
               />
             </div>
             <div className="flex justify-end">
-              <button className="btn dark:bg-s-dark ml-4 py-1.5 px-3 rounded-lg">
+              <button
+                className="btn dark:bg-s-dark ml-4 py-1.5 px-3 rounded-lg"
+                onClick={() => {
+                  createProject(inputValue);
+                  setInputValue("");
+                }}
+              >
                 Create
               </button>
             </div>
@@ -108,7 +110,7 @@ const Right = () => {
         </button>
 
         {projects?.map((project) => (
-          <ProjectCard {...project} key={project.name} />
+          <ProjectCard {...project} key={project.title} />
         ))}
       </div>
     </div>

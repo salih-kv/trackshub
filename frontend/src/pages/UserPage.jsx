@@ -5,19 +5,12 @@ import { useAuth } from "../context/AuthContext";
 import { BiLinkAlt } from "react-icons/bi";
 import { BsInstagram, BsSpotify, BsThreeDots } from "react-icons/bs";
 import { IoChatbubblesSharp } from "react-icons/io5";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import instance from "../axios/instance";
+import ProfileImg from "../components/ProfileImg";
 
 const UserPage = () => {
-  const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
-  const { userId } = useParams();
-
-  useEffect(() => {
-    const path = window.location.pathname;
-    if (path === `/${userId}` || path === `/${userId}/`) {
-      navigate(`/${userId}/activity`);
-    }
-  }, [navigate, userId]);
   return (
     <div className="relative min-h-screen dark:bg-p-dark dark:text-white">
       {isLoggedIn ? <PrivateHeader /> : <WelcomeHeader isShow={true} />}
@@ -34,27 +27,46 @@ const UserPage = () => {
 export default UserPage;
 
 const Left = () => {
+  const { username } = useParams();
+
+  const [user, setUser] = useState();
+
+  const fetchUser = async () => {
+    try {
+      const response = await instance.get(`/api/v1/user/${username}`);
+      setUser(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   return (
     <div className="w-1/4 relative">
-      <div className="bg-primary-50 dark:bg-primary-300 w-36 h-36 rounded-full absolute top-100 left-1/2 transform translate-x-[-50%] translate-y-[-50%]"></div>
+      <div className="bg-primary-50 dark:bg-primary-300 w-36 h-36 rounded-full absolute top-100 left-1/2 transform translate-x-[-50%] translate-y-[-50%]">
+        <ProfileImg name={user?.name} bg={`09ce82`} />
+      </div>
       <div>
         <div className="pt-20 pb-4 px-4 flex flex-col items-center">
           <div>
-            <h2 className="font-semibold text-2xl text-center">Name</h2>
+            <h2 className="font-semibold text-2xl text-center">{user?.name}</h2>
             <h2 className="text-gray-600 text-sm">
               {" "}
-              <span>@username</span>{" "}
+              <span>{`@${user?.username}`}</span>{" "}
               <span className="font-extrabold">&#183;</span>{" "}
-              <span>Location</span>
+              <span>{user?.location}</span>
             </h2>
             <div className="flex gap-2 items-center justify-center mt-4">
-              <div className="w-6 h-6 rounded-full bg-s-light flex items-center justify-center">
+              <div className="w-6 h-6 rounded-full bg-s-light dark:bg-s-dark flex items-center justify-center">
                 <BiLinkAlt />
               </div>
-              <div className="w-6 h-6 rounded-full bg-s-light flex items-center justify-center">
+              <div className="w-6 h-6 rounded-full bg-s-light dark:bg-s-dark flex items-center justify-center">
                 <BsInstagram />
               </div>
-              <div className="w-6 h-6 rounded-full bg-s-light flex items-center justify-center">
+              <div className="w-6 h-6 rounded-full bg-s-light dark:bg-s-dark flex items-center justify-center">
                 <BsSpotify />
               </div>
             </div>
@@ -65,17 +77,17 @@ const Left = () => {
               Chat
             </Link>
             <Link className="btn py-1.5 px-4 rounded-2xl btn-fill">Follow</Link>
-            <button className="btn bg-s-light px-4 rounded-2xl">
+            <button className="btn bg-s-light dark:bg-s-dark px-4 rounded-2xl">
               <BsThreeDots />
             </button>
           </div>
           <div className="mt-4 flex gap-6">
             <div className="flex flex-col items-center">
-              <p className="font-semibold text-lg">0</p>
+              <p className="font-semibold text-lg">{user?.followers.length}</p>
               <p className="text-sm font-medium text-gray-600">Followers</p>
             </div>
             <div className="flex flex-col items-center">
-              <p className="font-semibold text-lg">0</p>
+              <p className="font-semibold text-lg">{user?.following.length}</p>
               <p className="text-sm font-medium text-gray-600">Following</p>
             </div>
           </div>
@@ -88,7 +100,7 @@ const Left = () => {
 const Middle = () => {
   const NavLinks = [
     {
-      to: "activity",
+      to: "",
       label: "Activity",
     },
     {

@@ -5,6 +5,7 @@ import {
   followUser,
   forgotPassword,
   getUser,
+  getUserByUsername,
   resetPassword,
   searchUser,
   unFollowUser,
@@ -21,5 +22,6 @@ router.post("/forgot-password", forgotPassword); // ! pending
 router.post("/follow", verifyToken, followUser);
 router.post("/unfollow", verifyToken, unFollowUser);
 router.get("/searchUser", searchUser);
+router.get("/:username", getUserByUsername);
 
 export default router;

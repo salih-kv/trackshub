@@ -7,10 +7,10 @@ const projectSchema = mongoose.Schema({
     required: true,
     default: () => uuidv4().slice(0, 6),
   },
-  name: {
+  title: {
     type: String,
     required: [true, "Please enter project name"],
-    unique: [true, "Project name already exists"],
+    unique: true,
   },
   owner: {
     required: true,

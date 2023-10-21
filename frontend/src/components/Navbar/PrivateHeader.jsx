@@ -31,10 +31,18 @@ export const PrivateHeader = () => {
 const Left = () => {
   return (
     <div className="pl-4 md:mr-8">
-      <Link to="/" className="flex items-center">
+      {/* <Link to="/" className="flex items-center">
         <div className="w-40">
           <img src={logo} className="w-full" alt="TracksHub Logo" />
         </div>
+      </Link> */}
+      <Link
+        to="/"
+        className="logo-img flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
+      >
+        <h2 className="font-display text-2xl leading-6 text-black dark:text-white">
+          TracksHub
+        </h2>
       </Link>
     </div>
   );

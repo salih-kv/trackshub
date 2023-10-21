@@ -5,10 +5,10 @@ import { RiFolderMusicFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 
 const NavLinks = [
-  { to: "feed", label: "Feed", icon: <HiHome /> },
-  { to: "explore", label: "Explore", icon: <MdOutlineExplore /> },
-  { to: "projects", label: "Projects", icon: <IoLayers /> },
-  { to: "library", label: "Library", icon: <RiFolderMusicFill /> },
+  { to: "/feed", label: "Feed", icon: <HiHome /> },
+  { to: "/explore", label: "Explore", icon: <MdOutlineExplore /> },
+  { to: "/projects", label: "Projects", icon: <IoLayers /> },
+  { to: "/library", label: "Library", icon: <RiFolderMusicFill /> },
 ];
 
 const Nav = () => {

@@ -15,17 +15,14 @@ export const getProjectById = async (req, res, next) => {
 // create project
 export const createProject = async (req, res, next) => {
   const userId = req.user.id;
-  const { name, ...rest } = req.body;
+  const { title } = req.body;
   try {
-    const mandatoryFields = {
-      name: name,
+    const project = await Projects.create({
+      title,
       owner: userId,
-      isClosed: false, // By default, the project is not closed
-      isPrivate: true, // By default, the project is private
-    };
-
-    const project = new Projects({ ...mandatoryFields, ...rest });
-    await project.save();
+      isClosed: false,
+      isPrivate: true,
+    });
 
     return res.status(200).json({
       status: true,

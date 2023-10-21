@@ -97,7 +97,7 @@ export const followUser = async (req, res, next) => {
 
     if (!follower || !followed) errorHandler(404, "User not found");
 
-    res.send({ message: "Followed successfully!" });
+    res.json({ message: "Followed successfully!" });
   } catch (err) {
     next(err);
   }
@@ -123,7 +123,7 @@ export const unFollowUser = async (req, res) => {
 
     if (!follower || !followed) errorHandler(404, "User not found");
 
-    res.send({ message: "Unfollowed successfully!" });
+    res.json({ message: "Unfollowed successfully!" });
   } catch (err) {
     next(err);
   }
@@ -141,6 +141,16 @@ export const searchUser = async (req, res, next) => {
       username: { $regex: new RegExp(searchQuery, "i") }, // case-insensitive regex search
     }).select("username name profilePic");
     res.json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getUserByUsername = async (req, res, next) => {
+  const { username } = req.params;
+  try {
+    const user = await Users.findOne({ username });
+    res.status(200).json(user);
   } catch (err) {
     next(err);
   }
