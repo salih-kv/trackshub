@@ -91,7 +91,7 @@ const Workspace = () => {
 
   return (
     <div>
-      <header className="flex gap-8">
+      <header className="flex gap-8 mb-8">
         {NavLinks?.map(({ to, label }) => (
           <div key={to} className="group/link hover:bg-slate-100">
             <Link

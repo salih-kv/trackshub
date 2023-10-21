@@ -6,15 +6,23 @@ import Loading from "./components/Loading";
 const Welcome = lazy(() => import("./pages/Welcome"));
 const Register = lazy(() => import("./pages/Register"));
 const Login = lazy(() => import("./pages/Login"));
-const UserPage = lazy(() => import("./pages/UserPage"));
+
 const Layout = lazy(() => import("./components/Layout"));
 const Feed = lazy(() => import("./pages/Feed"));
 const Following = lazy(() => import("./components/Feed/Following"));
 const Trending = lazy(() => import("./components/Feed/Trending"));
+
+const UserPage = lazy(() => import("./pages/UserPage"));
+
 const Projects = lazy(() => import("./pages/Projects"));
-const ProjectPage = lazy(() => import("./pages/ProjectPage"));
-const ProjectsList = lazy(() => import("./components/Projects/ProjectsList"));
 const MyProjects = lazy(() => import("./components/Projects/MyProjects"));
+const ProjectsList = lazy(() => import("./components/Projects/ProjectsList"));
+
+const ProjectPage = lazy(() => import("./pages/ProjectPage"));
+const ProjectSettings = lazy(() =>
+  import("./components/Project/ProjectSettings")
+);
+
 const Settings = lazy(() => import("./pages/Settings"));
 const Profile = lazy(() => import("./components/Settings/Profile"));
 const Account = lazy(() => import("./components/Settings/Account"));
@@ -59,7 +67,7 @@ const App = () => {
                 <Route path="collaborators" element={<NotAvailable />} />
                 <Route path="messages" element={<NotAvailable />} />
                 <Route path="tasks" element={<NotAvailable />} />
-                <Route path="settings" element={<NotAvailable />} />
+                <Route path="settings" element={<ProjectSettings />} />
                 <Route path="comments" element={<NotAvailable />} />
               </Route>
               {/* Library */}
