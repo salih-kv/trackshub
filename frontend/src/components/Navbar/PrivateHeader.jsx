@@ -5,17 +5,17 @@ import DarkThemeToggle from "./DarkThemeToggle";
 import { Link } from "react-router-dom";
 import Nav from "./Nav";
 import UserDropDown from "./UserDropDown";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import logo from "../../assets/trackshub.svg";
 import ChatDropDown from "./ChatDropDown";
 import NotificationDropDown from "./NotificationDropDown";
 import ProfileImg from "../ProfileImg";
-import { UserContext } from "../../context/UserContext";
 import instance from "../../axios/instance";
+import { useSelector } from "react-redux";
 
 export const PrivateHeader = () => {
-  const { user } = useContext(UserContext);
+  const { user } = useSelector((state) => state.user);
   return (
     <header className="bg-white py-2 dark:bg-p-dark dark:text-white fixed top-0 left-0 right-0 border-b dark:border-s-dark">
       <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-2xl">

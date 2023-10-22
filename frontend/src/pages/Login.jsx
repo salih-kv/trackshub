@@ -1,19 +1,19 @@
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
 import { Form, Formik } from "formik";
 import { InputField } from "../components/InputField";
 import * as Yup from "yup";
 import instance from "../axios/instance";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../Redux/auth/authSlice";
 
 export default function Login() {
-  const { login, isLoggedIn } = useContext(AuthContext);
-
+  const { isLoggedIn } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  // Form Validation
   const initialValues = {
     userId: "",
     password: "",
@@ -27,12 +27,11 @@ export default function Login() {
   const handleLogin = async (user) => {
     try {
       const response = await instance.post("/api/v1/auth/login", user);
-      response.data.status && login(response.data.token);
+      response.data.status && dispatch(login(response.data.token));
     } catch (err) {
       toast.error(err.response.data.message);
     }
   };
-
   useEffect(() => {
     isLoggedIn && navigate("/feed");
   }, [isLoggedIn, navigate]);

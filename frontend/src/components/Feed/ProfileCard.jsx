@@ -1,14 +1,9 @@
 import { Link } from "react-router-dom";
 import ProfileImg from "../ProfileImg";
-import { UserContext } from "../../context/UserContext.jsx";
-import { useContext, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const ProfileCard = () => {
-  const { user, fetchUser } = useContext(UserContext);
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
+  const user = useSelector((state) => state.user.user);
 
   return (
     <div className="flex items-center justify-start w-full bg-s-light dark:bg-s-dark dark:text-white rounded-lg">

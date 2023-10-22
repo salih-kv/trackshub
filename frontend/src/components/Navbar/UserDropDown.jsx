@@ -4,18 +4,21 @@ import { BiHelpCircle } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import ProfileImg from "../ProfileImg";
 import instance from "../../axios/instance";
-import { AuthContext } from "../../context/AuthContext";
-import { UserContext } from "../../context/UserContext";
-import { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../Redux/auth/authSlice";
 
 const UserDropDown = () => {
-  const { logout } = useContext(AuthContext);
-  const { user } = useContext(UserContext);
-  const logoutUser = async () => {
-    instance.post("/api/v1/auth/logout");
-    logout();
-  };
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
 
+  const logoutUser = async () => {
+    try {
+      await instance.post("/api/v1/auth/logout");
+      dispatch(logout());
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
   return (
     <div
       className={`absolute top-16 right-0 z-20 rounded-lg shadow-lg bg-p-light dark:bg-s-dark`}

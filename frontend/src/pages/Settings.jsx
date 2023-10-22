@@ -2,9 +2,9 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import { FaUserLarge } from "react-icons/fa6";
 import { IoNotifications, IoTicket } from "react-icons/io5";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import ProfileImg from "../components/ProfileImg";
-import { UserContext } from "../context/UserContext";
+import { useSelector } from "react-redux";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const Settings = () => {
 export default Settings;
 
 const LeftNav = () => {
-  const { user } = useContext(UserContext);
+  const { user } = useSelector((state) => state.user);
 
   const NavItems = [
     {

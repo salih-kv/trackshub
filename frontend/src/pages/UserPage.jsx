@@ -1,16 +1,16 @@
 import { Link, Outlet, useParams } from "react-router-dom";
 import { PrivateHeader } from "../components/Navbar/PrivateHeader";
 import WelcomeHeader from "../components/Welcome/WelcomeHeader";
-import { AuthContext } from "../context/AuthContext";
 import { BiLinkAlt } from "react-icons/bi";
 import { BsInstagram, BsSpotify, BsThreeDots } from "react-icons/bs";
 import { IoChatbubblesSharp } from "react-icons/io5";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import instance from "../axios/instance";
 import ProfileImg from "../components/ProfileImg";
+import { useSelector } from "react-redux";
 
 const UserPage = () => {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn } = useSelector((state) => state.auth);
   return (
     <div className="relative min-h-screen dark:bg-p-dark dark:text-white">
       {isLoggedIn ? <PrivateHeader /> : <WelcomeHeader isShow={true} />}

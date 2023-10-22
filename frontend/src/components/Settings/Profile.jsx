@@ -1,12 +1,10 @@
 import ProfileImg from "../ProfileImg";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import { UserContext } from "../../context/UserContext";
-
-// issues to be resolved - not updating input immediately
+import { useSelector } from "react-redux";
 
 const Profile = () => {
-  const { fetchUser, user, updateUser } = useContext(UserContext);
+  const { user } = useSelector((state) => state.user);
 
   const [userInput, setUserInput] = useState({
     name: "",
@@ -22,17 +20,13 @@ const Profile = () => {
     setIsDirty(true);
   };
 
-  const update = (e) => {
-    e.preventDefault();
-    updateUser(userInput);
-  };
+  // const update = (e) => {
+  //   e.preventDefault();
+  //   updateUser(userInput);
+  // };
 
   useEffect(() => {
     setUserInput(user);
-  }, []);
-
-  useEffect(() => {
-    fetchUser();
   }, []);
 
   return (

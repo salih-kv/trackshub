@@ -1,24 +1,23 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import instance from "../../axios/instance";
-import { UserContext } from "../../context/UserContext";
+import { logout } from "../../Redux/auth/authSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const Account = () => {
-  const { logout } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     <div className="w-3/4 flex flex-col max-w-2xl mx-auto mb-16">
       <div className="w-full">
         <header className="pb-8">
           <h1 className="text-2xl">Account Settings</h1>
         </header>
-        <UpdateAccount />
+        <UpdateAccount dispatch={dispatch} />
         <div className="w-full h-[1px] my-12 bg-s-light dark:bg-s-dark"></div>
         <SetPassword />
         <div className="w-full h-[1px] my-12 bg-s-light dark:bg-s-dark"></div>
-        <DeleteAccount logout={logout} navigate={navigate} />
+        <DeleteAccount dispatch={dispatch} />
       </div>
       <ToastContainer />
     </div>
@@ -27,8 +26,8 @@ const Account = () => {
 
 export default Account;
 
-const UpdateAccount = () => {
-  const { fetchUser, user, updateUser } = useContext(UserContext);
+const UpdateAccount = ({ dispatch }) => {
+  const user = useSelector((state) => state.user.user);
 
   const [userInput, setUserInput] = useState({
     username: "",
@@ -43,20 +42,16 @@ const UpdateAccount = () => {
     setIsDirty(true);
   };
 
-  const update = (e) => {
-    e.preventDefault();
-    updateUser(userInput);
-  };
+  // const update = (e) => {
+  //   e.preventDefault();
+  //   updateUser(userInput);
+  // };
   useEffect(() => {
     setUserInput(user);
   }, []);
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
   return (
-    <form onSubmit={update}>
+    <form>
       <label htmlFor="username">Username</label>
       <input
         type="text"
@@ -147,7 +142,8 @@ const SetPassword = () => {
   );
 };
 
-const DeleteAccount = ({ logout, navigate }) => {
+const DeleteAccount = ({ dispatch }) => {
+  const navigate = useNavigate();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const deleteAccount = async () => {
@@ -157,7 +153,7 @@ const DeleteAccount = ({ logout, navigate }) => {
   const confirmDelete = async () => {
     try {
       await instance.delete("/api/v1/user/account");
-      logout();
+      dispatch(logout());
       navigate("/welcome");
     } catch (err) {
       toast.warning(err.response.data.message);

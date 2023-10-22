@@ -1,10 +1,9 @@
 import { BsThreeDots } from "react-icons/bs";
 import ProfileImg from "../ProfileImg";
-import { UserContext } from "../../context/UserContext";
-import { useContext } from "react";
+import { useSelector } from "react-redux";
 
 const Following = () => {
-  const { user } = useContext(UserContext);
+  const { user } = useSelector((state) => state.user);
   return (
     <div className="flex flex-col gap-6">
       <CreatePost />
