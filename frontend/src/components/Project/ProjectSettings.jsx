@@ -1,15 +1,19 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ProjectContext } from "../../context/ProjectContext";
+import {
+  getProjectById,
+  updateProject,
+  deleteProject,
+} from "../../Redux/project/projectSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProjectSettings = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
-
-  const { project, getProjectById, updateProject, deleteProject } =
-    useContext(ProjectContext);
+  const dispatch = useDispatch();
+  const { project } = useSelector((state) => state.project);
 
   const confirmDelete = async () => {
     setShowDeleteConfirmation(true);
@@ -30,9 +34,9 @@ const ProjectSettings = () => {
   };
 
   useEffect(() => {
-    getProjectById(projectId);
+    dispatch(getProjectById(projectId));
     setInput(project);
-  }, [projectId]);
+  }, [projectId, dispatch]);
 
   return (
     <div className="flex flex-col gap-12 mb-12 max-w-screen-md">
@@ -113,7 +117,9 @@ const ProjectSettings = () => {
             type="submit"
             className="btn btn-fill py-1.5 px-3 rounded-3xl"
             disabled={!isDirty}
-            onClick={() => updateProject(projectId, input)}
+            onClick={() =>
+              dispatch(updateProject({ projectId, updateData: input }))
+            }
           >
             Save
           </button>
@@ -166,7 +172,7 @@ const ProjectSettings = () => {
               </button>
               <button
                 onClick={() => {
-                  deleteProject(projectId);
+                  dispatch(deleteProject(projectId));
                   navigate("/projects/my-projects");
                 }}
                 className="btn btn-fill ml-4 py-1.5 px-3 rounded-lg"

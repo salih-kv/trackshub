@@ -2,14 +2,25 @@ import { FaPlus } from "react-icons/fa";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { MdAudiotrack } from "react-icons/md";
 import ProjectCard from "./ProjectCard";
-import { useContext, useEffect, useState } from "react";
-import { ProjectContext } from "../../context/ProjectContext";
+import { useEffect, useState } from "react";
+import {
+  fetchProjectsByUserId,
+  createNewProject,
+} from "../../Redux/project/projectSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const MyProjects = () => {
+  const dispatch = useDispatch();
+  const { projects } = useSelector((state) => state.project);
+
+  useEffect(() => {
+    dispatch(fetchProjectsByUserId());
+  }, [dispatch]);
+
   return (
     <div className="flex w-full gap-8">
       <Left />
-      <Right />
+      <Right projects={projects} dispatch={dispatch} />
     </div>
   );
 };
@@ -37,12 +48,9 @@ const Left = () => {
   );
 };
 
-const Right = () => {
+const Right = ({ projects, dispatch }) => {
   const [toggle, setToggle] = useState(false);
   const [inputValue, setInputValue] = useState("");
-
-  const { projects, getProjectsByUserId, createProject } =
-    useContext(ProjectContext);
 
   return (
     <div className="w-3/4">
@@ -89,7 +97,7 @@ const Right = () => {
               <button
                 className="btn dark:bg-s-dark ml-4 py-1.5 px-3 rounded-lg"
                 onClick={() => {
-                  createProject(inputValue);
+                  dispatch(createNewProject(inputValue));
                   setInputValue("");
                 }}
               >

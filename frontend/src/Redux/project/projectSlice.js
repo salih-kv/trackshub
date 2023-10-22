@@ -22,8 +22,8 @@ export const createNewProject = createAsyncThunk(
   }
 );
 
-export const fetchProjectById = createAsyncThunk(
-  "project/fetchProjectById",
+export const getProjectById = createAsyncThunk(
+  "project/getProjectById",
   async (projectId) => {
     const response = await instance.get(`/api/v1/project/${projectId}`);
     return response.data;
