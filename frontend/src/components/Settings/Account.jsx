@@ -2,10 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
-import { useUserState } from "../../context/UserContext";
 import instance from "../../axios/instance";
+import { UserContext } from "../../context/UserContext";
 
 const Account = () => {
+  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate();
   return (
     <div className="w-3/4 flex flex-col max-w-2xl mx-auto mb-16">
       <div className="w-full">
@@ -16,7 +18,7 @@ const Account = () => {
         <div className="w-full h-[1px] my-12 bg-s-light dark:bg-s-dark"></div>
         <SetPassword />
         <div className="w-full h-[1px] my-12 bg-s-light dark:bg-s-dark"></div>
-        <DeleteAccount />
+        <DeleteAccount logout={logout} navigate={navigate} />
       </div>
       <ToastContainer />
     </div>
@@ -26,7 +28,7 @@ const Account = () => {
 export default Account;
 
 const UpdateAccount = () => {
-  const { fetchUser, user, updateUser } = useUserState();
+  const { fetchUser, user, updateUser } = useContext(UserContext);
 
   const [userInput, setUserInput] = useState({
     username: "",
@@ -145,13 +147,11 @@ const SetPassword = () => {
   );
 };
 
-const DeleteAccount = () => {
-  const { logout } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+const DeleteAccount = ({ logout, navigate }) => {
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const deleteAccount = async () => {
-    setShowDeleteConfirmation(true);
+    setShowDeleteConfirm(true);
   };
 
   const confirmDelete = async () => {
@@ -173,13 +173,13 @@ const DeleteAccount = () => {
       </button>
 
       {/* Delete confirmation modal */}
-      {showDeleteConfirmation && (
+      {showDeleteConfirm && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
           <div className="bg-white dark:bg-s-dark p-6 rounded-lg">
             <p>Are you sure you want to delete your account?</p>
             <div className="mt-4 flex justify-end">
               <button
-                onClick={() => setShowDeleteConfirmation(false)}
+                onClick={() => setShowDeleteConfirm(false)}
                 className="btn btn-secondary dark:bg-p-dark py-1.5 px-3 rounded-lg"
               >
                 Cancel

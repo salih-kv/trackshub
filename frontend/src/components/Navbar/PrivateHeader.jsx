@@ -5,16 +5,17 @@ import DarkThemeToggle from "./DarkThemeToggle";
 import { Link } from "react-router-dom";
 import Nav from "./Nav";
 import UserDropDown from "./UserDropDown";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import logo from "../../assets/trackshub.svg";
 import ChatDropDown from "./ChatDropDown";
 import NotificationDropDown from "./NotificationDropDown";
 import ProfileImg from "../ProfileImg";
-import { useUserState } from "../../context/UserContext";
+import { UserContext } from "../../context/UserContext";
 import instance from "../../axios/instance";
 
 export const PrivateHeader = () => {
+  const { user } = useContext(UserContext);
   return (
     <header className="bg-white py-2 dark:bg-p-dark dark:text-white fixed top-0 left-0 right-0 border-b dark:border-s-dark">
       <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-2xl">
@@ -22,7 +23,7 @@ export const PrivateHeader = () => {
         <div className="hidden sm:block order-2 lg:order-1 mt-4 lg:mt-0 border dark:border-s-dark lg:border-none w-full lg:w-auto">
           <Nav />
         </div>
-        <Right />
+        <Right user={user} />
       </div>
     </header>
   );
@@ -48,10 +49,8 @@ const Left = () => {
   );
 };
 
-const Right = () => {
-  const { user } = useUserState();
+const Right = ({ user }) => {
   const [activeDropdown, setActiveDropdown] = useState(null);
-
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 

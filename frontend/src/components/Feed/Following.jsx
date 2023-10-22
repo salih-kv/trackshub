@@ -1,9 +1,10 @@
 import { BsThreeDots } from "react-icons/bs";
 import ProfileImg from "../ProfileImg";
-import { useUserState } from "../../context/UserContext";
+import { UserContext } from "../../context/UserContext";
+import { useContext } from "react";
 
 const Following = () => {
-  const { user } = useUserState();
+  const { user } = useContext(UserContext);
   return (
     <div className="flex flex-col gap-6">
       <CreatePost />

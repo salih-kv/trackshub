@@ -1,12 +1,12 @@
 import ProfileImg from "../ProfileImg";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import { useUserState } from "../../context/UserContext";
+import { UserContext } from "../../context/UserContext";
 
 // issues to be resolved - not updating input immediately
 
 const Profile = () => {
-  const { fetchUser, user, updateUser } = useUserState();
+  const { fetchUser, user, updateUser } = useContext(UserContext);
 
   const [userInput, setUserInput] = useState({
     name: "",

@@ -5,12 +5,12 @@ import { Link } from "react-router-dom";
 import ProfileImg from "../ProfileImg";
 import instance from "../../axios/instance";
 import { AuthContext } from "../../context/AuthContext";
-import { useUserState } from "../../context/UserContext";
+import { UserContext } from "../../context/UserContext";
 import { useContext } from "react";
 
 const UserDropDown = () => {
   const { logout } = useContext(AuthContext);
-  const { user } = useUserState();
+  const { user } = useContext(UserContext);
   const logoutUser = async () => {
     instance.post("/api/v1/auth/logout");
     logout();

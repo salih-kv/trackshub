@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import ProfileImg from "../ProfileImg";
-import { useUserState } from "../../context/UserContext.jsx";
-import { useEffect } from "react";
+import { UserContext } from "../../context/UserContext.jsx";
+import { useContext, useEffect } from "react";
 
 const ProfileCard = () => {
-  const { user, fetchUser } = useUserState();
+  const { user, fetchUser } = useContext(UserContext);
 
   useEffect(() => {
     fetchUser();
