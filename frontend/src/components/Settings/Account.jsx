@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import { useUserState } from "../../context/UserContext";
 import instance from "../../axios/instance";
@@ -146,7 +146,7 @@ const SetPassword = () => {
 };
 
 const DeleteAccount = () => {
-  const { logout } = useAuth();
+  const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 

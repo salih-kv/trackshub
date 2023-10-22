@@ -4,11 +4,12 @@ import { BiHelpCircle } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import ProfileImg from "../ProfileImg";
 import instance from "../../axios/instance";
-import { useAuth } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { useUserState } from "../../context/UserContext";
+import { useContext } from "react";
 
 const UserDropDown = () => {
-  const { logout } = useAuth();
+  const { logout } = useContext(AuthContext);
   const { user } = useUserState();
   const logoutUser = async () => {
     instance.post("/api/v1/auth/logout");

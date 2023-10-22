@@ -1,15 +1,15 @@
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import { Form, Formik } from "formik";
 import { InputField } from "../components/InputField";
 import * as Yup from "yup";
 import instance from "../axios/instance";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
 export default function Login() {
-  const { login, isLoggedIn } = useAuth();
+  const { login, isLoggedIn } = useContext(AuthContext);
 
   const navigate = useNavigate();
 

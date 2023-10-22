@@ -1,16 +1,16 @@
-import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
+import { Link, Outlet, useParams } from "react-router-dom";
 import { PrivateHeader } from "../components/Navbar/PrivateHeader";
 import WelcomeHeader from "../components/Welcome/WelcomeHeader";
-import { useAuth } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import { BiLinkAlt } from "react-icons/bi";
 import { BsInstagram, BsSpotify, BsThreeDots } from "react-icons/bs";
 import { IoChatbubblesSharp } from "react-icons/io5";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import instance from "../axios/instance";
 import ProfileImg from "../components/ProfileImg";
 
 const UserPage = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn } = useContext(AuthContext);
   return (
     <div className="relative min-h-screen dark:bg-p-dark dark:text-white">
       {isLoggedIn ? <PrivateHeader /> : <WelcomeHeader isShow={true} />}

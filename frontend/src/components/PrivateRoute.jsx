@@ -1,7 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../context/AuthContext.jsx";
+import { AuthContext } from "../context/AuthContext.jsx";
+import { useContext } from "react";
 
 export const PrivateRoute = ({ children }) => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn } = useContext(AuthContext);
   return <>{isLoggedIn ? <Outlet /> : <Navigate to="/welcome" />}</>;
 };

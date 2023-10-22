@@ -1,7 +1,7 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 import Cookies from "js-cookie";
 
-const authContext = createContext();
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [token] = useState(Cookies.get("userToken"));
@@ -25,12 +25,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <authContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
       {children}
-    </authContext.Provider>
+    </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  return useContext(authContext);
 };

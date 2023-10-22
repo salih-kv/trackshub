@@ -45,7 +45,7 @@ const Right = () => {
 
   useEffect(() => {
     getProjectsByUserId();
-  }, []);
+  }, [projects]);
 
   return (
     <div className="w-3/4">
