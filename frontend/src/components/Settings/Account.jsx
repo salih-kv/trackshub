@@ -4,18 +4,25 @@ import { ToastContainer, toast } from "react-toastify";
 import instance from "../../axios/instance";
 import { logout } from "../../Redux/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { fetchUser, updateUser } from "../../Redux/user/userSlice";
 
 const Account = () => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
+
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
+
   return (
     <div className="w-3/4 flex flex-col max-w-2xl mx-auto mb-16">
       <div className="w-full">
         <header className="pb-8">
           <h1 className="text-2xl">Account Settings</h1>
         </header>
-        <UpdateAccount dispatch={dispatch} />
+        <UpdateAccount dispatch={dispatch} user={user} />
         <div className="w-full h-[1px] my-12 bg-s-light dark:bg-s-dark"></div>
-        <SetPassword />
+        <SetPassword user={user} />
         <div className="w-full h-[1px] my-12 bg-s-light dark:bg-s-dark"></div>
         <DeleteAccount dispatch={dispatch} />
       </div>
@@ -26,9 +33,7 @@ const Account = () => {
 
 export default Account;
 
-const UpdateAccount = ({ dispatch }) => {
-  const user = useSelector((state) => state.user.user);
-
+const UpdateAccount = ({ dispatch, user }) => {
   const [userInput, setUserInput] = useState({
     username: "",
     email: "",
@@ -42,16 +47,17 @@ const UpdateAccount = ({ dispatch }) => {
     setIsDirty(true);
   };
 
-  // const update = (e) => {
-  //   e.preventDefault();
-  //   updateUser(userInput);
-  // };
+  const update = (e) => {
+    e.preventDefault();
+    dispatch(updateUser(userInput));
+  };
+
   useEffect(() => {
     setUserInput(user);
-  }, []);
+  }, [user]);
 
   return (
-    <form>
+    <form onSubmit={update}>
       <label htmlFor="username">Username</label>
       <input
         type="text"

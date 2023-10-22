@@ -1,10 +1,12 @@
 import ProfileImg from "../ProfileImg";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUser, updateUser } from "../../Redux/user/userSlice";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const [userInput, setUserInput] = useState({
     name: "",
@@ -20,14 +22,18 @@ const Profile = () => {
     setIsDirty(true);
   };
 
-  // const update = (e) => {
-  //   e.preventDefault();
-  //   updateUser(userInput);
-  // };
+  const update = (e) => {
+    e.preventDefault();
+    dispatch(updateUser(userInput));
+  };
 
   useEffect(() => {
     setUserInput(user);
-  }, []);
+  }, [user]);
+
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
 
   return (
     <div className="w-3/4 flex flex-col max-w-2xl mx-auto mb-16">

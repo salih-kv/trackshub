@@ -2,9 +2,12 @@ import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { PrivateHeader } from "./Navbar/PrivateHeader";
 import Nav from "./Navbar/Nav";
+import { fetchUser } from "../Redux/user/userSlice";
+import { useDispatch } from "react-redux";
 
 const Layout = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -12,6 +15,10 @@ const Layout = () => {
       navigate("/feed/trending");
     }
   }, [navigate]);
+
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
 
   return (
     <div className="relative dark:text-white">
