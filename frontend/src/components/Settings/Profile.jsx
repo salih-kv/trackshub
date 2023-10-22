@@ -3,17 +3,13 @@ import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser, updateUser } from "../../Redux/user/userSlice";
+import Loading from "../Loading";
 
 const Profile = () => {
-  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const { user, loading } = useSelector((state) => state.user);
 
-  const [userInput, setUserInput] = useState({
-    name: "",
-    location: "",
-    bio: "",
-  });
-
+  const [userInput, setUserInput] = useState(user);
   const [isDirty, setIsDirty] = useState(false);
 
   const handleChange = (e) => {
@@ -22,18 +18,24 @@ const Profile = () => {
     setIsDirty(true);
   };
 
-  const update = (e) => {
+  const update = async (e) => {
     e.preventDefault();
-    dispatch(updateUser(userInput));
+    await dispatch(updateUser(userInput));
+    setIsDirty(false);
+    dispatch(fetchUser());
   };
-
-  useEffect(() => {
-    setUserInput(user);
-  }, [user]);
 
   useEffect(() => {
     dispatch(fetchUser());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!loading) {
+      setUserInput(user);
+    }
+  }, [user, loading]);
+
+  if (loading) return <Loading />;
 
   return (
     <div className="w-3/4 flex flex-col max-w-2xl mx-auto mb-16">

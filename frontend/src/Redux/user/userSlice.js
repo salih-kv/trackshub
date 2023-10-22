@@ -29,6 +29,7 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     user: {},
+    loading: false,
   },
   reducers: {
     setUser: (state, action) => {
@@ -40,8 +41,15 @@ const userSlice = createSlice({
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.user = action.payload;
       })
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.user = action.payload;
+        state.loading = false;
+      })
+      .addCase(updateUser.rejected, (state) => {
+        state.loading = false;
       });
   },
 });

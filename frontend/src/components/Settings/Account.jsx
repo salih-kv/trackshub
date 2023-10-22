@@ -5,10 +5,11 @@ import instance from "../../axios/instance";
 import { logout } from "../../Redux/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUser, updateUser } from "../../Redux/user/userSlice";
+import Loading from "../Loading";
 
 const Account = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
+  const { user, loading } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(fetchUser());
@@ -20,7 +21,7 @@ const Account = () => {
         <header className="pb-8">
           <h1 className="text-2xl">Account Settings</h1>
         </header>
-        <UpdateAccount dispatch={dispatch} user={user} />
+        <UpdateAccount dispatch={dispatch} user={user} loading={loading} />
         <div className="w-full h-[1px] my-12 bg-s-light dark:bg-s-dark"></div>
         <SetPassword user={user} />
         <div className="w-full h-[1px] my-12 bg-s-light dark:bg-s-dark"></div>
@@ -33,12 +34,8 @@ const Account = () => {
 
 export default Account;
 
-const UpdateAccount = ({ dispatch, user }) => {
-  const [userInput, setUserInput] = useState({
-    username: "",
-    email: "",
-  });
-
+const UpdateAccount = ({ dispatch, user, loading }) => {
+  const [userInput, setUserInput] = useState(user);
   const [isDirty, setIsDirty] = useState(false);
 
   const handleChange = (e) => {
@@ -47,14 +44,20 @@ const UpdateAccount = ({ dispatch, user }) => {
     setIsDirty(true);
   };
 
-  const update = (e) => {
+  const update = async (e) => {
     e.preventDefault();
-    dispatch(updateUser(userInput));
+    await dispatch(updateUser(userInput));
+    setIsDirty(false);
+    dispatch(fetchUser());
   };
 
   useEffect(() => {
-    setUserInput(user);
-  }, [user]);
+    if (!loading) {
+      setUserInput(user);
+    }
+  }, [user, loading]);
+
+  if (loading) return <Loading />;
 
   return (
     <form onSubmit={update}>
