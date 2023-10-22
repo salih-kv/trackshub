@@ -1,4 +1,39 @@
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { ProjectContext } from "../../context/ProjectContext";
+
 const ProjectSettings = () => {
+  const { projectId } = useParams();
+  const navigate = useNavigate();
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
+
+  const { project, getProjectById, updateProject, deleteProject } =
+    useContext(ProjectContext);
+
+  const confirmDelete = async () => {
+    setShowDeleteConfirmation(true);
+  };
+
+  const [input, setInput] = useState({
+    title: "",
+    tags: "",
+    genres: "",
+    songTitle: "",
+    description: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setInput((prev) => ({ ...prev, [name]: value }));
+    setIsDirty(true);
+  };
+
+  useEffect(() => {
+    getProjectById(projectId);
+    setInput(project);
+  }, [projectId]);
+
   return (
     <div className="flex flex-col gap-12 mb-12 max-w-screen-md">
       <section>
@@ -18,14 +53,18 @@ const ProjectSettings = () => {
               name="title"
               placeholder="Name your project"
               className="input"
+              value={input?.title || ""}
+              onChange={handleInputChange}
             />
-            <label htmlFor="title">Genres</label>
+            <label htmlFor="genres">Genres</label>
             <input
               type="text"
-              id="genre"
-              name="genre"
+              id="genres"
+              name="genres"
               placeholder="Genres"
               className="input"
+              value={input?.genres || ""}
+              onChange={handleInputChange}
             />
             <label htmlFor="tags">Tags</label>
             <input
@@ -34,6 +73,8 @@ const ProjectSettings = () => {
               name="tags"
               placeholder="Start typing tags. Hit Enter to complete."
               className="input"
+              value={input?.tags || ""}
+              onChange={handleInputChange}
             />
           </div>
         </div>
@@ -42,15 +83,40 @@ const ProjectSettings = () => {
         <h1 className="font-semibold mb-4 text-xl">Project metadata</h1>
         <div className="flex gap-8">
           <div>
-            <label htmlFor="title">Song title</label>
+            <label htmlFor="songTitle">Song title</label>
             <input
-              type="text"
-              id="title"
-              name="title"
+              id="songTitle"
+              name="songTitle"
               placeholder="Name your song"
               className="input"
+              value={input?.songTitle || ""}
+              onChange={handleInputChange}
             />
           </div>
+          <div>
+            <label htmlFor="description">Description</label>
+            <input
+              id="description"
+              name="description"
+              placeholder="Song description"
+              className="input"
+              value={input?.description || ""}
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
+        <div className="flex justify-end gap-3">
+          <button className="btn btn-outlined py-1.5 px-3 rounded-3xl">
+            cancel
+          </button>
+          <button
+            type="submit"
+            className="btn btn-fill py-1.5 px-3 rounded-3xl"
+            disabled={!isDirty}
+            onClick={() => updateProject(projectId, input)}
+          >
+            Save
+          </button>
         </div>
       </section>
       <section>
@@ -64,7 +130,7 @@ const ProjectSettings = () => {
             </p>
           </div>
           <div>
-            <button className="btn btn-outlined py-1.5 px-4 rounded-md">
+            <button className="btn border border-gray-500 py-1.5 px-4 rounded-md">
               Close project
             </button>
           </div>
@@ -78,12 +144,39 @@ const ProjectSettings = () => {
             </p>
           </div>
           <div>
-            <button className="btn btn-secondary py-1.5 px-4 rounded-md">
+            <button
+              className="btn btn-secondary py-1.5 px-4 rounded-md"
+              onClick={confirmDelete}
+            >
               Delete project
             </button>
           </div>
         </div>
       </section>
+      {showDeleteConfirmation && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
+          <div className="bg-white dark:bg-s-dark p-6 rounded-lg">
+            <p>Are you sure you want to delete your project?</p>
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => setShowDeleteConfirmation(false)}
+                className="btn btn-secondary dark:bg-p-dark py-1.5 px-3 rounded-lg"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  deleteProject(projectId);
+                  navigate("/projects/my-projects");
+                }}
+                className="btn btn-fill ml-4 py-1.5 px-3 rounded-lg"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

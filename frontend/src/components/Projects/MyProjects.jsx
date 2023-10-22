@@ -2,8 +2,8 @@ import { FaPlus } from "react-icons/fa";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { MdAudiotrack } from "react-icons/md";
 import ProjectCard from "./ProjectCard";
-import { useEffect, useState } from "react";
-import { useProject } from "../../context/ProjectContext";
+import { useContext, useEffect, useState } from "react";
+import { ProjectContext } from "../../context/ProjectContext";
 
 const MyProjects = () => {
   return (
@@ -41,11 +41,8 @@ const Right = () => {
   const [toggle, setToggle] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
-  const { projects, getProjectsByUserId, createProject } = useProject();
-
-  useEffect(() => {
-    getProjectsByUserId();
-  }, [projects]);
+  const { projects, getProjectsByUserId, createProject } =
+    useContext(ProjectContext);
 
   return (
     <div className="w-3/4">

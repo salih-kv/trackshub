@@ -33,7 +33,7 @@ const Profile = () => {
 
   useEffect(() => {
     fetchUser();
-  }, [fetchUser]);
+  }, []);
 
   return (
     <div className="w-3/4 flex flex-col max-w-2xl mx-auto mb-16">
@@ -52,7 +52,7 @@ const Profile = () => {
                 name="name"
                 placeholder="Display name"
                 className="input"
-                value={userInput?.name}
+                value={userInput?.name || ""}
                 onChange={handleChange}
               />
               <label htmlFor="location">Location</label>
@@ -62,7 +62,7 @@ const Profile = () => {
                 name="location"
                 placeholder="Your City"
                 className="input"
-                value={userInput?.location}
+                value={userInput?.location || ""}
                 onChange={handleChange}
               />
             </div>
@@ -73,7 +73,7 @@ const Profile = () => {
               rows="6"
               className="resize-none w-full bg-s-light dark:bg-s-dark rounded-lg mt-2 outline-none p-3"
               name="bio"
-              value={userInput?.bio}
+              value={userInput?.bio || ""}
               onChange={handleChange}
             ></textarea>
           </div>

@@ -53,7 +53,7 @@ const UpdateAccount = () => {
 
   useEffect(() => {
     fetchUser();
-  }, [fetchUser]);
+  }, []);
 
   return (
     <form onSubmit={update}>
@@ -64,7 +64,7 @@ const UpdateAccount = () => {
         name="username"
         placeholder="Username"
         className="input"
-        value={userInput?.username}
+        value={userInput?.username || ""}
         onChange={handleChange}
       />
       <label htmlFor="email">Email</label>
@@ -74,7 +74,7 @@ const UpdateAccount = () => {
         name="email"
         placeholder="email"
         className="input"
-        value={userInput?.email}
+        value={userInput?.email || ""}
         onChange={handleChange}
       />
       <button

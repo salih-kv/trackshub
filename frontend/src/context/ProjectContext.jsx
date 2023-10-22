@@ -1,16 +1,16 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 import instance from "../axios/instance";
 
-const projectContext = createContext();
+export const ProjectContext = createContext();
 
 export const ProjectProvider = ({ children }) => {
   const [projects, setProjects] = useState([]);
-  const [project, setProject] = useState([]);
+  const [project, setProject] = useState({});
 
   const getProjectsByUserId = async () => {
     try {
       const response = await instance.get(`/api/v1/project/`);
-      setProjects(response.data);
+      setProjects((prev) => [...prev, response.data]);
     } catch (error) {
       throw new Error("Error fetching user's projects");
     }
@@ -18,8 +18,7 @@ export const ProjectProvider = ({ children }) => {
 
   const createProject = async (title) => {
     try {
-      const response = await instance.post("/api/v1/project/create", { title });
-      console.log(response.data);
+      await instance.post("/api/v1/project/create", { title });
     } catch (err) {
       console.log(err);
     }
@@ -28,7 +27,8 @@ export const ProjectProvider = ({ children }) => {
   const getProjectById = async (projectId) => {
     try {
       const response = await instance.get(`/api/v1/project/${projectId}`);
-      setProject(response.data);
+      setProject((prev) => ({ ...prev, ...response.data }));
+      return project;
     } catch (error) {
       throw new Error("Error fetching project");
     }
@@ -37,7 +37,7 @@ export const ProjectProvider = ({ children }) => {
   const updateProject = async (projectId, updateData) => {
     try {
       const response = await instance.patch(
-        `/api/project/${projectId}`,
+        `/api/v1/project/${projectId}`,
         updateData
       );
       console.log(response);
@@ -56,7 +56,7 @@ export const ProjectProvider = ({ children }) => {
   };
 
   return (
-    <projectContext.Provider
+    <ProjectContext.Provider
       value={{
         projects,
         project,
@@ -68,14 +68,6 @@ export const ProjectProvider = ({ children }) => {
       }}
     >
       {children}
-    </projectContext.Provider>
+    </ProjectContext.Provider>
   );
-};
-
-export const useProject = () => {
-  const context = useContext(projectContext);
-  if (!context) {
-    throw new Error("useProject must be used within a ProjectProvider");
-  }
-  return context;
 };
