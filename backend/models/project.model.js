@@ -24,20 +24,15 @@ const projectSchema = mongoose.Schema({
   tags: {
     type: [String],
   },
-  metadata: {
-    type: [
-      {
-        songTitle: {
-          type: String,
-        },
-        description: {
-          type: String,
-        },
-        releaseDate: {
-          type: Date,
-        },
-      },
-    ],
+
+  songTitle: {
+    type: String,
+  },
+  description: {
+    type: String,
+  },
+  releaseDate: {
+    type: Date,
   },
   collaborators: {
     type: [String],

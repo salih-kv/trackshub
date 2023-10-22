@@ -6,26 +6,21 @@ import {
   deleteProject,
 } from "../../Redux/project/projectSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Loading from "../Loading";
 
 const ProjectSettings = () => {
   const { projectId } = useParams();
+  const { project, loading } = useSelector((state) => state.project);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
-  const dispatch = useDispatch();
-  const { project } = useSelector((state) => state.project);
 
   const confirmDelete = async () => {
     setShowDeleteConfirmation(true);
   };
 
-  const [input, setInput] = useState({
-    title: "",
-    tags: "",
-    genres: "",
-    songTitle: "",
-    description: "",
-  });
+  const [input, setInput] = useState(project);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -37,6 +32,21 @@ const ProjectSettings = () => {
     dispatch(getProjectById(projectId));
     setInput(project);
   }, [projectId, dispatch]);
+
+  const update = async (e) => {
+    e.preventDefault();
+    await dispatch(updateProject({ projectId, updateData: input }));
+    setIsDirty(false);
+    dispatch(getProjectById(projectId));
+  };
+
+  useEffect(() => {
+    if (!loading) {
+      setInput(project);
+    }
+  }, [project, loading]);
+
+  if (loading) return <Loading />;
 
   return (
     <div className="flex flex-col gap-12 mb-12 max-w-screen-md">
@@ -117,9 +127,7 @@ const ProjectSettings = () => {
             type="submit"
             className="btn btn-fill py-1.5 px-3 rounded-3xl"
             disabled={!isDirty}
-            onClick={() =>
-              dispatch(updateProject({ projectId, updateData: input }))
-            }
+            onClick={update}
           >
             Save
           </button>

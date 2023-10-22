@@ -5,6 +5,7 @@ import instance from "../../axios/instance";
 const initialState = {
   projects: [],
   project: {},
+  loading: false,
 };
 
 export const fetchProjectsByUserId = createAsyncThunk(
@@ -49,24 +50,30 @@ export const deleteProject = createAsyncThunk(
   }
 );
 
+const handleAsyncAction = (builder, action, stateKey) => {
+  builder
+    .addCase(action.fulfilled, (state, action) => {
+      state[stateKey] = action.payload;
+      state.loading = false;
+    })
+    .addCase(action.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(action.rejected, (state) => {
+      state.loading = false;
+    });
+};
+
 const projectSlice = createSlice({
   name: "project",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchProjectsByUserId.fulfilled, (state, action) => {
-        state.projects = action.payload;
-        state.status = "succeeded";
-      })
-      .addCase(fetchProjectsByUserId.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchProjectsByUserId.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      });
-    // Repeat the above process for other async actions
+    handleAsyncAction(builder, fetchProjectsByUserId, "projects");
+    handleAsyncAction(builder, createNewProject, "project");
+    handleAsyncAction(builder, getProjectById, "project");
+    handleAsyncAction(builder, updateProject, "project");
+    handleAsyncAction(builder, deleteProject, "project");
   },
 });
 

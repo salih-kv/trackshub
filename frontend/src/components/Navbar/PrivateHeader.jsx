@@ -5,7 +5,7 @@ import DarkThemeToggle from "./DarkThemeToggle";
 import { Link } from "react-router-dom";
 import Nav from "./Nav";
 import UserDropDown from "./UserDropDown";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import logo from "../../assets/trackshub.svg";
 import ChatDropDown from "./ChatDropDown";
@@ -53,24 +53,29 @@ const Right = ({ user }) => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [isInputFocused, setInputFocus] = useState(false);
 
   const toggleDropdown = (dropdownName) => {
     setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
   };
 
-  useEffect(() => {
-    const searchUsers = async () => {
-      try {
-        const response = await instance.get(
-          `/api/v1/user/searchUser?q=${searchQuery}`
-        );
-        setSearchResults(response.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    searchUsers();
-  }, [searchQuery]);
+  const searchUsers = async () => {
+    try {
+      const response = await instance.get(
+        `/api/v1/user/searchUser?q=${searchQuery}`
+      );
+      setSearchResults(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleInputBlur = () => {
+    setInputFocus(false);
+    if (!searchQuery.length > 0) {
+      setSearchResults([]);
+    }
+  };
 
   return (
     <div className="flex items-center space-x-3 lg:space-x-6 pr-4 order-1 lg:order-2">
@@ -79,10 +84,15 @@ const Right = ({ user }) => {
           type="text"
           placeholder="search"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            searchUsers();
+          }}
+          onBlur={handleInputBlur}
+          onFocus={() => setInputFocus(true)}
           className="hidden md:block px-2 lg:px-4 py-2 rounded-3xl dark:text-white bg-s-light dark:bg-s-dark focus:border-primary-500 outline-none"
         />
-        {searchResults.length > 0 && (
+        {isInputFocused && searchResults.length > 0 && (
           <div className="absolute top-16 right-0 z-20">
             <div className="rounded-lg shadow-lg bg-p-light dark:bg-s-dark min-w-[330px] text-sm p-2">
               {searchResults.map((result) => (

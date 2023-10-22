@@ -2,7 +2,7 @@ import { Bars } from "react-loader-spinner";
 
 const Loading = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen dark:bg-p-dark">
+    <div className="flex items-center justify-center w-full min-h-screen dark:bg-p-dark">
       <Bars
         visible={true}
         height="40"
