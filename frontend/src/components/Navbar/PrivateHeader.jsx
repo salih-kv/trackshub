@@ -14,6 +14,8 @@ import ProfileImg from "../ProfileImg";
 import instance from "../../axios/instance";
 import { useSelector } from "react-redux";
 
+import { Transition } from "@headlessui/react";
+
 export const PrivateHeader = () => {
   const { user } = useSelector((state) => state.user);
   return (
@@ -51,12 +53,14 @@ const Left = () => {
 
 const Right = ({ user }) => {
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [isShowing, setIsShowing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isInputFocused, setInputFocus] = useState(false);
 
   const toggleDropdown = (dropdownName) => {
     setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
+    setIsShowing((isShowing) => !isShowing);
   };
 
   const searchUsers = async () => {
@@ -120,14 +124,34 @@ const Right = ({ user }) => {
         onClick={() => toggleDropdown("notification")}
       >
         <IoNotificationsOutline className="text-xl" />
-        {activeDropdown === "notification" && <NotificationDropDown />}
+        <Transition
+          show={activeDropdown === "notification"}
+          enter="transition ease-out duration-300"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-200"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
+        >
+          {activeDropdown === "notification" && <NotificationDropDown />}
+        </Transition>
       </button>
       <button
         className="relative hidden sm:block hover:bg-s-light rounded-lg active:outline-none active:ring-2 active:ring-gray-200 dark:text-white dark:hover:bg-s-dark dark:active:ring-gray-600 p-2"
         onClick={() => toggleDropdown("chat")}
       >
         <AiOutlineComment className="text-xl" />
-        {activeDropdown === "chat" && <ChatDropDown />}
+        <Transition
+          show={activeDropdown === "chat"}
+          enter="transition ease-out duration-300"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-200"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
+        >
+          {activeDropdown === "chat" && <ChatDropDown />}
+        </Transition>
       </button>
       <ProfileImg
         w={9}
@@ -135,7 +159,17 @@ const Right = ({ user }) => {
         onClick={() => toggleDropdown("user")}
         name={user?.name}
       >
-        {activeDropdown === "user" && <UserDropDown />}
+        <Transition
+          show={activeDropdown === "user"}
+          enter="transition ease-out duration-300"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-200"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
+        >
+          {activeDropdown === "user" && <UserDropDown />}
+        </Transition>
       </ProfileImg>
     </div>
   );

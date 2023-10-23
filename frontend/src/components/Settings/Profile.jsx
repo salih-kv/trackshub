@@ -1,5 +1,5 @@
 import ProfileImg from "../ProfileImg";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser, updateUser } from "../../Redux/user/userSlice";
@@ -12,6 +12,8 @@ const Profile = () => {
   const [userInput, setUserInput] = useState(user);
   const [isDirty, setIsDirty] = useState(false);
 
+  const inputRef = useRef(null);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserInput((prev) => ({ ...prev, [name]: value }));
@@ -23,6 +25,10 @@ const Profile = () => {
     await dispatch(updateUser(userInput));
     setIsDirty(false);
     dispatch(fetchUser());
+  };
+
+  const onButtonClick = () => {
+    inputRef.current.click();
   };
 
   useEffect(() => {
@@ -45,7 +51,18 @@ const Profile = () => {
         </header>
         <form className="flex flex-col w-full gap-8">
           <div className="flex gap-12">
-            <ProfileImg w={40} name={""} />
+            <div>
+              <div className={`flex items-center justify-center w-40 h-40`}>
+                <img
+                  className="w-full h-auto rounded-full"
+                  src={`https://ui-avatars.com/api/?name=${
+                    user?.name
+                  }&length=1&bold=true&background=${"B73D0D"}&color=fff&size=256`}
+                  alt="user photo"
+                />
+              </div>
+            </div>
+
             <div className="">
               <label htmlFor="name">Name</label>
               <input

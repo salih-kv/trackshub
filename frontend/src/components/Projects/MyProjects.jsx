@@ -99,6 +99,7 @@ const Right = ({ projects, dispatch }) => {
                 onClick={() => {
                   dispatch(createNewProject(inputValue));
                   setInputValue("");
+                  dispatch(fetchProjectsByUserId());
                 }}
               >
                 Create
@@ -110,7 +111,10 @@ const Right = ({ projects, dispatch }) => {
       {/* project input modal */}
 
       <div className="py-4 flex gap-4 flex-wrap">
-        <button className="w-60 h-40 flex items-center justify-center rounded bg-s-light dark:bg-s-dark">
+        <button
+          onClick={() => setToggle(true)}
+          className="w-60 h-40 flex items-center justify-center rounded bg-s-light dark:bg-s-dark"
+        >
           <FaPlus className="text-lg text-s-dark dark:text-s-light" />
         </button>
 

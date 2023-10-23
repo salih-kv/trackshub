@@ -1,8 +1,10 @@
+import { useEffect } from "react";
 import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import { FaChevronRight } from "react-icons/fa";
 import { IoLayers } from "react-icons/io5";
 import { IoIosShareAlt } from "react-icons/io";
-import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getProjectById } from "../Redux/project/projectSlice";
 
 const ProjectPage = () => {
   const navigate = useNavigate();
@@ -27,8 +29,16 @@ export default ProjectPage;
 
 const Overview = () => {
   const { projectId } = useParams();
+  const dispatch = useDispatch();
+  const { project } = useSelector((state) => state.project);
 
-  // Fetch project data using projectId
+  const date = new Date(project.createdAt);
+  const options = { year: "numeric", month: "short", day: "numeric" };
+  const formattedDate = date.toLocaleDateString(undefined, options);
+
+  useEffect(() => {
+    dispatch(getProjectById(projectId));
+  }, [dispatch]);
 
   return (
     <div className="flex items-center gap-8 w-full bg-primary-400 rounded-lg p-4 mb-8">
@@ -36,15 +46,15 @@ const Overview = () => {
       <div>
         <div className="flex gap-4 items-center mb-2">
           <h2 className="text-primary-100 text-xl font-semibold">
-            Project Name
+            {project?.title}
           </h2>
           <span className="text-xs bg-primary-300 px-4 py-1 rounded-2xl text-primary-800">
-            Private
+            {project.isPrivate ? "Private" : "Public"}
           </span>
         </div>
         <div className="flex gap-4 items-center text-sm">
           <h1>Owner</h1>
-          <h1>Created Date</h1>
+          <h1>{formattedDate}</h1>
         </div>
         <div className="tracking-[.5em] my-2">
           |||||||| |||||||||||||| Audio Visualizer Here... ||||||||||
