@@ -1,10 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import { FaChevronRight } from "react-icons/fa";
 import { IoLayers } from "react-icons/io5";
 import { IoIosShareAlt } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjectById } from "../Redux/project/projectSlice";
+
+import { AudioPlayer } from "react-audio-player-component";
+import NumbFrozen from "../assets/Icy Narco - Numb & Frozen.mp3";
 
 const ProjectPage = () => {
   const navigate = useNavigate();
@@ -32,7 +35,7 @@ const Overview = () => {
   const dispatch = useDispatch();
   const { project } = useSelector((state) => state.project);
 
-  const date = new Date(project.createdAt);
+  const date = new Date(project?.createdAt);
   const options = { year: "numeric", month: "short", day: "numeric" };
   const formattedDate = date.toLocaleDateString(undefined, options);
 
@@ -49,16 +52,32 @@ const Overview = () => {
             {project?.title}
           </h2>
           <span className="text-xs bg-primary-300 px-4 py-1 rounded-2xl text-primary-800">
-            {project.isPrivate ? "Private" : "Public"}
+            {project?.isPrivate ? "Private" : "Public"}
           </span>
         </div>
         <div className="flex gap-4 items-center text-sm">
           <h1>Owner</h1>
-          <h1>{formattedDate}</h1>
+          <h1>{formattedDate || ""}</h1>
         </div>
         <div className="tracking-[.5em] my-2">
-          |||||||| |||||||||||||| Audio Visualizer Here... ||||||||||
-          ||||||||||||||
+          <AudioPlayer
+            src={NumbFrozen}
+            minimal={true}
+            width={1050}
+            trackHeight={75}
+            barWidth={2}
+            gap={1}
+            visualise={true}
+            backgroundColor="#BCB1FF"
+            barColor="#262831"
+            barPlayedColor="#774EFF"
+            skipDuration={2}
+            showLoopOption={false}
+            showVolumeControl={false}
+            seekBarColor="#774EFF"
+            hideSeekBar={true}
+            hideTrackKnobWhenPlaying={true}
+          />
         </div>
         <div>
           <button className="bg-primary-300 inline-flex gap-2 py-1.5 px-3 rounded-2xl">
