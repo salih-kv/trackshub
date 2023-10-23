@@ -7,16 +7,47 @@ import { IoChatbubblesSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import instance from "../axios/instance";
 import ProfileImg from "../components/ProfileImg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Loading from "../components/Loading";
+import { followUser, unFollowUser } from "../Redux/user/userSlice";
 
 const UserPage = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
+  const loggedInUser = useSelector((state) => state.user.user);
+  const { username } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState();
+
+  const fetchUserPublicProfile = async () => {
+    try {
+      const response = await instance.get(`/api/v1/user/${username}`);
+      setUser(response.data);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserPublicProfile();
+  }, [username]);
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className="relative min-h-screen dark:bg-p-dark dark:text-white">
       {isLoggedIn ? <PrivateHeader /> : <WelcomeHeader isShow={true} />}
       <div className="w-full h-60 bg-gradient-to-r from-primary-300 via-primary-500 to-primary-400"></div>
       <div className="flex gap-4 w-full justify-between mx-auto max-w-screen-2xl">
-        <Left />
+        <Left
+          user={user}
+          fetchUserPublicProfile={fetchUserPublicProfile}
+          loggedInUser={loggedInUser}
+          loading={loading}
+        />
         <Middle />
         <Right />
       </div>
@@ -26,23 +57,23 @@ const UserPage = () => {
 
 export default UserPage;
 
-const Left = () => {
-  const { username } = useParams();
+const Left = ({ user, fetchUserPublicProfile, loggedInUser, loading }) => {
+  const dispatch = useDispatch();
+  const [isFollowing, setIsFollowing] = useState(
+    user?.followers?.includes(loggedInUser._id)
+  );
 
-  const [user, setUser] = useState();
-
-  const fetchUser = async () => {
-    try {
-      const response = await instance.get(`/api/v1/user/${username}`);
-      setUser(response.data);
-    } catch (err) {
-      console.log(err);
+  const followOrUnFollow = () => {
+    setIsFollowing((prevIsFollowing) => !prevIsFollowing);
+    if (isFollowing) {
+      dispatch(unFollowUser(user?._id));
+    } else {
+      dispatch(followUser(user?._id));
     }
+    fetchUserPublicProfile();
   };
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
+  if (loading) return <Loading />;
 
   return (
     <div className="w-1/4 relative">
@@ -76,18 +107,29 @@ const Left = () => {
               <IoChatbubblesSharp className="mr-1" />
               Chat
             </Link>
-            <Link className="btn py-1.5 px-4 rounded-2xl btn-fill">Follow</Link>
+            <button
+              onClick={followOrUnFollow}
+              className={`btn py-1.5 px-4 rounded-2xl ${
+                isFollowing ? "btn-outlined" : "btn-fill"
+              }`}
+            >
+              {isFollowing ? "Following" : "Follow"}
+            </button>
             <button className="btn bg-s-light dark:bg-s-dark px-4 rounded-2xl">
               <BsThreeDots />
             </button>
           </div>
           <div className="mt-4 flex gap-6">
             <div className="flex flex-col items-center">
-              <p className="font-semibold text-lg">{user?.followers.length}</p>
+              <p className="font-semibold text-lg">
+                {user?.followers?.length || 0}
+              </p>
               <p className="text-sm font-medium text-gray-600">Followers</p>
             </div>
             <div className="flex flex-col items-center">
-              <p className="font-semibold text-lg">{user?.following.length}</p>
+              <p className="font-semibold text-lg">
+                {user?.following?.length || 0}
+              </p>
               <p className="text-sm font-medium text-gray-600">Following</p>
             </div>
           </div>

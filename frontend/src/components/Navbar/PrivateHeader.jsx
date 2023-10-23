@@ -5,7 +5,7 @@ import DarkThemeToggle from "./DarkThemeToggle";
 import { Link } from "react-router-dom";
 import Nav from "./Nav";
 import UserDropDown from "./UserDropDown";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import logo from "../../assets/trackshub.svg";
 import ChatDropDown from "./ChatDropDown";
@@ -15,6 +15,7 @@ import instance from "../../axios/instance";
 import { useSelector } from "react-redux";
 
 import { Transition } from "@headlessui/react";
+import { useEffect } from "react";
 
 export const PrivateHeader = () => {
   const { user } = useSelector((state) => state.user);
@@ -56,11 +57,10 @@ const Right = ({ user }) => {
   const [isShowing, setIsShowing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [isInputFocused, setInputFocus] = useState(false);
 
   const toggleDropdown = (dropdownName) => {
     setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
-    setIsShowing((isShowing) => !isShowing);
+    setIsShowing((prev) => !prev);
   };
 
   const searchUsers = async () => {
@@ -74,12 +74,24 @@ const Right = ({ user }) => {
     }
   };
 
-  const handleInputBlur = () => {
-    setInputFocus(false);
-    if (!searchQuery.length > 0) {
-      setSearchResults([]);
-    }
-  };
+  const searchContainerRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(e.target)
+      ) {
+        setSearchResults([]);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="flex items-center space-x-3 lg:space-x-6 pr-4 order-1 lg:order-2">
@@ -92,16 +104,17 @@ const Right = ({ user }) => {
             setSearchQuery(e.target.value);
             searchUsers();
           }}
-          onBlur={handleInputBlur}
-          onFocus={() => setInputFocus(true)}
           className="hidden md:block px-2 lg:px-4 py-2 rounded-3xl dark:text-white bg-s-light dark:bg-s-dark focus:border-primary-500 outline-none"
         />
-        {isInputFocused && searchResults.length > 0 && (
-          <div className="absolute top-16 right-0 z-20">
+        {searchResults.length > 0 && (
+          <div
+            className="absolute top-16 right-0 z-20"
+            ref={searchContainerRef}
+          >
             <div className="rounded-lg shadow-lg bg-p-light dark:bg-s-dark min-w-[330px] text-sm p-2">
               {searchResults.map((result) => (
-                <Link key={result._id}>
-                  <header className="flex items-center p-4 w-full rounded-md dark:hover:bg-p-dark">
+                <Link to={`/${result.username}`} key={result._id}>
+                  <header className="flex items-center p-4 w-full rounded-md hover:bg-s-light dark:hover:bg-p-dark">
                     <ProfileImg
                       w={10}
                       buttonStyle={`mr-4`}

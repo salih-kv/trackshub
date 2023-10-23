@@ -25,6 +25,74 @@ export const updateUser = createAsyncThunk(
   }
 );
 
+export const resetPassword = createAsyncThunk(
+  "user/resetPassword",
+  async (newPassword, { rejectWithValue }) => {
+    try {
+      const response = await instance.post(
+        "/api/v1/user/reset-password",
+        newPassword
+      );
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const deleteUser = createAsyncThunk(
+  "user/deleteUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await instance.delete("/api/v1/user/");
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const followUser = createAsyncThunk(
+  "user/followUser",
+  async (followedId, { rejectWithValue }) => {
+    try {
+      const response = await instance.post("/api/v1/user/follow", {
+        followedId,
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const unFollowUser = createAsyncThunk(
+  "user/unFollowUser",
+  async (followedId, { rejectWithValue }) => {
+    try {
+      const response = await instance.post("/api/v1/user/unfollow", followedId);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+const handleAsyncAction = (builder, action) => {
+  builder
+    .addCase(action.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.loading = false;
+    })
+    .addCase(action.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(action.rejected, (state) => {
+      state.loading = false;
+    });
+};
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -37,20 +105,12 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchUser.fulfilled, (state, action) => {
-        state.user = action.payload;
-      })
-      .addCase(updateUser.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(updateUser.fulfilled, (state, action) => {
-        state.user = action.payload;
-        state.loading = false;
-      })
-      .addCase(updateUser.rejected, (state) => {
-        state.loading = false;
-      });
+    handleAsyncAction(builder, fetchUser);
+    handleAsyncAction(builder, updateUser);
+    handleAsyncAction(builder, resetPassword);
+    handleAsyncAction(builder, deleteUser);
+    handleAsyncAction(builder, followUser);
+    handleAsyncAction(builder, unFollowUser);
   },
 });
 
