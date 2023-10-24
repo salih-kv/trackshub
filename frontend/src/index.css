@@ -30,6 +30,10 @@ body {
   @apply text-white bg-gradient-to-r from-primary-400 to-primary-600  hover:from-primary-500 hover:to-primary-700 active:from-primary-600 active:to-primary-800 disabled:from-primary-100 disabled:to-primary-300 disabled:text-primary-400 disabled:opacity-90;
 }
 
+.header-btn {
+  @apply relative hover:bg-s-light rounded-lg active:outline-none active:ring-2 active:ring-gray-200 dark:text-white dark:hover:bg-s-dark dark:active:ring-gray-600 p-2;
+}
+
 .input {
   @apply w-full px-4 py-3 mb-6 mt-2 rounded-lg bg-s-light dark:bg-s-dark focus:border focus:border-primary-500 outline-none placeholder:text-sm;
 }

@@ -16,15 +16,14 @@ const Nav = () => {
     <nav className="">
       <ul className="flex items-center justify-around font-medium space-x-2 lg:space-x-4">
         {NavLinks?.map(({ to, label, icon }) => (
-          <li key={to}>
-            <Link
-              to={to}
-              className="flex items-center gap-2 text-black rounded-3xl py-2 px-4 dark:text-white lg:hover:bg-s-light dark:hover:text-primary-500 lg:active:bg-s-dark active:text-primary-500 hover:text-primary-500"
-            >
-              <span className="text-xl sm:text-base">{icon}</span>
-              <span className="hidden sm:block font-semibold">{label}</span>
-            </Link>
-          </li>
+          <Link
+            key={to}
+            to={to}
+            className="flex items-center gap-2 text-black rounded-3xl py-2 px-4 dark:text-white lg:hover:bg-s-light dark:hover:text-primary-500 lg:active:bg-s-dark active:text-primary-500 hover:text-primary-500"
+          >
+            <span className="text-xl sm:text-base">{icon}</span>
+            <span className="hidden sm:block font-semibold">{label}</span>
+          </Link>
         ))}
       </ul>
     </nav>
