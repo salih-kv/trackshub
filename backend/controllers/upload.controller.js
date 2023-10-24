@@ -1,4 +1,4 @@
-import { Files } from "../models/file.model";
+import { Files } from "../models/file.model.js";
 
 export const uploadProfile = async (req, res, next) => {
   const myFile = req.body;

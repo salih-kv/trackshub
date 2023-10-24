@@ -1,7 +1,7 @@
 const ProfileImg = ({ w, buttonStyle, name, children, bg, ...rest }) => {
   return (
     <div className={`${buttonStyle}`} {...rest}>
-      <button className={`flex items-center justify-center w-${w} h-${w}`}>
+      <button className={`flex items-center justify-center w-${w} h-${w} inline-block`}>
         <img
           className="w-full h-auto rounded-full"
           src={`https://ui-avatars.com/api/?name=${name}&length=1&bold=true&background=${

@@ -2,6 +2,7 @@ import { Link, Outlet, useParams } from "react-router-dom";
 import { PrivateHeader } from "../components/Navbar/PrivateHeader";
 import WelcomeHeader from "../components/Welcome/WelcomeHeader";
 import { BiLinkAlt } from "react-icons/bi";
+import { FiEdit3 } from "react-icons/fi";
 import { BsInstagram, BsSpotify, BsThreeDots } from "react-icons/bs";
 import { IoChatbubblesSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
@@ -17,6 +18,18 @@ const UserPage = () => {
   const { username } = useParams();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState();
+
+  const [currentUser, setCurrentUser] = useState(false);
+
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (
+      path === `/${loggedInUser.username}` ||
+      path === `/${loggedInUser.username}/`
+    ) {
+      setCurrentUser(true);
+    }
+  }, [loggedInUser.username]);
 
   const fetchUserPublicProfile = async () => {
     try {
@@ -47,6 +60,7 @@ const UserPage = () => {
           fetchUserPublicProfile={fetchUserPublicProfile}
           loggedInUser={loggedInUser}
           loading={loading}
+          currentUser={currentUser}
         />
         <Middle />
         <Right />
@@ -57,7 +71,13 @@ const UserPage = () => {
 
 export default UserPage;
 
-const Left = ({ user, fetchUserPublicProfile, loggedInUser, loading }) => {
+const Left = ({
+  user,
+  fetchUserPublicProfile,
+  loggedInUser,
+  loading,
+  currentUser,
+}) => {
   const dispatch = useDispatch();
   const [isFollowing, setIsFollowing] = useState(
     user?.followers?.includes(loggedInUser._id)
@@ -102,23 +122,35 @@ const Left = ({ user, fetchUserPublicProfile, loggedInUser, loading }) => {
               </div>
             </div>
           </div>
-          <div className="flex gap-2 mt-5">
-            <Link className="btn py-1.5 px-4 rounded-2xl bg-primary-200  text-primary-500">
-              <IoChatbubblesSharp className="mr-1" />
-              Chat
-            </Link>
-            <button
-              onClick={followOrUnFollow}
-              className={`btn py-1.5 px-4 rounded-2xl ${
-                isFollowing ? "btn-outlined" : "btn-fill"
-              }`}
-            >
-              {isFollowing ? "Following" : "Follow"}
-            </button>
-            <button className="btn bg-s-light dark:bg-s-dark px-4 rounded-2xl">
-              <BsThreeDots />
-            </button>
-          </div>
+          {currentUser ? (
+            <div className="mt-5">
+              <Link
+                to="/settings/profile"
+                className="btn btn-secondary !text-primary-500 py-1.5 px-16 rounded-2xl"
+              >
+                <FiEdit3 />
+                <span className="ml-2">Edit</span>
+              </Link>
+            </div>
+          ) : (
+            <div className="flex gap-2 mt-5">
+              <Link className="btn py-1.5 px-4 rounded-2xl bg-primary-200  text-primary-500">
+                <IoChatbubblesSharp className="mr-1" />
+                Chat
+              </Link>
+              <button
+                onClick={followOrUnFollow}
+                className={`btn py-1.5 px-4 rounded-2xl ${
+                  isFollowing ? "btn-outlined" : "btn-fill"
+                }`}
+              >
+                {isFollowing ? "Following" : "Follow"}
+              </button>
+              <button className="btn bg-s-light dark:bg-s-dark px-4 rounded-2xl">
+                <BsThreeDots />
+              </button>
+            </div>
+          )}
           <div className="mt-4 flex gap-6">
             <div className="flex flex-col items-center">
               <p className="font-semibold text-lg">
