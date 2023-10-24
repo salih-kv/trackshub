@@ -2,7 +2,6 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { BiChevronDown } from "react-icons/bi";
 import { Link } from "react-router-dom";
-import ProfileImg from "../ProfileImg";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 const sortOptions = [

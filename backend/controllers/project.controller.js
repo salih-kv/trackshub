@@ -13,7 +13,7 @@ export const getProjectById = async (req, res, next) => {
   }
 };
 
-// create project
+// create new project
 export const createProject = async (req, res, next) => {
   const userId = req.user.id;
   const { title } = req.body;
@@ -79,13 +79,31 @@ export const deleteProject = async (req, res, next) => {
   }
 };
 
-// get user projects
+// get user all projects
 export const getProjectsByUserId = async (req, res, next) => {
   const userId = req.user.id;
   try {
     const projects = await Projects.find({ owner: userId });
     if (!projects) errorHandler(404, "Projects not found");
     return res.status(200).json(projects);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// add collaborator to project
+export const addCollaborator = async (req, res, next) => {
+  const { projectId, collaboratorId } = req.body;
+  try {
+    const project = await Projects.findOneAndUpdate(
+      { projectId: projectId },
+      { $addToSet: { collaborators: collaboratorId } },
+      {
+        upsert: true,
+        new: true,
+      }
+    );
+    res.status(200).json({ message: "Collaborator added successfully" });
   } catch (err) {
     next(err);
   }

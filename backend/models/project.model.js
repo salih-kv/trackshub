@@ -24,7 +24,6 @@ const projectSchema = mongoose.Schema({
   tags: {
     type: [String],
   },
-
   songTitle: {
     type: String,
   },
@@ -34,9 +33,12 @@ const projectSchema = mongoose.Schema({
   releaseDate: {
     type: Date,
   },
-  collaborators: {
-    type: [String],
-  },
+  collaborators: [
+    {
+      type: String,
+      ref: "Users",
+    },
+  ],
   files: {
     type: [String],
   },

@@ -50,6 +50,17 @@ export const deleteProject = createAsyncThunk(
   }
 );
 
+export const addCollaborator = createAsyncThunk(
+  "project/addCollaborator",
+  async ({ projectId, collaboratorId }) => {
+    const response = await instance.post(`/api/v1/project/collaborator`, {
+      projectId,
+      collaboratorId,
+    });
+    return response.data;
+  }
+);
+
 const handleAsyncAction = (builder, action, stateKey) => {
   builder
     .addCase(action.fulfilled, (state, action) => {
@@ -74,6 +85,7 @@ const projectSlice = createSlice({
     handleAsyncAction(builder, getProjectById, "project");
     handleAsyncAction(builder, updateProject, "project");
     handleAsyncAction(builder, deleteProject, "project");
+    handleAsyncAction(builder, addCollaborator, "project");
   },
 });
 

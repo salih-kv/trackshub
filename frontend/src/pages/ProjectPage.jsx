@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
-import { FaChevronRight } from "react-icons/fa";
-import { IoLayers } from "react-icons/io5";
 import { IoIosShareAlt } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjectById } from "../Redux/project/projectSlice";
