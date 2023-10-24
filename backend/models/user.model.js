@@ -32,25 +32,12 @@ const userSchema = mongoose.Schema({
       ref: "Users",
     },
   ],
-
   following: [
     {
       type: String,
       ref: "Users",
     },
   ],
-  isOnline: Boolean,
-  // country: {
-  //   type: String,
-  //   required: [true, "Please choose your country"],
-  // },
-  // state: {
-  //   type: String,
-  // },
-  // city: {
-  //   type: String,
-  //   required: true,
-  // },
   location: {
     type: String,
   },
@@ -68,6 +55,13 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  projects: [
+    {
+      type: String,
+      ref: "Projects",
+    },
+  ],
+  isOnline: Boolean,
 });
 
 userSchema.pre("save", async function (next) {

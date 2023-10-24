@@ -10,16 +10,23 @@ import instance from "../axios/instance";
 import ProfileImg from "../components/ProfileImg";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../components/Loading";
-import { followUser, unFollowUser } from "../Redux/user/userSlice";
+import { fetchUser, followUser, unFollowUser } from "../Redux/user/userSlice";
 
 const UserPage = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.user);
   const loggedInUser = useSelector((state) => state.user.user);
   const { username } = useParams();
-  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState();
-
+  const dispatch = useDispatch();
+  const [isFollowing, setIsFollowing] = useState(false);
   const [currentUser, setCurrentUser] = useState(false);
+
+  useEffect(() => {
+    if (!loading) {
+      dispatch(fetchUser());
+    }
+  }, []);
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -35,16 +42,17 @@ const UserPage = () => {
     try {
       const response = await instance.get(`/api/v1/user/${username}`);
       setUser(response.data);
-      setLoading(false);
+      setIsFollowing(response.data?.followers?.includes(loggedInUser._id));
     } catch (err) {
       console.log(err);
-      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchUserPublicProfile();
-  }, [username]);
+    if (!loading) {
+      fetchUserPublicProfile();
+    }
+  }, [username, loggedInUser]);
 
   if (loading) {
     return <Loading />;
@@ -58,8 +66,8 @@ const UserPage = () => {
         <Left
           user={user}
           fetchUserPublicProfile={fetchUserPublicProfile}
-          loggedInUser={loggedInUser}
-          loading={loading}
+          isFollowing={isFollowing}
+          setIsFollowing={setIsFollowing}
           currentUser={currentUser}
         />
         <Middle />
@@ -74,14 +82,11 @@ export default UserPage;
 const Left = ({
   user,
   fetchUserPublicProfile,
-  loggedInUser,
-  loading,
+  isFollowing,
+  setIsFollowing,
   currentUser,
 }) => {
   const dispatch = useDispatch();
-  const [isFollowing, setIsFollowing] = useState(
-    user?.followers?.includes(loggedInUser._id)
-  );
 
   const followOrUnFollow = () => {
     setIsFollowing((prevIsFollowing) => !prevIsFollowing);
@@ -92,8 +97,6 @@ const Left = ({
     }
     fetchUserPublicProfile();
   };
-
-  if (loading) return <Loading />;
 
   return (
     <div className="w-1/4 relative">

@@ -11,16 +11,18 @@ import { useDispatch, useSelector } from "react-redux";
 
 const MyProjects = () => {
   const dispatch = useDispatch();
-  const { projects } = useSelector((state) => state.project);
+  const { projects, loading } = useSelector((state) => state.project);
 
   useEffect(() => {
-    dispatch(fetchProjectsByUserId());
+    if (!loading) {
+      dispatch(fetchProjectsByUserId());
+    }
   }, [dispatch]);
 
   return (
     <div className="flex w-full gap-8">
       <Left />
-      <Right projects={projects} dispatch={dispatch} />
+      <Right projects={projects} dispatch={dispatch} loading={loading} />
     </div>
   );
 };

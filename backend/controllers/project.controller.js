@@ -1,4 +1,5 @@
 import { Projects } from "../models/project.model.js";
+import { Users } from "../models/user.model.js";
 import { errorHandler } from "../utils/errorHandler.js";
 
 // get a project
@@ -23,6 +24,15 @@ export const createProject = async (req, res, next) => {
       isClosed: false,
       isPrivate: true,
     });
+
+    await Users.findOneAndUpdate(
+      { _id: userId },
+      { $addToSet: { projects: project.projectId } },
+      {
+        upsert: true,
+        new: true,
+      }
+    );
 
     return res.status(200).json({
       status: true,
