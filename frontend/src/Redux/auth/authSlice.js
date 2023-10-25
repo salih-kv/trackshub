@@ -31,5 +31,7 @@ const authSlice = createSlice({
     },
   },
 });
+
+// createSlice automatically generates an action creator function
 export const { login, logout } = authSlice.actions;
 export default authSlice.reducer;

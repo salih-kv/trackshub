@@ -79,10 +79,22 @@ export const unFollowUser = createAsyncThunk(
   }
 );
 
-const handleAsyncAction = (builder, action) => {
+export const fetchOtherUser = createAsyncThunk(
+  "user/fetchOtherUser",
+  async ({ username }, { rejectWithValue }) => {
+    try {
+      const response = await instance.get(`/api/v1/user/${username}`);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+const handleAsyncAction = (builder, action, stateKey) => {
   builder
     .addCase(action.fulfilled, (state, action) => {
-      state.user = action.payload;
+      state[stateKey] = action.payload;
       state.loading = false;
     })
     .addCase(action.pending, (state) => {
@@ -97,22 +109,21 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     user: {},
+    otherUsers: [],
     loading: false,
   },
-  reducers: {
-    setUser: (state, action) => {
-      state.user = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
-    handleAsyncAction(builder, fetchUser);
-    handleAsyncAction(builder, updateUser);
-    handleAsyncAction(builder, resetPassword);
-    handleAsyncAction(builder, deleteUser);
-    handleAsyncAction(builder, followUser);
-    handleAsyncAction(builder, unFollowUser);
+    handleAsyncAction(builder, fetchUser, "user");
+    handleAsyncAction(builder, updateUser, "user");
+    handleAsyncAction(builder, resetPassword, "user");
+    handleAsyncAction(builder, deleteUser, "user");
+    handleAsyncAction(builder, followUser, "user");
+    handleAsyncAction(builder, unFollowUser, "user");
+    handleAsyncAction(builder, fetchOtherUser, "otherUsers");
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const selectUser = (state) => state.user;
+
 export default userSlice.reducer;

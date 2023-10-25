@@ -1,12 +1,5 @@
-// projectSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import instance from "../../axios/instance";
-
-const initialState = {
-  projects: [],
-  project: {},
-  loading: false,
-};
 
 export const fetchProjectsByUserId = createAsyncThunk(
   "project/fetchProjectsByUserId",
@@ -77,7 +70,11 @@ const handleAsyncAction = (builder, action, stateKey) => {
 
 const projectSlice = createSlice({
   name: "project",
-  initialState,
+  initialState: {
+    projects: [],
+    project: {},
+    loading: false,
+  },
   reducers: {},
   extraReducers: (builder) => {
     handleAsyncAction(builder, fetchProjectsByUserId, "projects");
@@ -88,5 +85,6 @@ const projectSlice = createSlice({
     handleAsyncAction(builder, addCollaborator, "project");
   },
 });
+export const selectProject = (state) => state.project;
 
 export default projectSlice.reducer;
