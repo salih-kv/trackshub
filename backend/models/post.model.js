@@ -8,10 +8,11 @@ const postSchema = Schema(
       default: () => uuidv4().slice(0, 6),
     },
     userId: { type: String, required: true, ref: "Users" },
-    content: {
+    text: {
       type: String,
-      required: [true, "Content is required"],
+      required: [true, "text is required"],
     },
+    file: { type: String },
     likes: [
       {
         type: String,
