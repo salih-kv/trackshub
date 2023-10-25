@@ -4,6 +4,7 @@ import ProfileImg from "../ProfileImg";
 
 const ProjectCard = ({ projectId, title, createdAt, collaborators }) => {
   const formattedTime = TimeStamp(createdAt);
+
   return (
     <Link
       to={`/project/${projectId}`}
@@ -17,7 +18,7 @@ const ProjectCard = ({ projectId, title, createdAt, collaborators }) => {
         <div className="flex items-center -space-x-3 px-3">
           {collaborators?.map((collaborator) => (
             <ProfileImg
-              key={collaborator.id}
+              key={collaborator}
               w={6}
               imageStyle={`border-2 border-white`}
             />

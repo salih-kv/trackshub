@@ -22,12 +22,12 @@ const Left = () => {
       </header>
       <div className="grid grid-cols-2 gap-x-4 gap-y-2">
         {items?.map((item) => (
-          <div
+          <button
             key={item}
             className="py-2 text-center rounded-xl bg-s-light dark:bg-s-dark"
           >
             {item}
-          </div>
+          </button>
         ))}
       </div>
     </div>

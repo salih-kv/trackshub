@@ -91,7 +91,7 @@ export const PrivateHeader = () => {
             to="/"
             className="logo-img flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
           >
-            <h2 className="font-display text-2xl leading-6 text-black dark:text-white">
+            <h2 className="text-2xl leading-6 text-black dark:text-white">
               TracksHub
             </h2>
           </Link>

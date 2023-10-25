@@ -178,7 +178,7 @@ const Middle = () => {
   const NavLinks = [
     {
       to: "",
-      label: "Activity",
+      label: "Posts",
     },
     {
       to: "tracks",

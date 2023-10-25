@@ -1,16 +1,36 @@
 import { BsThreeDots } from "react-icons/bs";
 import ProfileImg from "../ProfileImg";
-import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import {
+  createNewPost,
+  getPosts,
+  selectPost,
+} from "../../Redux/post/postSlice";
+import { selectUser } from "../../Redux/user/userSlice";
+import { TimeStamp } from "../../utils/TimeStamp";
+import { storageRef } from "../../firebase/firebase.config";
+import { AudioPlayer } from "react-audio-player-component";
+import Loading from "../Loading";
 
 const Following = () => {
-  const { user } = useSelector((state) => state.user);
+  const { user } = useSelector(selectUser);
+  const { posts, loading } = useSelector(selectPost);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!loading) {
+      dispatch(getPosts());
+    }
+  }, [dispatch]);
+
   return (
     <div className="flex flex-col gap-6">
       <CreatePost />
-      {/* My posts */}
-      <Post name={user?.name} />
+      {posts?.map((post) => (
+        <Post key={post._id} name={user?.name} {...post} />
+      ))}
       <div>{/* render following users posts */}</div>
     </div>
   );
@@ -20,79 +40,162 @@ export default Following;
 
 const CreatePost = () => {
   const [postToggle, setPostToggle] = useState(false);
+  const dispatch = useDispatch();
+  const [postInput, setPostInput] = useState("");
 
-  const PostForm = () => (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
-      <div className="bg-white dark:bg-p-dark p-6 rounded-lg w-[650px]">
-        <div className="flex items-center gap-2 mb-3">
-          <ProfileImg w={10} buttonStyle={`mr-3`} />
-          <div>
-            <h2 className="text-sm">Username</h2>
-            <p className="text-xs text-blue-gray-300">Posting to Feed</p>
-          </div>
-          <div>
-            <IoMdCloseCircleOutline
-              onClick={() => setPostToggle(false)}
-              className="text-red-500 text-2xl cursor-pointer"
-            />
-          </div>
-        </div>
-        <div>
-          <textarea
-            type="text"
-            className="bg-s-light dark:bg-s-dark w-full py-3 px-6 rounded-xl placeholder:text-gray-500 resize-none outline-none"
-            placeholder="What's new?"
-          />
-        </div>
-        <div className="flex items-center justify-between mt-3">
-          <button className="btn btn-secondary !text-primary-500 py-1.5 px-3 rounded-2xl">
-            Audio
-          </button>
-          <button className="btn btn-fill py-1.5 px-3 rounded-2xl">Post</button>
-        </div>
-      </div>
-    </div>
-  );
+  const handleInputChange = (e) => {
+    setPostInput(e.target.value);
+  };
+
+  const [audioFile, setAudioFile] = useState(null);
+  const [audioURL, setAudioURL] = useState(null);
+  const [audioLoading, setAudioLoading] = useState(false);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setAudioFile(file);
+    setAudioLoading(true);
+
+    // Preview the selected file
+    const reader = new FileReader();
+    reader.onload = () => {
+      setAudioURL(reader.result);
+      setAudioLoading(false);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleUpload = () => {
+    if (audioFile) {
+      const audioRef = storageRef.child(audioFile.name);
+      audioRef.put(audioFile).then(() => {
+        console.log("uploaded");
+        // get the download url for the uploaded file
+        audioRef.getDownloadURL().then((url) => {
+          console.log("URL:", url);
+        });
+      });
+    } else {
+      console.log("No file selected for upload");
+    }
+  };
 
   return (
-    <div className="flex items-center justify-between relative">
+    <div className="flex items-center justify-between">
       <ProfileImg w={10} buttonStyle={`mr-3`} />
       <div className="w-full">
         <input
           type="text"
-          className="bg-s-light dark:bg-s-dark w-full py-3 px-6 rounded-3xl placeholder:text-gray-500"
+          className="bg-s-light dark:bg-s-dark w-full py-3 px-6 rounded-3xl placeholder:text-gray-500 outline-none"
           placeholder="What's new?"
+          readOnly={true}
           onClick={() => setPostToggle((prev) => !prev)}
         />
       </div>
-      {postToggle && <PostForm />}
+      {postToggle && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60">
+          <div className="bg-white dark:bg-p-dark p-6 rounded-lg w-[650px]">
+            <div className="flex items-center justify-between w-full mb-3">
+              <div className="flex items-center">
+                <ProfileImg w={10} buttonStyle={`mr-3`} />
+                <div>
+                  <h2 className="text-sm">Username</h2>
+                  <p className="text-xs text-blue-gray-300">Posting to Feed</p>
+                </div>
+              </div>
+              <div>
+                <IoMdCloseCircleOutline
+                  onClick={() => setPostToggle(false)}
+                  className="text-red-500 text-2xl cursor-pointer"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <textarea
+                rows="2"
+                className="bg-s-light dark:bg-s-dark w-full p-4 rounded-t-xl placeholder:text-gray-500 resize-none outline-none"
+                placeholder="What's new?"
+                value={postInput}
+                onChange={handleInputChange}
+              />
+              <div className="bg-s-light dark:bg-s-dark p-4 rounded-b-xl">
+                {audioFile && audioLoading ? (
+                  <>...</>
+                ) : (
+                  audioFile && (
+                    <AudioPlayer
+                      src={audioURL}
+                      minimal={true}
+                      width={570}
+                      trackHeight={35}
+                      backgroundColor="#1C1C26"
+                      barColor="#262831"
+                      barPlayedColor="#774EFF"
+                      seekBarColor="#774EFF"
+                      hideSeekBar={true}
+                    />
+                  )
+                )}
+              </div>
+            </div>
+            <div className="flex items-center justify-between mt-3">
+              <input
+                type="file"
+                id="uploads"
+                accept="audio/*"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+              <label
+                htmlFor="uploads"
+                className="btn btn-secondary !text-primary-500 py-1.5 px-3 rounded-2xl cursor-pointer"
+              >
+                Audio
+              </label>
+              <button
+                onClick={() => {
+                  dispatch(createNewPost({ text: postInput, file: "" }));
+                  handleUpload;
+                  dispatch(getPosts());
+                  setPostInput("");
+                  setPostToggle(false);
+                }}
+                className="btn btn-fill py-1.5 px-3 rounded-2xl"
+              >
+                Post
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-const Post = ({ name }) => {
+const Post = ({ name, text, createdAt }) => {
+  const formattedTime = TimeStamp(createdAt);
   return (
     <div className="border-b dark:border-s-dark pb-6">
       <header className="flex items-center justify-between py-4">
         <ProfileImg w={10} buttonStyle={`mr-3`} />
         <div className="mr-auto w-full">
           <h4 className="font-semibold text-base">{name}</h4>
-          <p className="text-gray-500 text-xs">1d ago</p>
+          <p className="text-gray-500 text-xs">{formattedTime}</p>
         </div>
-        <div>
+        <button>
           <BsThreeDots className="text-gray-500" />
-        </div>
+        </button>
       </header>
       {/* post content */}
       <div className="mt-2 mb-4">
-        <div>Post content here...</div>
+        <div>{text}</div>
       </div>
       {/* comment */}
       <div className="">
         <div className="w-full">
           <input
             type="text"
-            className="bg-s-light dark:bg-s-dark w-full py-2 pl-10 rounded-3xl placeholder:text-gray-500 text-xs"
+            className="bg-s-light dark:bg-s-dark w-full py-2 pl-10 rounded-3xl placeholder:text-gray-500 text-xs outline-none"
             placeholder="Leave a comment..."
           />
         </div>

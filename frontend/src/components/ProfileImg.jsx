@@ -17,7 +17,7 @@ const ProfileImg = ({
           src={`https://ui-avatars.com/api/?name=${name}&length=1&bold=true&background=${
             bg || "B73D0D"
           }&color=fff&size=256`}
-          alt="user photo"
+          alt="🤖"
         />
       </button>
       {children}

@@ -35,7 +35,7 @@ export default function Projects() {
             <div key={to} className="group/link hover:bg-slate-100">
               <Link
                 to={to}
-                className="text-gray-500 font-medium hover:text-black"
+                className="text-gray-500 font-medium hover:text-white"
               >
                 {label}
               </Link>

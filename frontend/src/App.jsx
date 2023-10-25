@@ -13,6 +13,7 @@ const Following = lazy(() => import("./components/Feed/Following"));
 const Trending = lazy(() => import("./components/Feed/Trending"));
 
 const UserPage = lazy(() => import("./pages/UserPage"));
+const Posts = lazy(() => import("./components/User/Posts"));
 
 const Projects = lazy(() => import("./pages/Projects"));
 const MyProjects = lazy(() => import("./components/Projects/MyProjects"));
@@ -46,7 +47,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           {/* dynamic user route */}
           <Route path="/:username" element={<UserPage />}>
-            <Route index element={<NotAvailable />} />
+            <Route index element={<Posts />} />
             <Route path="tracks" element={<NotAvailable />} />
             <Route path="playlists" element={<NotAvailable />} />
           </Route>

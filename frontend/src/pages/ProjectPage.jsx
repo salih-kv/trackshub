@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import { IoIosShareAlt } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { getProjectById } from "../Redux/project/projectSlice";
+import { getProjectById, selectProject } from "../Redux/project/projectSlice";
 
 import { AudioPlayer } from "react-audio-player-component";
 import NumbFrozen from "../assets/Icy Narco - Numb & Frozen.mp3";
@@ -31,7 +31,7 @@ export default ProjectPage;
 const Overview = () => {
   const { projectId } = useParams();
   const dispatch = useDispatch();
-  const { project } = useSelector((state) => state.project);
+  const { project } = useSelector(selectProject);
 
   const date = new Date(project?.createdAt);
   const options = { year: "numeric", month: "short", day: "numeric" };
@@ -44,7 +44,7 @@ const Overview = () => {
   return (
     <div className="flex items-center gap-8 w-full bg-primary-400 rounded-lg p-4 mb-8">
       <div className="w-40 h-40 bg-primary-500 rounded-lg">{/* Project */}</div>
-      <div>
+      <div className="w-full">
         <div className="flex gap-4 items-center mb-2">
           <h2 className="text-primary-100 text-xl font-semibold">
             {project?.title}
@@ -61,8 +61,8 @@ const Overview = () => {
           <AudioPlayer
             src={NumbFrozen}
             minimal={true}
-            width={1050}
-            trackHeight={75}
+            // width={1050}
+            trackHeight={45}
             barWidth={2}
             gap={1}
             visualise={true}

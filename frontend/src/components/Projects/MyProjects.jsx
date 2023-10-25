@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import {
   fetchProjectsByUserId,
   createNewProject,
+  selectProject,
 } from "../../Redux/project/projectSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,7 +14,7 @@ const items = ["All", "Active", "Closed"];
 
 const MyProjects = () => {
   const dispatch = useDispatch();
-  const { projects, loading } = useSelector((state) => state.project);
+  const { projects, loading } = useSelector(selectProject);
 
   const [toggle, setToggle] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -32,12 +33,12 @@ const MyProjects = () => {
         </header>
         <div className="grid grid-cols-2 gap-x-4 gap-y-2">
           {items?.map((item) => (
-            <div
+            <button
               key={item}
               className="py-2 text-center rounded-xl bg-s-light dark:bg-s-dark"
             >
               {item}
-            </div>
+            </button>
           ))}
         </div>
       </div>
