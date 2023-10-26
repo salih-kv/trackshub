@@ -16,8 +16,8 @@ const ProfileCard = () => {
   );
 
   return (
-    <div className="flex items-center justify-start w-full bg-s-light dark:bg-s-dark dark:text-white rounded-lg">
-      <div className="p-4 flex flex-col items-start w-full">
+    <div className="flex items-center justify-start w-full bg-s-light dark:bg-s-dark dark:text-white rounded-xl">
+      <div className="p-6 flex flex-col items-start w-full">
         <Link to={`/${user?.username}`}>
           <header className="flex items-center pb-4 w-full">
             <ProfileImg w={12} buttonStyle={`mr-4`} name={user?.name} />

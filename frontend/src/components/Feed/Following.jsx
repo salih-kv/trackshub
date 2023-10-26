@@ -13,22 +13,30 @@ import { TimeStamp } from "../../utils/TimeStamp";
 import { storageRef } from "../../firebase/firebase.config";
 import { AudioPlayer } from "react-audio-player-component";
 import Loading from "../Loading";
+import { Post } from "../Post";
 
 const Following = () => {
   const { user } = useSelector(selectUser);
   const { posts, loading } = useSelector(selectPost);
   const dispatch = useDispatch();
 
+  const latestPosts = posts
+    ? posts
+        .slice()
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 1)
+    : [];
+
   useEffect(() => {
     if (!loading) {
       dispatch(getPosts());
     }
-  }, [dispatch]);
+  }, [dispatch, createNewPost]);
 
   return (
     <div className="flex flex-col gap-6">
       <CreatePost />
-      {posts?.map((post) => (
+      {latestPosts?.map((post) => (
         <Post key={post._id} name={user?.name} {...post} />
       ))}
       <div>{/* render following users posts */}</div>
@@ -168,38 +176,6 @@ const CreatePost = () => {
           </div>
         </div>
       )}
-    </div>
-  );
-};
-
-const Post = ({ name, text, createdAt }) => {
-  const formattedTime = TimeStamp(createdAt);
-  return (
-    <div className="border-b dark:border-s-dark pb-6">
-      <header className="flex items-center justify-between py-4">
-        <ProfileImg w={10} buttonStyle={`mr-3`} />
-        <div className="mr-auto w-full">
-          <h4 className="font-semibold text-base">{name}</h4>
-          <p className="text-gray-500 text-xs">{formattedTime}</p>
-        </div>
-        <button>
-          <BsThreeDots className="text-gray-500" />
-        </button>
-      </header>
-      {/* post content */}
-      <div className="mt-2 mb-4">
-        <div>{text}</div>
-      </div>
-      {/* comment */}
-      <div className="">
-        <div className="w-full">
-          <input
-            type="text"
-            className="bg-s-light dark:bg-s-dark w-full py-2 pl-10 rounded-3xl placeholder:text-gray-500 text-xs outline-none"
-            placeholder="Leave a comment..."
-          />
-        </div>
-      </div>
     </div>
   );
 };

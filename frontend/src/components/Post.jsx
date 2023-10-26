@@ -1,9 +1,15 @@
 import { BsThreeDots } from "react-icons/bs";
 import { TimeStamp } from "../utils/TimeStamp";
 import ProfileImg from "./ProfileImg";
+import { useState } from "react";
+import { MdDelete } from "react-icons/md";
+import { deletePost } from "../Redux/post/postSlice";
+import { useDispatch } from "react-redux";
 
-export const Post = ({ name, text, createdAt }) => {
+export const Post = ({ _id: postId, name, text, createdAt }) => {
+  const dispatch = useDispatch();
   const formattedTime = TimeStamp(createdAt);
+  const [isShow, setIsShow] = useState(false);
   return (
     <div className="border-b dark:border-s-dark pb-6">
       <header className="flex items-center justify-between py-4">
@@ -12,9 +18,26 @@ export const Post = ({ name, text, createdAt }) => {
           <h4 className="font-semibold text-base">{name}</h4>
           <p className="text-gray-500 text-xs">{formattedTime}</p>
         </div>
-        <button>
-          <BsThreeDots className="text-gray-500" />
-        </button>
+        <div onClick={() => setIsShow(!isShow)} className="relative">
+          <div
+            className={`p-2 hover:bg-s-light ${
+              isShow && "bg-s-light"
+            } rounded-full`}
+          >
+            <BsThreeDots className="text-gray-500 " />
+          </div>
+          {isShow && (
+            <div className="absolute right-0 top-10 bg-white dark:bg-s-dark shadow-lg rounded-lg">
+              <button
+                onClick={() => dispatch(deletePost(postId))}
+                className="text-sm text-red-500 flex items-center gap-2 hover:bg-s-light hover:dark:bg-p-dark p-2 rounded"
+              >
+                <MdDelete />
+                <span>delete</span>
+              </button>
+            </div>
+          )}
+        </div>
       </header>
       {/* post content */}
       <div className="mt-2 mb-4">

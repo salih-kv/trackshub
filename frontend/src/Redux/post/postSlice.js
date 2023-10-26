@@ -19,6 +19,7 @@ export const getPostById = createAsyncThunk(
 export const deletePost = createAsyncThunk(
   "post/deletePost",
   async (postId) => {
+    console.log(postId);
     const response = await instance.delete(`/api/v1/post/${postId}`);
     return response.data;
   }
@@ -52,9 +53,7 @@ const postSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    handleAsyncAction(builder, createNewPost, "post");
     handleAsyncAction(builder, getPostById, "post");
-    handleAsyncAction(builder, deletePost, "post");
     handleAsyncAction(builder, getPosts, "posts");
   },
 });
