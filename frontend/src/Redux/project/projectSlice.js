@@ -85,6 +85,7 @@ const projectSlice = createSlice({
     handleAsyncAction(builder, addCollaborator, "project");
   },
 });
+
 export const selectProject = (state) => state.project;
 
 export default projectSlice.reducer;

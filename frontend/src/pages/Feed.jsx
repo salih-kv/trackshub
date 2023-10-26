@@ -2,6 +2,12 @@ import { Link, Outlet } from "react-router-dom";
 import ProfileCard from "../components/Feed/ProfileCard";
 import ProjectsCard from "../components/Feed/ProjectsCard";
 import UsersCard from "../components/Feed/UsersCard";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchProjectsByUserId,
+  selectProject,
+} from "../Redux/project/projectSlice";
+import { useEffect } from "react";
 
 const Feed = () => {
   return (
@@ -16,10 +22,40 @@ const Feed = () => {
 export default Feed;
 
 const Left = () => {
+  const dispatch = useDispatch();
+  const { projects, loading } = useSelector(selectProject);
+  const latestProjects = projects
+    ? projects
+        .slice()
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 3)
+    : [];
+
+  useEffect(() => {
+    if (!projects && !loading) {
+      dispatch(fetchProjectsByUserId());
+    }
+  }, [dispatch, projects]);
+
   return (
     <section className="md:w-1/3 lg:w-1/4 hidden md:flex flex-col justify-start items-center">
       <ProfileCard />
-      <ProjectsCard />
+      {latestProjects.length > 0 && (
+        <div className="w-full mt-8">
+          <header className="flex items-center justify-between mb-3">
+            <h4 className="font-semibold">Projects</h4>
+            <Link
+              to={`/projects/my-projects`}
+              className="text-gray-500 text-sm"
+            >
+              View All
+            </Link>
+          </header>
+        </div>
+      )}
+      {latestProjects?.map((project) => (
+        <ProjectsCard key={project._id} {...project} />
+      ))}
     </section>
   );
 };

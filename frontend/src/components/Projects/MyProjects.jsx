@@ -102,7 +102,7 @@ const MyProjects = () => {
         <div className="py-4 flex gap-4 flex-wrap">
           <button
             onClick={() => setToggle(true)}
-            className="w-60 h-40 flex items-center justify-center rounded bg-s-light dark:bg-s-dark"
+            className="w-60 h-40 flex items-center justify-center rounded-xl bg-s-light dark:bg-s-dark"
           >
             <FaPlus className="text-lg text-s-dark dark:text-s-light" />
           </button>

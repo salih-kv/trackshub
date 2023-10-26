@@ -61,8 +61,8 @@ const Overview = () => {
           <AudioPlayer
             src={NumbFrozen}
             minimal={true}
-            // width={1050}
-            trackHeight={45}
+            width={1050}
+            trackHeight={75}
             barWidth={2}
             gap={1}
             visualise={true}

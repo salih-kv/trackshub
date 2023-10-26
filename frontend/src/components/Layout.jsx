@@ -4,6 +4,7 @@ import { PrivateHeader } from "./Navbar/PrivateHeader";
 import Nav from "./Navbar/Nav";
 import { fetchUser } from "../Redux/user/userSlice";
 import { useDispatch } from "react-redux";
+import { fetchProjectsByUserId } from "../Redux/project/projectSlice";
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const Layout = () => {
 
   useEffect(() => {
     dispatch(fetchUser());
+    dispatch(fetchProjectsByUserId());
   }, [dispatch]);
 
   return (
