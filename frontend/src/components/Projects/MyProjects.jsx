@@ -1,4 +1,4 @@
-import { FaPlus } from "react-icons/fa";
+import { CgMusicNote } from "react-icons/cg";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { MdAudiotrack } from "react-icons/md";
 import ProjectCard from "./ProjectCard";
@@ -9,6 +9,7 @@ import {
   selectProject,
 } from "../../Redux/project/projectSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { BiSolidLayerPlus } from "react-icons/bi";
 
 const items = ["All", "Active", "Closed"];
 
@@ -24,6 +25,8 @@ const MyProjects = () => {
       dispatch(fetchProjectsByUserId());
     }
   }, [dispatch]);
+
+  console.log(projects);
 
   return (
     <div className="flex w-full gap-8">
@@ -45,14 +48,15 @@ const MyProjects = () => {
       <div className="w-3/4">
         <header className="flex justify-between">
           <div>
-            <p>Projects Created by you</p>
+            <p className="text-lg font-medium">Projects Created by you</p>
           </div>
           <div>
             <button
-              className="btn btn-fill px-4 py-3 rounded-xl"
+              className="btn btn-fill px-3 py-2 text-sm rounded-xl flex items-center gap-2"
               onClick={() => setToggle(true)}
             >
-              New Project
+              <BiSolidLayerPlus className="text-lg" />
+              New
             </button>
           </div>
         </header>
@@ -100,16 +104,20 @@ const MyProjects = () => {
         {/* project input modal ^ */}
 
         <div className="py-4 flex gap-4 flex-wrap">
-          <button
-            onClick={() => setToggle(true)}
-            className="w-60 h-40 flex items-center justify-center rounded-xl bg-s-light dark:bg-s-dark"
-          >
-            <FaPlus className="text-lg text-s-dark dark:text-s-light" />
-          </button>
-
-          {projects?.map((project) => (
-            <ProjectCard {...project} key={project.title} />
-          ))}
+          {projects.length > 0 ? (
+            projects?.map((project) => (
+              <ProjectCard {...project} key={project.title} />
+            ))
+          ) : (
+            <div className="flex items-center justify-center w-full mt-32">
+              <div className="flex flex-col items-center justify-center max-w-[240px]">
+                <CgMusicNote className="text-4xl mb-4" />
+                <p className="text-gray-500 text-center text-xs font-medium">
+                  It Looks Like You Haven't Started Any Projects Yet.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

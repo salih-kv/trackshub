@@ -1,5 +1,6 @@
 import { FaPlus } from "react-icons/fa";
 import ProjectCard from "./ProjectCard";
+import { CgMusicNote } from "react-icons/cg";
 
 const ProjectsList = () => {
   return (
@@ -39,8 +40,7 @@ const Right = () => {
     <div className="w-3/4">
       <header className="flex justify-between">
         <div>
-          {/* <h1 className="text-3xl font-bold mb-1">Projects</h1> */}
-          <p>Collaborate with your team</p>
+          <p className="text-lg font-medium">Collaborate with your team</p>
         </div>
         <div>
           <button className="btn btn-fill px-4 py-3 rounded-xl">
@@ -49,10 +49,15 @@ const Right = () => {
         </div>
       </header>
       <div className="py-4 flex gap-4 flex-wrap">
-        <button className="w-60 h-40 flex items-center justify-center rounded bg-s-light dark:bg-s-dark">
-          <FaPlus className="text-lg text-s-dark dark:text-s-light" />
-        </button>
         {/* //! Project List Here */}
+        <div className="flex items-center justify-center w-full mt-32">
+          <div className="flex flex-col items-center justify-center max-w-[240px]">
+            <CgMusicNote className="text-4xl mb-4" />
+            <p className="text-gray-500 text-center text-xs font-medium">
+              It Looks Like You Don't Have Any Projects.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -68,7 +68,7 @@ const UserPage = () => {
       {isLoggedIn ? <PrivateHeader /> : <WelcomeHeader isShow={true} />}
       <div className="w-full h-60 bg-gradient-to-r from-primary-300 via-primary-500 to-primary-400"></div>
       <div className="flex gap-4 w-full justify-between mx-auto max-w-screen-2xl">
-        <div className="w-1/4 relative">
+        <div className="w-1/4 relative z-10">
           <div className="bg-primary-50 dark:bg-primary-300 w-36 h-36 rounded-full absolute top-100 left-1/2 transform translate-x-[-50%] translate-y-[-50%]">
             <ProfileImg name={user?.name} bg={`09ce82`} />
           </div>
@@ -78,11 +78,10 @@ const UserPage = () => {
                 <h2 className="font-semibold text-2xl text-center">
                   {user?.name}
                 </h2>
-                <h2 className="text-gray-600 text-sm">
-                  {" "}
-                  <span>{`@${user?.username}`}</span>{" "}
-                  <span className="font-extrabold">&#183;</span>{" "}
-                  <span>{user?.location}</span>
+                <h2 className="text-gray-600 text-sm flex items-center gap-2">
+                  <div>{`@${user?.username}`}</div>
+                  <div className="font-extrabold w-1 h-1 bg-gray-600 rounded-full"></div>
+                  <div>{user?.location}</div>
                 </h2>
                 <div className="flex gap-2 items-center justify-center mt-4">
                   <div className="w-6 h-6 rounded-full bg-s-light dark:bg-s-dark flex items-center justify-center">

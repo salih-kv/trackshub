@@ -42,8 +42,10 @@ const Overview = () => {
   }, [dispatch]);
 
   return (
-    <div className="flex items-center gap-8 w-full bg-primary-400 rounded-lg p-4 mb-8">
-      <div className="w-40 h-40 bg-primary-500 rounded-lg">{/* Project */}</div>
+    <div className="flex items-center gap-6 w-full bg-primary-400 rounded-lg p-6 mb-8">
+      <div className="w-44 h-48 bg-primary-500 rounded-lg ">
+        <img src="https://picsum.photos/id/304/400/400" alt="project_img" className="w-full h-full rounded-lg" />
+      </div>
       <div className="w-full">
         <div className="flex gap-4 items-center mb-2">
           <h2 className="text-primary-100 text-xl font-semibold">
@@ -61,7 +63,7 @@ const Overview = () => {
           <AudioPlayer
             src={NumbFrozen}
             minimal={true}
-            width={1050}
+            width={1060}
             trackHeight={75}
             barWidth={2}
             gap={1}

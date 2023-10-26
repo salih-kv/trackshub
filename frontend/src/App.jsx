@@ -56,8 +56,8 @@ const App = () => {
             <Route path="/" element={<Layout />}>
               {/* Feed */}
               <Route path="feed" element={<Feed />}>
-                <Route path="trending" element={<NotAvailable />} />
                 <Route path="following" element={<Following />} />
+                <Route path="trending" element={<NotAvailable />} />
               </Route>
               {/* Explore */}
               <Route path="/explore" element={<NotAvailable />} />

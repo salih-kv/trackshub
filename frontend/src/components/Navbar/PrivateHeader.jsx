@@ -78,7 +78,7 @@ export const PrivateHeader = () => {
   };
 
   return (
-    <header className="bg-white py-2 dark:bg-p-dark dark:text-white fixed top-0 left-0 right-0 border-b dark:border-s-dark">
+    <header className="bg-white py-2 dark:bg-p-dark dark:text-white fixed top-0 left-0 right-0 z-50 border-b dark:border-s-dark">
       <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-2xl">
         {/* Left */}
         <div className="pl-4 md:mr-8">

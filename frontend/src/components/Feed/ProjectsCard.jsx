@@ -1,16 +1,21 @@
-import { BsFillLayersFill, BsThreeDots } from "react-icons/bs";
+import { BsThreeDots } from "react-icons/bs";
 import { TimeStamp } from "../../utils/TimeStamp";
 import { Link } from "react-router-dom";
 
 const ProjectsCard = ({ projectId, title, createdAt }) => {
   const formattedTime = TimeStamp(createdAt);
   return (
-    <Link to={`/project/${projectId}`} className="w-full m-2">
+    <Link
+      to={`/project/${projectId}`}
+      className="w-full my-1 p-2 hover:bg-s-light hover:dark:bg-s-dark rounded-lg"
+    >
       <div className="flex items-center justify-between">
-        <div className="w-15 h-auto mr-6">
-          {/* project thumbnail */}
-          {/* <img src="" alt="" /> */}
-          {<BsFillLayersFill className="text-5xl text-primary-400" />}
+        <div className="w-10 h-10 mr-4">
+          <img
+            src="https://picsum.photos/id/304/100/100"
+            alt=""
+            className="w-full h-full rounded-xl"
+          />
         </div>
         <div className="mr-auto">
           <h4 className="font-semibold text-base">{title}</h4>
