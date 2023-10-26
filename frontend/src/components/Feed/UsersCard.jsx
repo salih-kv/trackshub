@@ -1,4 +1,5 @@
 import { IoMdPersonAdd } from "react-icons/io";
+import ProfileImg from "../ProfileImg";
 
 const UsersCard = () => {
   return (
@@ -34,8 +35,8 @@ export default UsersCard;
 const User = ({ imgUrl, name }) => {
   return (
     <div className="flex items-center justify-between overflow-hidden">
-      <div className="w-10 h-auto mr-6">
-        <img className="w-full h-full rounded-full" src={imgUrl} alt="🙂" />
+      <div className="mr-6">
+        <ProfileImg w={10} />
       </div>
       <div className="mr-auto">
         <h4 className="font-semibold text-sm">{name}</h4>

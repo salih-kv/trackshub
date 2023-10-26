@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import ProfileImg from "../ProfileImg";
 import { useSelector } from "react-redux";
+import ProfileImg from "../ProfileImg";
 
 const ProfileCard = () => {
   const user = useSelector((state) => state.user.user);

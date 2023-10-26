@@ -1,7 +1,6 @@
-import { BsThreeDots } from "react-icons/bs";
-import ProfileImg from "../ProfileImg";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import ProfileImg from "../ProfileImg";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import {
   createNewPost,
@@ -9,16 +8,14 @@ import {
   selectPost,
 } from "../../Redux/post/postSlice";
 import { selectUser } from "../../Redux/user/userSlice";
-import { TimeStamp } from "../../utils/TimeStamp";
 import { storageRef } from "../../firebase/firebase.config";
 import { AudioPlayer } from "react-audio-player-component";
-import Loading from "../Loading";
 import { Post } from "../Post";
 
 const Following = () => {
+  const dispatch = useDispatch();
   const { user } = useSelector(selectUser);
   const { posts, loading } = useSelector(selectPost);
-  const dispatch = useDispatch();
 
   const latestPosts = posts
     ? posts
@@ -31,7 +28,7 @@ const Following = () => {
     if (!loading) {
       dispatch(getPosts());
     }
-  }, [dispatch, createNewPost]);
+  }, [dispatch, loading]);
 
   return (
     <div className="flex flex-col gap-6">

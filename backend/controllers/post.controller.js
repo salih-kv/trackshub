@@ -22,12 +22,12 @@ export const createNewPost = async (req, res, next) => {
 
 export const deletePost = async (req, res, next) => {
   const userId = req.user.id;
-  const { id } = req.body;
+  const { postId } = req.params;
   try {
     const user = Users.findOne({ _id: userId });
     if (user) {
-      const post = await Posts.findById(id);
-      if (post._id === id) {
+      const post = await Posts.findById({ _id: postId });
+      if (post._id === postId) {
         await post.deleteOne();
         res.status(200).json({
           status: true,
