@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 
 const postSchema = Schema(
@@ -7,9 +7,14 @@ const postSchema = Schema(
       type: String,
       default: () => uuidv4().slice(0, 6),
     },
-    userId: { type: String, required: true, ref: "Users" },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Users",
+    },
     text: {
       type: String,
+      maxLength: 400,
       required: [true, "text is required"],
     },
     file: { type: String },
@@ -21,8 +26,21 @@ const postSchema = Schema(
     ],
     comments: [
       {
-        type: String,
-        ref: "Users",
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        text: {
+          type: String,
+          required: true,
+        },
+        userProfilePic: {
+          type: String,
+        },
+        username: {
+          type: String,
+        },
       },
     ],
   },
@@ -31,4 +49,4 @@ const postSchema = Schema(
   }
 );
 
-export const Posts = model("Posts", postSchema);
+export const Post = model("Post", postSchema);

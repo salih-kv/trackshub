@@ -25,6 +25,7 @@ const userSchema = mongoose.Schema({
   },
   profilePic: {
     type: String,
+    default: "",
   },
   followers: [
     {
@@ -55,12 +56,6 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     default: true,
   },
-  projects: [
-    {
-      type: String,
-      ref: "Projects",
-    },
-  ],
   isOnline: Boolean,
 });
 
@@ -75,4 +70,4 @@ userSchema.methods.comparePassword = async function (enteredPassword) {
   return await compare(enteredPassword, this.password);
 };
 
-export const Users = mongoose.model("Users", userSchema);
+export const User = mongoose.model("User", userSchema);

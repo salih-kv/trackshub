@@ -1,12 +1,11 @@
-import { Projects } from "../models/project.model.js";
-import { Users } from "../models/user.model.js";
+import { Project } from "../models/project.model.js";
 import { errorHandler } from "../utils/errorHandler.js";
 
 // get a project
 export const getProjectById = async (req, res, next) => {
   const { projectId } = req.params;
   try {
-    const project = await Projects.findOne({ projectId });
+    const project = await Project.findOne({ projectId });
     res.status(200).json(project);
   } catch (err) {
     next(err);
@@ -18,21 +17,12 @@ export const createProject = async (req, res, next) => {
   const userId = req.user.id;
   const { title } = req.body;
   try {
-    const project = await Projects.create({
+    const project = await Project.create({
       title,
       owner: userId,
       isClosed: false,
       isPrivate: true,
     });
-
-    await Users.findOneAndUpdate(
-      { _id: userId },
-      { $addToSet: { projects: project.projectId } },
-      {
-        upsert: true,
-        new: true,
-      }
-    );
 
     return res.status(200).json({
       status: true,
@@ -49,7 +39,7 @@ export const updateProject = async (req, res, next) => {
   const updateData = req.body;
 
   try {
-    const project = await Projects.findOneAndUpdate(
+    const project = await Project.findOneAndUpdate(
       { projectId: projectId },
       updateData,
       { new: true } // To return the updated document
@@ -71,7 +61,7 @@ export const updateProject = async (req, res, next) => {
 export const deleteProject = async (req, res, next) => {
   const { projectId } = req.params;
   try {
-    const deletedProject = await Projects.findOneAndDelete({ projectId });
+    const deletedProject = await Project.findOneAndDelete({ projectId });
     if (!deletedProject) errorHandler(404, "Project not found");
     res.status(200).json({ message: "Project deleted successfully" });
   } catch (err) {
@@ -83,7 +73,7 @@ export const deleteProject = async (req, res, next) => {
 export const getProjectsByUserId = async (req, res, next) => {
   const userId = req.user.id;
   try {
-    const projects = await Projects.find({ owner: userId });
+    const projects = await Project.find({ owner: userId });
     if (!projects) errorHandler(404, "Projects not found");
     return res.status(200).json(projects);
   } catch (err) {
@@ -95,7 +85,7 @@ export const getProjectsByUserId = async (req, res, next) => {
 export const addCollaborator = async (req, res, next) => {
   const { projectId, collaboratorId } = req.body;
   try {
-    const project = await Projects.findOneAndUpdate(
+    const project = await Project.findOneAndUpdate(
       { projectId: projectId },
       { $addToSet: { collaborators: collaboratorId } },
       {

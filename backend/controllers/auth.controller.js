@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { Users } from "../models/user.model.js";
+import { User } from "../models/user.model.js";
 import { errorHandler } from "../utils/errorHandler.js";
 
 // Generate Token
@@ -13,7 +13,7 @@ const generateToken = function (id) {
 export const signupUser = async (req, res, next) => {
   const { name, email, username, password } = req.body;
   try {
-    const user = await Users.findOne({
+    const user = await User.findOne({
       $or: [{ email }, { username }],
     });
 
@@ -24,7 +24,7 @@ export const signupUser = async (req, res, next) => {
       return next(errorHandler(401, "Email already exists"));
     }
 
-    const newUser = await Users.create({
+    const newUser = await User.create({
       name,
       email,
       username,
@@ -46,7 +46,7 @@ export const signupUser = async (req, res, next) => {
 export const loginUser = async (req, res, next) => {
   const { userId, password } = req.body;
   try {
-    const user = await Users.findOne({
+    const user = await User.findOne({
       $or: [{ email: userId }, { username: userId }],
     }).select("+password");
 
