@@ -12,7 +12,8 @@ export const fetchProjectsByUserId = createAsyncThunk(
 export const createNewProject = createAsyncThunk(
   "project/createNewProject",
   async (title) => {
-    await instance.post("/api/v1/project/create", { title });
+    const response = await instance.post("/api/v1/project/create", { title });
+    return response.data;
   }
 );
 
@@ -39,7 +40,7 @@ export const deleteProject = createAsyncThunk(
   "project/deleteProject",
   async (projectId) => {
     const response = await instance.delete(`/api/v1/project/${projectId}`);
-    return response.data;
+    return response.data.projects;
   }
 );
 
@@ -78,10 +79,10 @@ const projectSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     handleAsyncAction(builder, fetchProjectsByUserId, "projects");
-    handleAsyncAction(builder, createNewProject, "project");
+    handleAsyncAction(builder, createNewProject, "projects");
     handleAsyncAction(builder, getProjectById, "project");
     handleAsyncAction(builder, updateProject, "project");
-    handleAsyncAction(builder, deleteProject, "project");
+    handleAsyncAction(builder, deleteProject, "projects");
     handleAsyncAction(builder, addCollaborator, "project");
   },
 });

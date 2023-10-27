@@ -53,6 +53,8 @@ const App = () => {
             <Route path="tracks" element={<NotAvailable />} />
             <Route path="playlists" element={<NotAvailable />} />
           </Route>
+          {/* dynamic post route */}
+          <Route path="/:username/post/:postId" element={<NotAvailable />} />
           {/* // */}
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Layout />}>

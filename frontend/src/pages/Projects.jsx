@@ -3,8 +3,8 @@ import { useEffect } from "react";
 
 const NavLinks = [
   {
-    to: "all",
-    label: "All Projects",
+    to: "collab",
+    label: "Collab Projects",
   },
   {
     to: "my-projects",
@@ -22,7 +22,7 @@ export default function Projects() {
   useEffect(() => {
     const path = window.location.pathname;
     if (path === "/projects" || path === "/projects/") {
-      navigate("/projects/all");
+      navigate("/projects/my-projects");
     }
   }, [navigate]);
 

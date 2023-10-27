@@ -1,35 +1,18 @@
 import { CgMusicNote } from "react-icons/cg";
+import { BiSolidLayerPlus } from "react-icons/bi";
+import { useState } from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { MdAudiotrack } from "react-icons/md";
-import ProjectCard from "./ProjectCard";
-import { useEffect, useState } from "react";
-import {
-  fetchProjectsByUserId,
-  createNewProject,
-  selectProject,
-} from "../../Redux/project/projectSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { BiSolidLayerPlus } from "react-icons/bi";
-import Loading from "../Loading";
+import { createNewProject } from "../../Redux/project/projectSlice";
+import { useDispatch } from "react-redux";
 
 const items = ["All", "Active", "Closed"];
 
-const MyProjects = () => {
+const CollabProjects = () => {
   const dispatch = useDispatch();
-  const { projects, loading } = useSelector(selectProject);
 
   const [toggle, setToggle] = useState(false);
   const [inputValue, setInputValue] = useState("");
-
-  useEffect(() => {
-    if (!loading) {
-      dispatch(fetchProjectsByUserId());
-    }
-  }, [dispatch]);
-
-  if (loading) {
-    return <Loading />;
-  }
 
   return (
     <div className="flex w-full gap-8">
@@ -51,7 +34,7 @@ const MyProjects = () => {
       <div className="w-3/4">
         <header className="flex justify-between">
           <div>
-            <p className="text-lg font-medium">Projects Created by you</p>
+            <p className="text-lg font-medium">Collaborate with your team</p>
           </div>
           <div>
             <button
@@ -63,7 +46,6 @@ const MyProjects = () => {
             </button>
           </div>
         </header>
-
         {/* project input modal */}
         {toggle && (
           <div
@@ -95,7 +77,6 @@ const MyProjects = () => {
                   onClick={() => {
                     dispatch(createNewProject(inputValue));
                     setInputValue("");
-                    dispatch(fetchProjectsByUserId());
                   }}
                 >
                   Create
@@ -105,26 +86,19 @@ const MyProjects = () => {
           </div>
         )}
         {/* project input modal ^ */}
-
         <div className="py-4 flex gap-4 flex-wrap">
-          {projects.length > 0 ? (
-            projects?.map((project) => (
-              <ProjectCard {...project} key={project.title} />
-            ))
-          ) : (
-            <div className="flex items-center justify-center w-full mt-32">
-              <div className="flex flex-col items-center justify-center max-w-[240px]">
-                <CgMusicNote className="text-4xl mb-4" />
-                <p className="text-gray-500 text-center text-xs font-medium">
-                  It Looks Like You Haven't Started Any Projects Yet.
-                </p>
-              </div>
+          <div className="flex items-center justify-center w-full mt-32">
+            <div className="flex flex-col items-center justify-center max-w-[240px]">
+              <CgMusicNote className="text-4xl mb-4" />
+              <p className="text-gray-500 text-center text-xs font-medium">
+                It Looks Like You Don't Have Any Projects.
+              </p>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default MyProjects;
+export default CollabProjects;

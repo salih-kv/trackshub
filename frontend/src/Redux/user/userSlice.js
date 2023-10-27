@@ -1,95 +1,64 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import instance from "../../axios/instance";
 
-export const fetchUser = createAsyncThunk(
-  "user/fetchUser",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await instance.get("/api/v1/user/");
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response.data);
-    }
-  }
-);
+export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
+  const response = await instance.get("/api/v1/user/");
+  return response.data;
+});
 
 export const updateUser = createAsyncThunk(
   "user/updateUser",
-  async (userData, { rejectWithValue }) => {
-    try {
-      const response = await instance.post("/api/v1/user/", userData);
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response.data);
-    }
+  async (userData) => {
+    const response = await instance.post("/api/v1/user/", userData);
+    return response.data;
   }
 );
 
 export const resetPassword = createAsyncThunk(
   "user/resetPassword",
-  async (newPassword, { rejectWithValue }) => {
-    try {
-      const response = await instance.post(
-        "/api/v1/user/reset-password",
-        newPassword
-      );
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response.data);
-    }
+  async (newPassword) => {
+    const response = await instance.post(
+      "/api/v1/user/reset-password",
+      newPassword
+    );
+    return response.data;
   }
 );
 
-export const deleteUser = createAsyncThunk(
-  "user/deleteUser",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await instance.delete("/api/v1/user/");
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response.data);
-    }
-  }
-);
+export const deleteUser = createAsyncThunk("user/deleteUser", async () => {
+  const response = await instance.delete("/api/v1/user/");
+  return response.data;
+});
 
 export const followUser = createAsyncThunk(
   "user/followUser",
-  async (followedId, { rejectWithValue }) => {
-    try {
-      const response = await instance.post("/api/v1/user/follow", {
-        followedId,
-      });
-      console.log(response.data);
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response.data);
-    }
+  async (followedId) => {
+    const response = await instance.post("/api/v1/user/follow", {
+      followedId,
+    });
+    return response.data;
   }
 );
 
 export const unFollowUser = createAsyncThunk(
   "user/unFollowUser",
-  async (followedId, { rejectWithValue }) => {
-    try {
-      const response = await instance.post("/api/v1/user/unfollow", followedId);
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response.data);
-    }
+  async (followedId) => {
+    const response = await instance.post("/api/v1/user/unfollow", followedId);
+    return response.data;
   }
 );
 
-export const fetchOtherUser = createAsyncThunk(
-  "user/fetchOtherUser",
-  async ({ username }, { rejectWithValue }) => {
-    try {
-      const response = await instance.get(`/api/v1/user/${username}`);
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response.data);
-    }
-  }
-);
+// export const fetchOtherUser = createAsyncThunk(
+//   "user/fetchOtherUser",
+//   async ({ username }, { rejectWithValue }) => {
+//     try {
+//       const response = await instance.get(`/api/v1/user/${username}`);
+//       return response.data;
+//     } catch (err) {
+//       return rejectWithValue(err.response.data);
+//     }
+//   }
+// );
 
 const handleAsyncAction = (builder, action, stateKey) => {
   builder
@@ -120,7 +89,7 @@ const userSlice = createSlice({
     handleAsyncAction(builder, deleteUser, "user");
     handleAsyncAction(builder, followUser, "user");
     handleAsyncAction(builder, unFollowUser, "user");
-    handleAsyncAction(builder, fetchOtherUser, "otherUsers");
+    // handleAsyncAction(builder, fetchOtherUser, "otherUsers");
   },
 });
 
