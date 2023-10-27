@@ -2,6 +2,19 @@ import { Post } from "../models/post.model.js";
 import { User } from "../models/user.model.js";
 import { errorHandler } from "../utils/errorHandler.js";
 
+const getUserPosts = async (userId) => {
+  try {
+    let user = await User.findOne({ _id: userId });
+    if (!user) {
+      console.log("User not found");
+    }
+    const posts = await Post.find({ userId });
+    return posts;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const createNewPost = async (req, res, next) => {
   const userId = req.user.id;
   const { text, file } = req.body;
@@ -70,8 +83,9 @@ export const getPosts = async (req, res, next) => {
   }
 };
 
-const likeUnlikePost = async (req, res) => {
-  const { postId, userId } = req.body;
+export const likeUnlikePost = async (req, res, next) => {
+  const userId = req.user.id;
+  const { postId } = req.body;
   try {
     const post = await Post.findById(postId);
     if (!post) errorHandler(404, "Post not found");
@@ -80,19 +94,27 @@ const likeUnlikePost = async (req, res) => {
     if (userLikedPost) {
       // Unlike post
       await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
-      res.status(200).json({ message: "Post unliked successfully" });
+      const posts = await getUserPosts(userId);
+      res.status(200).json({
+        message: "Post unliked successfully",
+        posts,
+      });
     } else {
       // Like post
       post.likes.push(userId);
       await post.save();
-      res.status(200).json({ message: "Post liked successfully" });
+      const posts = await getUserPosts(userId);
+      res.status(200).json({
+        message: "Post liked successfully",
+        posts,
+      });
     }
   } catch (err) {
     next(err);
   }
 };
 
-const replyToPost = async (req, res) => {
+export const replyToPost = async (req, res, next) => {
   try {
     const { text } = req.body;
     const postId = req.params.id;
@@ -120,7 +142,7 @@ const replyToPost = async (req, res) => {
   }
 };
 
-const getFeedPosts = async (req, res) => {
+export const getFeedPosts = async (req, res, next) => {
   try {
     const userId = req.user._id;
     const user = await User.findById(userId);
@@ -140,20 +162,20 @@ const getFeedPosts = async (req, res) => {
   }
 };
 
-const getUserPosts = async (req, res) => {
-  const { username } = req.params;
-  try {
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
+// export const getUserPosts = async (req, res, next) => {
+//   const { username } = req.params;
+//   try {
+//     const user = await User.findOne({ username });
+//     if (!user) {
+//       return res.status(404).json({ error: "User not found" });
+//     }
 
-    const posts = await Post.find({ postedBy: user._id }).sort({
-      createdAt: -1,
-    });
+//     const posts = await Post.find({ postedBy: user._id }).sort({
+//       createdAt: -1,
+//     });
 
-    res.status(200).json(posts);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+//     res.status(200).json(posts);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };

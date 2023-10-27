@@ -8,6 +8,7 @@ import {
   fetchProjectsByUserId,
   selectProject,
 } from "../Redux/project/projectSlice";
+import { fetchUser } from "../Redux/user/userSlice";
 
 const Feed = () => {
   const { projects, loading } = useSelector(selectProject);
@@ -20,10 +21,11 @@ const Feed = () => {
     : [];
 
   useEffect(() => {
-    if (!projects && !loading) {
+    if (!projects || !loading) {
+      dispatch(fetchUser());
       dispatch(fetchProjectsByUserId());
     }
-  }, [dispatch, projects, loading]);
+  }, [dispatch]);
   return (
     <div className="flex justify-between w-full gap-12 py-0 sm:py-8 lg:py-4 mx-4 lg:mx-0">
       <section className="md:w-1/3 lg:w-1/4 hidden md:flex flex-col justify-start items-center">
@@ -46,7 +48,9 @@ const Feed = () => {
         ))}
       </section>
       <Middle />
-      <section className="w-1/4 hidden lg:block"><UsersCard /></section>
+      <section className="w-1/4 hidden lg:block">
+        <UsersCard />
+      </section>
     </div>
   );
 };

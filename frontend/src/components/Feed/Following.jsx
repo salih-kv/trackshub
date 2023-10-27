@@ -11,11 +11,14 @@ import { selectUser } from "../../Redux/user/userSlice";
 import { storageRef } from "../../firebase/firebase.config";
 import { AudioPlayer } from "react-audio-player-component";
 import { Post } from "../Post";
+import Loading from "../Loading";
 
 const Following = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector(selectUser);
-  const { posts, loading } = useSelector(selectPost);
+  const { user, loading } = useSelector(selectUser);
+  const { posts } = useSelector(selectPost);
+
+  console.log("following", user);
 
   const latestPosts = posts
     ? posts
@@ -27,14 +30,17 @@ const Following = () => {
   useEffect(() => {
     if (!loading) {
       dispatch(getPosts());
+      console.log("user", user);
     }
-  }, [dispatch, loading]);
+  }, [dispatch]);
+
+  if (loading || !user) return <Loading />;
 
   return (
     <div className="flex flex-col gap-6">
       <CreatePost />
-      {latestPosts?.map((post) => (
-        <Post key={post._id} name={user?.name} {...post} />
+      {latestPosts?.map((post, index) => (
+        <Post key={index} user={user} post={post} />
       ))}
       <div>{/* render following users posts */}</div>
     </div>
@@ -160,7 +166,7 @@ const CreatePost = () => {
               <button
                 onClick={() => {
                   dispatch(createNewPost({ text: postInput, file: "" }));
-                  handleUpload;
+                  handleUpload();
                   dispatch(getPosts());
                   setPostInput("");
                   setPostToggle(false);

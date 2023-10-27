@@ -6,7 +6,12 @@ import { IoChatbubblesSharp } from "react-icons/io5";
 import { BiLinkAlt } from "react-icons/bi";
 import { FiEdit3 } from "react-icons/fi";
 import { PrivateHeader } from "../components/Navbar/PrivateHeader";
-import { fetchUser, followUser, unFollowUser } from "../Redux/user/userSlice";
+import {
+  fetchUser,
+  followUser,
+  selectUser,
+  unFollowUser,
+} from "../Redux/user/userSlice";
 import WelcomeHeader from "../components/Welcome/WelcomeHeader";
 import instance from "../axios/instance";
 import ProfileImg from "../components/ProfileImg";
@@ -15,7 +20,7 @@ const UserPage = () => {
   const dispatch = useDispatch();
   const { username } = useParams();
   const { isLoggedIn } = useSelector((state) => state.auth);
-  const { user: loggedInUser } = useSelector((state) => state.user);
+  const { user: loggedInUser } = useSelector(selectUser);
   const [user, setUser] = useState();
   const [isFollowing, setIsFollowing] = useState(false);
   const [currentUser, setCurrentUser] = useState(false);
