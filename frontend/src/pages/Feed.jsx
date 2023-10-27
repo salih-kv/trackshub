@@ -25,7 +25,7 @@ const Feed = () => {
     }
   }, [dispatch, projects, loading]);
   return (
-    <div className="flex justify-between w-full gap-8 py-0 sm:py-8 lg:py-4 mx-4 lg:mx-0">
+    <div className="flex justify-between w-full gap-12 py-0 sm:py-8 lg:py-4 mx-4 lg:mx-0">
       <section className="md:w-1/3 lg:w-1/4 hidden md:flex flex-col justify-start items-center">
         <ProfileCard />
         {latestProjects.length > 0 && (
@@ -46,7 +46,7 @@ const Feed = () => {
         ))}
       </section>
       <Middle />
-      <section className="w-1/4 hidden lg:block">{/* <UsersCard /> */}</section>
+      <section className="w-1/4 hidden lg:block"><UsersCard /></section>
     </div>
   );
 };

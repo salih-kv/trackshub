@@ -21,7 +21,7 @@ const UserDropDown = () => {
   };
   return (
     <div
-      className={`absolute top-16 right-0 z-20 rounded-lg shadow-lg bg-p-light dark:bg-s-dark`}
+      className={`absolute top-8 right-0 z-20 rounded-lg shadow-lg bg-p-light dark:bg-s-dark`}
     >
       <div className="p-4">
         <div className="text-left min-w-[280px]">

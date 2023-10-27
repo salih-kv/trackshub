@@ -139,7 +139,7 @@ export const PrivateHeader = () => {
           </button>
           <ProfileImg
             w={9}
-            buttonStyle="px-2 relative"
+            buttonStyle="px-2 md:px-0 relative"
             onClick={() => toggleDropdown("user")}
             name={user?.name}
           >

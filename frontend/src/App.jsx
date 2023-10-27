@@ -17,7 +17,9 @@ const Posts = lazy(() => import("./components/User/Posts"));
 
 const Projects = lazy(() => import("./pages/Projects"));
 const MyProjects = lazy(() => import("./components/Projects/MyProjects"));
-const ProjectsList = lazy(() => import("./components/Projects/ProjectsList"));
+const CollabProjects = lazy(() =>
+  import("./components/Projects/CollabProjects")
+);
 
 const ProjectPage = lazy(() => import("./pages/ProjectPage"));
 const Files = lazy(() => import("./components/Project/Files"));
@@ -63,7 +65,7 @@ const App = () => {
               <Route path="/explore" element={<NotAvailable />} />
               {/* Projects */}
               <Route path="/projects" element={<Projects />}>
-                <Route path="all" element={<ProjectsList />} />
+                <Route path="collab" element={<CollabProjects />} />
                 <Route path="my-projects" element={<MyProjects />} />
                 <Route path="deleted" element={<NotAvailable />} />
               </Route>
