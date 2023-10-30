@@ -30,6 +30,14 @@ export const deleteUser = createAsyncThunk("user/deleteUser", async () => {
   return response.data;
 });
 
+export const fetchNotLoggedInUser = createAsyncThunk(
+  "user/fetchNotLoggedInUser",
+  async (username) => {
+    const response = await instance.get(`/api/v1/user${username}`);
+    return response.data;
+  }
+);
+
 export const followUser = createAsyncThunk(
   "user/followUser",
   async (followedId) => {
@@ -39,26 +47,6 @@ export const followUser = createAsyncThunk(
     return response.data;
   }
 );
-
-export const unFollowUser = createAsyncThunk(
-  "user/unFollowUser",
-  async (followedId) => {
-    const response = await instance.post("/api/v1/user/unfollow", followedId);
-    return response.data;
-  }
-);
-
-// export const fetchOtherUser = createAsyncThunk(
-//   "user/fetchOtherUser",
-//   async ({ username }, { rejectWithValue }) => {
-//     try {
-//       const response = await instance.get(`/api/v1/user/${username}`);
-//       return response.data;
-//     } catch (err) {
-//       return rejectWithValue(err.response.data);
-//     }
-//   }
-// );
 
 const handleAsyncAction = (builder, action, stateKey) => {
   builder
@@ -78,7 +66,7 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     user: {},
-    otherUsers: [],
+    notLoggedInUser: {},
     loading: false,
   },
   reducers: {},
@@ -87,12 +75,10 @@ const userSlice = createSlice({
     handleAsyncAction(builder, updateUser, "user");
     handleAsyncAction(builder, resetPassword, "user");
     handleAsyncAction(builder, deleteUser, "user");
+    handleAsyncAction(builder, fetchNotLoggedInUser, "notLoggedInUser");
     handleAsyncAction(builder, followUser, "user");
-    handleAsyncAction(builder, unFollowUser, "user");
-    // handleAsyncAction(builder, fetchOtherUser, "otherUsers");
   },
 });
 
 export const selectUser = (state) => state.user;
-
 export default userSlice.reducer;

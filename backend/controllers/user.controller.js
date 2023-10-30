@@ -2,11 +2,25 @@ import { User } from "../models/user.model.js";
 import { errorHandler } from "../utils/errorHandler.js";
 
 // get account details
-export const getUser = async (req, res, next) => {
-  const userId = req.user.id; // id retrieved from token
+export const getUserDetails = async (req, res, next) => {
   try {
-    const user = await User.findOne({ _id: userId });
-    res.status(200).json(user);
+    if (req.params.username) {
+      const { username } = req.params;
+      const user = await User.findOne({ username });
+      if (user) {
+        res.status(200).json(user);
+      } else {
+        res.status(404).json({ message: "User not found" });
+      }
+    } else {
+      const userId = req.user.id; // id retrieved from token
+      const user = await User.findOne({ _id: userId });
+      if (user) {
+        res.status(200).json(user);
+      } else {
+        res.status(404).json({ message: "User not found" });
+      }
+    }
   } catch (err) {
     next(err);
   }
@@ -77,53 +91,49 @@ export const deleteUser = async (req, res, next) => {
   }
 };
 
-// follow user
-export const followUser = async (req, res, next) => {
+// follow / unfollow
+export const toggleFollowUser = async (req, res, next) => {
   const userId = req.user.id; // logged-in user id
   const { followedId } = req.body; // other user id
 
   try {
-    const follower = await User.findOneAndUpdate(
-      { _id: userId },
-      { $addToSet: { following: followedId } }, // $addToSet - avoid duplicate entries
-      { new: true }
-    );
+    const follower = await User.findOne({ _id: userId });
+    const followed = await User.findOne({ _id: followedId });
 
-    const followed = await User.findOneAndUpdate(
-      { _id: followedId },
-      { $addToSet: { followers: userId } },
-      { new: true }
-    );
+    if (!follower || !followed) {
+      errorHandler(404, "User not found");
+      return;
+    }
 
-    if (!follower || !followed) errorHandler(404, "User not found");
+    const isFollowing = follower.following.includes(followedId);
 
-    res.json({ message: "Followed successfully!" });
-  } catch (err) {
-    next(err);
-  }
-};
-
-// unfollow user
-export const unFollowUser = async (req, res) => {
-  const userId = req.user.id;
-  const { followedId } = req.body;
-
-  try {
-    const follower = await User.findOneAndUpdate(
-      { _id: userId },
-      { $pull: { following: followedId } },
-      { new: true }
-    );
-
-    const followed = await User.findOneAndUpdate(
-      { _id: followedId },
-      { $pull: { followers: userId } },
-      { new: true }
-    );
-
-    if (!follower || !followed) errorHandler(404, "User not found");
-
-    res.json({ message: "Unfollowed successfully!" });
+    if (isFollowing) {
+      // If the user is already following, unfollow
+      await User.findOneAndUpdate(
+        { _id: userId },
+        { $pull: { following: followedId } },
+        { new: true }
+      );
+      await User.findOneAndUpdate(
+        { _id: followedId },
+        { $pull: { followers: userId } },
+        { new: true }
+      );
+      res.json({ message: "Unfollowed successfully!" });
+    } else {
+      // If the user is not following, follow
+      await User.findOneAndUpdate(
+        { _id: userId },
+        { $addToSet: { following: followedId } },
+        { new: true }
+      );
+      await User.findOneAndUpdate(
+        { _id: followedId },
+        { $addToSet: { followers: userId } },
+        { new: true }
+      );
+      res.json({ message: "Followed successfully!" });
+    }
   } catch (err) {
     next(err);
   }
@@ -141,16 +151,6 @@ export const searchUser = async (req, res, next) => {
       username: { $regex: new RegExp(searchQuery, "i") }, // case-insensitive regex search
     }).select("username name profilePic");
     res.json(result);
-  } catch (err) {
-    next(err);
-  }
-};
-
-export const getUserByUsername = async (req, res, next) => {
-  const { username } = req.params;
-  try {
-    const user = await User.findOne({ username });
-    res.status(200).json(user);
   } catch (err) {
     next(err);
   }

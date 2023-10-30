@@ -6,10 +6,11 @@ import ProfileImg from "../ProfileImg";
 import instance from "../../axios/instance";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../Redux/auth/authSlice";
+import { selectUser } from "../../Redux/user/userSlice";
 
 const UserDropDown = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector(selectUser);
 
   const logoutUser = async () => {
     try {
@@ -25,7 +26,7 @@ const UserDropDown = () => {
     >
       <div className="p-4">
         <div className="text-left min-w-[280px]">
-          <Link>
+          <Link to={`/${user?.username}`}>
             <div className="flex items-center justify-between hover:bg-s-light dark:hover:bg-p-dark rounded-lg p-2">
               <ProfileImg w={10} buttonStyle={`mr-3`} name={user?.name} />
               <div className="w-full">

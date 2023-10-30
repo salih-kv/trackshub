@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { Link, Outlet, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { BsInstagram, BsSpotify, BsThreeDots } from "react-icons/bs";
 import { IoChatbubblesSharp } from "react-icons/io5";
@@ -7,66 +7,26 @@ import { BiLinkAlt } from "react-icons/bi";
 import { FiEdit3 } from "react-icons/fi";
 import { PrivateHeader } from "../components/Navbar/PrivateHeader";
 import {
-  fetchUser,
+  fetchNotLoggedInUser,
   followUser,
   selectUser,
-  unFollowUser,
 } from "../Redux/user/userSlice";
 import WelcomeHeader from "../components/Welcome/WelcomeHeader";
-import instance from "../axios/instance";
 import ProfileImg from "../components/ProfileImg";
 
-const UserPage = () => {
+const UserPage = ({ currentUser, userProfile }) => {
   const dispatch = useDispatch();
-  const { username } = useParams();
   const { isLoggedIn } = useSelector((state) => state.auth);
-  const { user: loggedInUser } = useSelector(selectUser);
-  const [user, setUser] = useState();
+  const isCurrentUser = currentUser._id === userProfile._id;
   const [isFollowing, setIsFollowing] = useState(false);
-  const [currentUser, setCurrentUser] = useState(false);
+  const path = window.location.pathname;
 
   useEffect(() => {
-    dispatch(fetchUser());
-  }, [dispatch]);
+    dispatch(fetchNotLoggedInUser(path));
+  }, [dispatch, path]);
 
-  useEffect(() => {
-    const path = window.location.pathname;
-    if (
-      path === `/${loggedInUser.username}` ||
-      path === `/${loggedInUser.username}/`
-    ) {
-      setCurrentUser(true);
-    } else {
-      setCurrentUser(false);
-    }
-  }, [loggedInUser.username]);
-
-  const fetchUserPublicProfile = useCallback(async () => {
-    try {
-      const response = await instance.get(`/api/v1/user/${username}`);
-      setUser(response.data);
-      setIsFollowing(response.data?.followers?.includes(loggedInUser._id));
-    } catch (err) {
-      console.log(err);
-    }
-  }, [loggedInUser, username]);
-
-  useEffect(() => {
-    fetchUserPublicProfile();
-  }, [fetchUserPublicProfile]);
-
-  const followOrUnFollow = () => {
-    setIsFollowing((prevIsFollowing) => !prevIsFollowing);
-    if (isFollowing) {
-      dispatch(unFollowUser(user?._id));
-    } else {
-      dispatch(followUser(user?._id));
-    }
-    fetchUserPublicProfile();
-  };
-
-  const followersCount = user?.followers?.length || 0;
-  const followingCount = user?.following?.length || 0;
+  const followersCount = userProfile?.followers?.length || 0;
+  const followingCount = userProfile?.following?.length || 0;
 
   return (
     <div className="relative min-h-screen dark:bg-p-dark dark:text-white">
@@ -75,18 +35,18 @@ const UserPage = () => {
       <div className="flex gap-4 w-full justify-between mx-auto max-w-screen-2xl">
         <div className="w-1/4 relative z-10">
           <div className="bg-primary-50 dark:bg-primary-300 w-36 h-36 rounded-full absolute top-100 left-1/2 transform translate-x-[-50%] translate-y-[-50%]">
-            <ProfileImg name={user?.name} bg={`09ce82`} />
+            <ProfileImg name={userProfile?.name} bg={`09ce82`} />
           </div>
           <div>
             <div className="pt-20 pb-4 px-4 flex flex-col items-center">
               <div>
                 <h2 className="font-semibold text-2xl text-center">
-                  {user?.name}
+                  {userProfile?.name}
                 </h2>
                 <h2 className="text-gray-600 text-sm flex items-center gap-2">
-                  <div>{`@${user?.username}`}</div>
+                  <div>{`@${userProfile?.username}`}</div>
                   <div className="font-extrabold w-1 h-1 bg-gray-600 rounded-full"></div>
-                  <div>{user?.location}</div>
+                  <div>{userProfile?.location}</div>
                 </h2>
                 <div className="flex gap-2 items-center justify-center mt-4">
                   <div className="w-6 h-6 rounded-full bg-s-light dark:bg-s-dark flex items-center justify-center">
@@ -100,7 +60,7 @@ const UserPage = () => {
                   </div>
                 </div>
               </div>
-              {currentUser ? (
+              {isCurrentUser ? (
                 <div className="mt-5">
                   <Link
                     to="/settings/profile"
@@ -117,7 +77,10 @@ const UserPage = () => {
                     Chat
                   </Link>
                   <button
-                    onClick={followOrUnFollow}
+                    onClick={() => {
+                      setIsFollowing((prevIsFollowing) => !prevIsFollowing);
+                      dispatch(followUser(userProfile?._id));
+                    }}
                     className={`btn py-1.5 px-4 rounded-2xl ${
                       isFollowing ? "btn-outlined" : "btn-fill"
                     }`}

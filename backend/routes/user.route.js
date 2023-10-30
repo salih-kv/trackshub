@@ -2,26 +2,22 @@ import express from "express";
 import { verifyToken } from "../middlewares/auth.js";
 import {
   deleteUser,
-  followUser,
   forgotPassword,
-  getUser,
-  getUserByUsername,
+  getUserDetails,
   resetPassword,
   searchUser,
-  unFollowUser,
+  toggleFollowUser,
   updateUser,
 } from "../controllers/user.controller.js";
 const router = express();
 
-router.get("/", verifyToken, getUser);
+router.get("/:username?", verifyToken, getUserDetails);
 router.post("/", verifyToken, updateUser);
 router.delete("/", verifyToken, deleteUser);
 router.post("/reset-password", verifyToken, resetPassword);
 router.post("/forgot-password", forgotPassword); // ! pending
 
-router.post("/follow", verifyToken, followUser);
-router.post("/unfollow", verifyToken, unFollowUser);
+router.post("/follow", verifyToken, toggleFollowUser);
 router.get("/searchUser", searchUser);
-router.get("/:username", getUserByUsername);
 
 export default router;

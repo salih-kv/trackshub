@@ -1,7 +1,9 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { PrivateRoute } from "./components/PrivateRoute";
 import Loading from "./components/Loading";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUser, selectUser } from "./Redux/user/userSlice";
 
 const Welcome = lazy(() => import("./pages/Welcome"));
 const Register = lazy(() => import("./pages/Register"));
@@ -40,6 +42,13 @@ const NotAvailable = lazy(() => import("./components/Error/NotAvailable"));
 const NotFound = lazy(() => import("./components/Error/NotFound"));
 
 const App = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
+
+  const { user, notLoggedInUser } = useSelector(selectUser);
+
   return (
     <BrowserRouter>
       <Suspense fallback={<Loading />}>
@@ -48,7 +57,12 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           {/* dynamic user route */}
-          <Route path="/:username" element={<UserPage />}>
+          <Route
+            path="/:username"
+            element={
+              <UserPage currentUser={user} userProfile={notLoggedInUser} />
+            }
+          >
             <Route index element={<Posts />} />
             <Route path="tracks" element={<NotAvailable />} />
             <Route path="playlists" element={<NotAvailable />} />
