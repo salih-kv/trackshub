@@ -1,24 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ProfileImg from "../ProfileImg";
 import { IoMdCloseCircleOutline } from "react-icons/io";
-import {
-  createNewPost,
-  getPosts,
-  selectPost,
-} from "../../Redux/post/postSlice";
-import { selectUser } from "../../Redux/user/userSlice";
+import { createNewPost, selectPost } from "../../Redux/slices/postSlice";
+import { selectUser } from "../../Redux/slices/userSlice";
 import { storageRef } from "../../firebase/firebase.config";
 import { AudioPlayer } from "react-audio-player-component";
 import { Post } from "../Post";
-import Loading from "../Loading";
 
 const Following = () => {
-  const dispatch = useDispatch();
-  const { user, loading } = useSelector(selectUser);
+  const { user } = useSelector(selectUser);
   const { posts } = useSelector(selectPost);
-
-  console.log("following", user);
 
   const latestPosts = posts
     ? posts
@@ -26,15 +18,6 @@ const Following = () => {
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
         .slice(0, 1)
     : [];
-
-  useEffect(() => {
-    if (!loading) {
-      dispatch(getPosts());
-      console.log("user", user);
-    }
-  }, [dispatch]);
-
-  if (loading || !user) return <Loading />;
 
   return (
     <div className="flex flex-col gap-6">
@@ -167,7 +150,6 @@ const CreatePost = () => {
                 onClick={() => {
                   dispatch(createNewPost({ text: postInput, file: "" }));
                   handleUpload();
-                  dispatch(getPosts());
                   setPostInput("");
                   setPostToggle(false);
                 }}

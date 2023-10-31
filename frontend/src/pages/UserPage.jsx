@@ -7,22 +7,29 @@ import { BiLinkAlt } from "react-icons/bi";
 import { FiEdit3 } from "react-icons/fi";
 import { PrivateHeader } from "../components/Navbar/PrivateHeader";
 import {
-  fetchNotLoggedInUser,
+  fetchUserByUsername,
   followUser,
   selectUser,
-} from "../Redux/user/userSlice";
+} from "../Redux/slices/userSlice";
 import WelcomeHeader from "../components/Welcome/WelcomeHeader";
 import ProfileImg from "../components/ProfileImg";
+import PageNotFound from "../components/Error/PageNotFound";
+import { fetchPostsByUsername } from "../Redux/slices/postSlice";
 
-const UserPage = ({ currentUser, userProfile }) => {
+const UserPage = ({ userProfile }) => {
   const dispatch = useDispatch();
   const { isLoggedIn } = useSelector((state) => state.auth);
-  const isCurrentUser = currentUser._id === userProfile._id;
+  const { user, isCurrentUser } = useSelector(selectUser);
   const [isFollowing, setIsFollowing] = useState(false);
   const path = window.location.pathname;
 
   useEffect(() => {
-    dispatch(fetchNotLoggedInUser(path));
+    setIsFollowing(userProfile?.followers?.includes(user._id));
+  }, [userProfile.followers, user._id]);
+
+  useEffect(() => {
+    dispatch(fetchUserByUsername(path));
+    dispatch(fetchPostsByUsername(path));
   }, [dispatch, path]);
 
   const followersCount = userProfile?.followers?.length || 0;
@@ -31,83 +38,92 @@ const UserPage = ({ currentUser, userProfile }) => {
   return (
     <div className="relative min-h-screen dark:bg-p-dark dark:text-white">
       {isLoggedIn ? <PrivateHeader /> : <WelcomeHeader isShow={true} />}
-      <div className="w-full h-60 bg-gradient-to-r from-primary-300 via-primary-500 to-primary-400"></div>
-      <div className="flex gap-4 w-full justify-between mx-auto max-w-screen-2xl">
-        <div className="w-1/4 relative z-10">
-          <div className="bg-primary-50 dark:bg-primary-300 w-36 h-36 rounded-full absolute top-100 left-1/2 transform translate-x-[-50%] translate-y-[-50%]">
-            <ProfileImg name={userProfile?.name} bg={`09ce82`} />
-          </div>
-          <div>
-            <div className="pt-20 pb-4 px-4 flex flex-col items-center">
-              <div>
-                <h2 className="font-semibold text-2xl text-center">
-                  {userProfile?.name}
-                </h2>
-                <h2 className="text-gray-600 text-sm flex items-center gap-2">
-                  <div>{`@${userProfile?.username}`}</div>
-                  <div className="font-extrabold w-1 h-1 bg-gray-600 rounded-full"></div>
-                  <div>{userProfile?.location}</div>
-                </h2>
-                <div className="flex gap-2 items-center justify-center mt-4">
-                  <div className="w-6 h-6 rounded-full bg-s-light dark:bg-s-dark flex items-center justify-center">
-                    <BiLinkAlt />
+      <div className="w-full h-60 bg-gradient-to-r from-primary-300 via-primary-500 to-primary-400">
+        {!userProfile ||
+          (Object.keys(userProfile).length === 0 && <PageNotFound />)}
+      </div>
+      {Object.keys(userProfile).length > 0 && (
+        <div className="flex gap-4 w-full justify-between mx-auto max-w-screen-2xl">
+          <div className="w-1/4 relative z-10">
+            <div className="bg-primary-50 dark:bg-primary-300 w-36 h-36 rounded-full absolute top-100 left-1/2 transform translate-x-[-50%] translate-y-[-50%]">
+              <ProfileImg name={userProfile?.name} bg={`09ce82`} />
+            </div>
+            <div>
+              <div className="pt-20 pb-4 px-4 flex flex-col items-center">
+                <div>
+                  <h2 className="font-semibold text-2xl text-center">
+                    {userProfile?.name}
+                  </h2>
+                  <h2 className="text-gray-600 text-sm flex items-center gap-2">
+                    <div>{`@${userProfile?.username}`}</div>
+                    <div className="font-extrabold w-1 h-1 bg-gray-600 rounded-full"></div>
+                    <div>{userProfile?.location}</div>
+                  </h2>
+                  <div className="flex gap-2 items-center justify-center mt-4">
+                    <div className="w-6 h-6 rounded-full bg-s-light dark:bg-s-dark flex items-center justify-center">
+                      <BiLinkAlt />
+                    </div>
+                    <div className="w-6 h-6 rounded-full bg-s-light dark:bg-s-dark flex items-center justify-center">
+                      <BsInstagram />
+                    </div>
+                    <div className="w-6 h-6 rounded-full bg-s-light dark:bg-s-dark flex items-center justify-center">
+                      <BsSpotify />
+                    </div>
                   </div>
-                  <div className="w-6 h-6 rounded-full bg-s-light dark:bg-s-dark flex items-center justify-center">
-                    <BsInstagram />
+                </div>
+                {isCurrentUser ? (
+                  <div className="mt-5">
+                    <Link
+                      to="/settings/profile"
+                      className="btn btn-secondary !text-primary-500 py-1.5 px-16 rounded-2xl"
+                    >
+                      <FiEdit3 />
+                      <span className="ml-2">Edit</span>
+                    </Link>
                   </div>
-                  <div className="w-6 h-6 rounded-full bg-s-light dark:bg-s-dark flex items-center justify-center">
-                    <BsSpotify />
+                ) : (
+                  <div className="flex gap-2 mt-5">
+                    <Link className="btn py-1.5 px-4 rounded-2xl bg-primary-200  text-primary-500">
+                      <IoChatbubblesSharp className="mr-1" />
+                      Chat
+                    </Link>
+                    <button
+                      onClick={() => {
+                        dispatch(followUser(userProfile?._id));
+                      }}
+                      className={`btn py-1.5 px-4 rounded-2xl ${
+                        isFollowing ? "btn-outlined" : "btn-fill"
+                      }`}
+                    >
+                      {isFollowing ? "Following" : "Follow"}
+                    </button>
+                    <button className="btn bg-s-light dark:bg-s-dark px-4 rounded-2xl">
+                      <BsThreeDots />
+                    </button>
                   </div>
-                </div>
-              </div>
-              {isCurrentUser ? (
-                <div className="mt-5">
-                  <Link
-                    to="/settings/profile"
-                    className="btn btn-secondary !text-primary-500 py-1.5 px-16 rounded-2xl"
-                  >
-                    <FiEdit3 />
-                    <span className="ml-2">Edit</span>
-                  </Link>
-                </div>
-              ) : (
-                <div className="flex gap-2 mt-5">
-                  <Link className="btn py-1.5 px-4 rounded-2xl bg-primary-200  text-primary-500">
-                    <IoChatbubblesSharp className="mr-1" />
-                    Chat
-                  </Link>
-                  <button
-                    onClick={() => {
-                      setIsFollowing((prevIsFollowing) => !prevIsFollowing);
-                      dispatch(followUser(userProfile?._id));
-                    }}
-                    className={`btn py-1.5 px-4 rounded-2xl ${
-                      isFollowing ? "btn-outlined" : "btn-fill"
-                    }`}
-                  >
-                    {isFollowing ? "Following" : "Follow"}
-                  </button>
-                  <button className="btn bg-s-light dark:bg-s-dark px-4 rounded-2xl">
-                    <BsThreeDots />
-                  </button>
-                </div>
-              )}
-              <div className="mt-4 flex gap-6">
-                <div className="flex flex-col items-center">
-                  <p className="font-semibold text-lg">{followersCount}</p>
-                  <p className="text-sm font-medium text-gray-600">Followers</p>
-                </div>
-                <div className="flex flex-col items-center">
-                  <p className="font-semibold text-lg">{followingCount}</p>
-                  <p className="text-sm font-medium text-gray-600">Following</p>
+                )}
+                <div className="mt-4 flex gap-6">
+                  <div className="flex flex-col items-center">
+                    <p className="font-semibold text-lg">{followersCount}</p>
+                    <p className="text-sm font-medium text-gray-600">
+                      Followers
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <p className="font-semibold text-lg">{followingCount}</p>
+                    <p className="text-sm font-medium text-gray-600">
+                      Following
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+          <Middle />
+          <Right />
         </div>
-        <Middle />
-        <Right />
-      </div>
+      )}
     </div>
   );
 };

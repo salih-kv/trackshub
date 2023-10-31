@@ -4,12 +4,14 @@ import ProfileImg from "./ProfileImg";
 import { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { deletePost, likePost } from "../Redux/post/postSlice";
-import { useDispatch } from "react-redux";
+import { deletePost, likePost } from "../Redux/slices/postSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { selectUser } from "../Redux/slices/userSlice";
 
 export const Post = ({ user, post }) => {
   const dispatch = useDispatch();
+  const { isCurrentUser } = useSelector(selectUser);
   const formattedTime = TimeStamp(post?.createdAt);
   const [isShow, setIsShow] = useState(false);
   const [liked, setLiked] = useState(post?.likes?.includes(user?._id));
@@ -19,45 +21,47 @@ export const Post = ({ user, post }) => {
   }, [post, user]);
 
   return (
-    <Link
-      // to={`/${username}/post/${postId}`}
-      className="border-b dark:border-s-dark pb-6"
-    >
+    <div className="border-b dark:border-s-dark pb-6">
       <header className="flex items-center justify-between py-4">
         <ProfileImg w={10} buttonStyle={`mr-3`} />
         <div className="mr-auto w-full">
           <h4 className="font-semibold text-base">{user?.name}</h4>
           <p className="text-gray-500 text-xs">{formattedTime}</p>
         </div>
-        <div
-          onClick={() => setIsShow(!isShow)}
-          className="relative cursor-pointer"
-        >
+        {isCurrentUser && (
           <div
-            className={`p-2 hover:bg-s-light ${
-              isShow && "bg-s-light"
-            } rounded-full`}
+            onClick={() => setIsShow(!isShow)}
+            className="relative cursor-pointer"
           >
-            <BsThreeDots className="text-gray-500 " />
-          </div>
-          {isShow && (
-            <div className="absolute right-0 top-10 bg-white dark:bg-s-dark shadow-lg rounded-lg cursor-pointer">
-              <button
-                onClick={() => dispatch(deletePost(post?._id))}
-                className="text-sm text-red-500 flex items-center gap-2 hover:bg-s-light hover:dark:bg-p-dark p-2 rounded"
-              >
-                <MdDelete className="text-lg" />
-                <span>delete</span>
-              </button>
+            <div
+              className={`p-2 hover:bg-s-light ${
+                isShow && "bg-s-light"
+              } rounded-full`}
+            >
+              <BsThreeDots className="text-gray-500 " />
             </div>
-          )}
-        </div>
+            {isShow && (
+              <div className="absolute right-0 top-10 bg-white dark:bg-s-dark shadow-lg rounded-lg cursor-pointer">
+                <button
+                  onClick={() => dispatch(deletePost(post?._id))}
+                  className="text-sm text-red-500 flex items-center gap-2 hover:bg-s-light hover:dark:bg-p-dark p-2 rounded"
+                >
+                  <MdDelete className="text-lg" />
+                  <span>delete</span>
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </header>
       {/* post content */}
-      <div className="mt-2 mb-2 flex items-center justify-between">
+      <Link
+        to={`/${user?.username}/post/${post?.postId}`}
+        className="mt-2 mb-2 flex items-center justify-between"
+      >
         <div className="w-10 mr-4"></div>
         <div className="mr-auto w-full">{post?.text}</div>
-      </div>
+      </Link>
       {/* count */}
       <div className="text-gray-600 text-xs flex items-center gap-2 py-3">
         <p>{0} comments</p>
@@ -86,6 +90,6 @@ export const Post = ({ user, post }) => {
           placeholder="Leave a comment..."
         />
       </div>
-    </Link>
+    </div>
   );
 };

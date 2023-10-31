@@ -1,9 +1,12 @@
 import { Suspense, lazy, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { PrivateRoute } from "./components/PrivateRoute";
-import Loading from "./components/Loading";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUser, selectUser } from "./Redux/user/userSlice";
+import { fetchUser, selectUser } from "./Redux/slices/userSlice";
+import { fetchProjectsByUserId } from "./Redux/slices/projectSlice";
+import { fetchPosts } from "./Redux/slices/postSlice";
+import { selectAuth } from "./Redux/slices/authSlice";
+import Loading from "./components/Loading";
 
 const Welcome = lazy(() => import("./pages/Welcome"));
 const Register = lazy(() => import("./pages/Register"));
@@ -43,11 +46,17 @@ const NotFound = lazy(() => import("./components/Error/NotFound"));
 
 const App = () => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchUser());
-  }, [dispatch]);
+  const { isLoggedIn } = useSelector(selectAuth);
 
-  const { user, notLoggedInUser } = useSelector(selectUser);
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(fetchUser());
+      dispatch(fetchPosts());
+      dispatch(fetchProjectsByUserId());
+    }
+  }, [dispatch, isLoggedIn]);
+
+  const { userProfile } = useSelector(selectUser);
 
   return (
     <BrowserRouter>
@@ -56,12 +65,10 @@ const App = () => {
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          {/* dynamic user route */}
+          {/* dynamic user🤖 route */}
           <Route
             path="/:username"
-            element={
-              <UserPage currentUser={user} userProfile={notLoggedInUser} />
-            }
+            element={<UserPage userProfile={userProfile} />}
           >
             <Route index element={<Posts />} />
             <Route path="tracks" element={<NotAvailable />} />
@@ -69,13 +76,13 @@ const App = () => {
           </Route>
           {/* dynamic post route */}
           <Route path="/:username/post/:postId" element={<NotAvailable />} />
-          {/* // */}
+          {/* protected🔒 route  */}
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Layout />}>
               {/* Feed */}
               <Route path="feed" element={<Feed />}>
                 <Route path="following" element={<Following />} />
-                <Route path="trending" element={<NotAvailable />} />
+                <Route path="trending" element={<Trending />} />
               </Route>
               {/* Explore */}
               <Route path="/explore" element={<NotAvailable />} />
@@ -94,18 +101,17 @@ const App = () => {
                 <Route path="settings" element={<ProjectSettings />} />
                 <Route path="comments" element={<Comments />} />
               </Route>
-              {/* Library */}
+              {/*  */}
               <Route path="/library" element={<NotAvailable />} />
-              {/* Settings */}
+              {/* Settings⚙️ */}
               <Route path="/settings" element={<Settings />}>
                 <Route path="profile" element={<Profile />} />
                 <Route path="account" element={<Account />} />
-                <Route path="billing" element={<NotAvailable />} />
-                <Route path="notifications" element={<NotAvailable />} />
+                <Route path="billing" element={<Plans />} />
+                <Route path="notifications" element={<Notifications />} />
               </Route>
             </Route>
           </Route>
-          {/* // */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

@@ -6,6 +6,14 @@ export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
   return response.data;
 });
 
+export const fetchUserByUsername = createAsyncThunk(
+  "user/fetchUserByUsername",
+  async (username) => {
+    const response = await instance.get(`/api/v1/user${username}`);
+    return response.data;
+  }
+);
+
 export const updateUser = createAsyncThunk(
   "user/updateUser",
   async (userData) => {
@@ -30,14 +38,6 @@ export const deleteUser = createAsyncThunk("user/deleteUser", async () => {
   return response.data;
 });
 
-export const fetchNotLoggedInUser = createAsyncThunk(
-  "user/fetchNotLoggedInUser",
-  async (username) => {
-    const response = await instance.get(`/api/v1/user${username}`);
-    return response.data;
-  }
-);
-
 export const followUser = createAsyncThunk(
   "user/followUser",
   async (followedId) => {
@@ -53,6 +53,9 @@ const handleAsyncAction = (builder, action, stateKey) => {
     .addCase(action.fulfilled, (state, action) => {
       state[stateKey] = action.payload;
       state.loading = false;
+      if (stateKey === "userProfile") {
+        state.isCurrentUser = state.user._id === action.payload._id;
+      }
     })
     .addCase(action.pending, (state) => {
       state.loading = true;
@@ -66,16 +69,21 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     user: {},
-    notLoggedInUser: {},
+    userProfile: {},
+    isCurrentUser: false,
     loading: false,
   },
-  reducers: {},
+  reducers: {
+    setIsCurrentUser: (state, action) => {
+      state.isCurrentUser = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     handleAsyncAction(builder, fetchUser, "user");
+    handleAsyncAction(builder, fetchUserByUsername, "userProfile");
     handleAsyncAction(builder, updateUser, "user");
     handleAsyncAction(builder, resetPassword, "user");
     handleAsyncAction(builder, deleteUser, "user");
-    handleAsyncAction(builder, fetchNotLoggedInUser, "notLoggedInUser");
     handleAsyncAction(builder, followUser, "user");
   },
 });

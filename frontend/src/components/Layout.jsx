@@ -2,13 +2,9 @@ import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { PrivateHeader } from "./Navbar/PrivateHeader";
 import Nav from "./Navbar/Nav";
-import { fetchUser } from "../Redux/user/userSlice";
-import { useDispatch } from "react-redux";
-import { fetchProjectsByUserId } from "../Redux/project/projectSlice";
 
 const Layout = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -16,11 +12,6 @@ const Layout = () => {
       navigate("/feed/following");
     }
   }, [navigate]);
-
-  useEffect(() => {
-    dispatch(fetchUser());
-    dispatch(fetchProjectsByUserId());
-  }, [dispatch]);
 
   return (
     <div className="relative dark:text-white">

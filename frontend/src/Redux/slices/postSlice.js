@@ -5,7 +5,22 @@ export const createNewPost = createAsyncThunk(
   "post/createNewPost",
   async (content) => {
     const response = await instance.post("/api/v1/post/", content);
-    return response.data;
+    return response.data.newPost;
+  }
+);
+
+export const fetchPosts = createAsyncThunk("post/fetchPosts", async () => {
+  const response = await instance.get(`/api/v1/post/`);
+  return response.data;
+});
+
+export const fetchPostsByUsername = createAsyncThunk(
+  "post/fetchPostsByUsername",
+  async (username) => {
+    if (username) {
+      const response = await instance.post(`/api/v1/post/${username}`);
+      return response.data;
+    }
   }
 );
 
@@ -24,15 +39,11 @@ export const likePost = createAsyncThunk("post/likePost", async (postId) => {
   return response.data.posts;
 });
 
-export const getPosts = createAsyncThunk("post/getPosts", async () => {
-  const response = await instance.get(`/api/v1/post/`);
-  return response.data;
-});
-
 const postSlice = createSlice({
   name: "post",
   initialState: {
     posts: [],
+    userPosts: [],
     loading: false,
   },
   reducers: {},
@@ -45,11 +56,18 @@ const postSlice = createSlice({
         state.posts.push(action.payload);
         state.loading = false;
       })
-      .addCase(getPosts.pending, (state) => {
+      .addCase(fetchPosts.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getPosts.fulfilled, (state, action) => {
+      .addCase(fetchPosts.fulfilled, (state, action) => {
         state.posts = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchPostsByUsername.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchPostsByUsername.fulfilled, (state, action) => {
+        state.userPosts = action.payload;
         state.loading = false;
       })
       .addCase(deletePost.pending, (state) => {

@@ -1,28 +1,28 @@
-import { useDispatch, useSelector } from "react-redux";
-import { getPosts, selectPost } from "../../Redux/post/postSlice";
 import { useEffect } from "react";
 import { Post } from "../Post";
-import { selectUser } from "../../Redux/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPostsByUsername, selectPost } from "../../Redux/slices/postSlice";
+import { selectUser } from "../../Redux/slices/userSlice";
 
 const Posts = () => {
-  const { user } = useSelector(selectUser);
-  const { posts } = useSelector(selectPost);
   const dispatch = useDispatch();
+  const { userProfile } = useSelector(selectUser);
+  const { userPosts } = useSelector(selectPost);
 
-  const latestPosts = posts
-    ? posts
+  useEffect(() => {
+    dispatch(fetchPostsByUsername(userProfile?.username));
+  }, [dispatch, userProfile?.username]);
+
+  const latestPosts = userPosts
+    ? userPosts
         .slice()
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     : [];
 
-  useEffect(() => {
-    dispatch(getPosts());
-  }, [dispatch]);
-
   return (
     <div>
       {latestPosts?.map((post) => (
-        <Post key={post._id} user={user} post={post} />
+        <Post key={post._id} user={userProfile} post={post} />
       ))}
     </div>
   );
