@@ -11,7 +11,8 @@ import ProfileImg from "../ProfileImg";
 import instance from "../../axios/instance";
 import { useSelector } from "react-redux";
 import { Transition } from "@headlessui/react";
-import { selectUser } from "../../Redux/user/userSlice";
+import { selectUser } from "../../Redux/slices/userSlice";
+import { RiSearch2Line } from "react-icons/ri";
 
 export const PrivateHeader = () => {
   const { user } = useSelector(selectUser);
@@ -101,18 +102,19 @@ export const PrivateHeader = () => {
           <Nav />
         </div>
         {/* Right */}
-        <div className="flex items-center space-x-3 lg:space-x-6 pr-4 order-1 lg:order-2">
+        <div className="flex items-center space-x-3 lg:space-x-4 pr-4 order-1 lg:order-2">
           <form className="relative">
             <input
               type="text"
-              placeholder="search"
+              placeholder="Search"
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
                 searchUsers();
               }}
-              className="hidden md:block px-2 lg:px-4 py-2 rounded-3xl bg-s-light dark:bg-s-dark outline-none"
+              className="relative hidden md:block px-2 lg:px-4 lg:pl-10 max-w-xs py-1 rounded-3xl bg-s-light dark:bg-s-dark outline-none placeholder:text-xs placeholder:text-gray-500"
             />
+            <RiSearch2Line className="absolute top-1/4 left-4 text-gray-500" />
             {searchResults?.length > 0 && <SearchResults />}
           </form>
           <DarkThemeToggle />
@@ -139,7 +141,7 @@ export const PrivateHeader = () => {
           </button>
           <ProfileImg
             w={9}
-            buttonStyle="px-2 md:px-0 relative"
+            buttonStyle="px-2 md:pl-2 md:px-0 relative"
             onClick={() => toggleDropdown("user")}
             name={user?.name}
           >

@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import ProfileImg from "../ProfileImg";
 import instance from "../../axios/instance";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../Redux/auth/authSlice";
-import { selectUser } from "../../Redux/user/userSlice";
+import { logout } from "../../Redux/slices/authSlice";
+import { selectUser } from "../../Redux/slices/userSlice";
 
 const UserDropDown = () => {
   const dispatch = useDispatch();
