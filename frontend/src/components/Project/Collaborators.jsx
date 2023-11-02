@@ -3,7 +3,7 @@ import ProfileImg from "../ProfileImg";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import instance from "../../axios/instance";
-import { addCollaborator } from "../../Redux/project/projectSlice";
+import { addCollaborator } from "../../Redux/slices/projectSlice";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 

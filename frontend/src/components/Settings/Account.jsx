@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import instance from "../../axios/instance";
-import { logout } from "../../Redux/auth/authSlice";
+import { logout } from "../../Redux/slices/authSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUser, updateUser } from "../../Redux/user/userSlice";
+import { fetchUser, updateUser } from "../../Redux/slices/userSlice";
 import Loading from "../Loading";
 
 const Account = () => {

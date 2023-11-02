@@ -7,7 +7,7 @@ import {
   fetchProjectsByUserId,
   createNewProject,
   selectProject,
-} from "../../Redux/project/projectSlice";
+} from "../../Redux/slices/projectSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { BiSolidLayerPlus } from "react-icons/bi";
 import Loading from "../Loading";

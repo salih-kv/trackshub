@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import { IoIosShareAlt } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { getProjectById, selectProject } from "../Redux/project/projectSlice";
+import { getProjectById, selectProject } from "../Redux/slices/projectSlice";
 
 import { AudioPlayer } from "react-audio-player-component";
 import NumbFrozen from "../assets/Icy Narco - Numb & Frozen.mp3";

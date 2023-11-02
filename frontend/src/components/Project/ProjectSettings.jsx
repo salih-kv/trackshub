@@ -4,7 +4,7 @@ import {
   getProjectById,
   updateProject,
   deleteProject,
-} from "../../Redux/project/projectSlice";
+} from "../../Redux/slices/projectSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../Loading";
 

@@ -3,7 +3,7 @@ import { BiSolidLayerPlus } from "react-icons/bi";
 import { useState } from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { MdAudiotrack } from "react-icons/md";
-import { createNewProject } from "../../Redux/project/projectSlice";
+import { createNewProject } from "../../Redux/slices/projectSlice";
 import { useDispatch } from "react-redux";
 
 const items = ["All", "Active", "Closed"];

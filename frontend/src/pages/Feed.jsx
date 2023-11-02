@@ -7,8 +7,8 @@ import UsersCard from "../components/Feed/UsersCard";
 import {
   fetchProjectsByUserId,
   selectProject,
-} from "../Redux/project/projectSlice";
-import { fetchUser } from "../Redux/user/userSlice";
+} from "../Redux/slices/projectSlice";
+import { fetchUser } from "../Redux/slices/userSlice";
 
 const Feed = () => {
   const { projects, loading } = useSelector(selectProject);
