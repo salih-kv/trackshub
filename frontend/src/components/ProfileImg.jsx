@@ -2,6 +2,7 @@ const ProfileImg = ({
   w,
   buttonStyle,
   imageStyle,
+  profileURL,
   name,
   children,
   bg,
@@ -14,9 +15,12 @@ const ProfileImg = ({
       >
         <img
           className={`w-full h-auto rounded-full ${imageStyle}`}
-          src={`https://ui-avatars.com/api/?name=${name}&length=1&bold=true&background=${
-            bg || "B73D0D"
-          }&color=fff&size=256`}
+          src={
+            profileURL ||
+            `https://ui-avatars.com/api/?name=${name}&length=1&bold=true&background=${
+              bg || "B73D0D"
+            }&color=fff&size=256`
+          }
           alt="🤖"
         />
       </button>

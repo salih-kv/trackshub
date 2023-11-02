@@ -1,8 +1,7 @@
-import ProfileImg from "../ProfileImg";
 import { useEffect, useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUser, updateUser } from "../../Redux/user/userSlice";
+import { fetchUser, updateUser } from "../../Redux/slices/userSlice";
 import Loading from "../Loading";
 
 const Profile = () => {

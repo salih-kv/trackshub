@@ -21,7 +21,7 @@ const Following = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <CreatePost />
+      <CreatePost user={user} />
       {latestPosts?.map((post, index) => (
         <Post key={index} user={user} post={post} />
       ))}
@@ -32,7 +32,7 @@ const Following = () => {
 
 export default Following;
 
-const CreatePost = () => {
+const CreatePost = ({ user }) => {
   const [postToggle, setPostToggle] = useState(false);
   const dispatch = useDispatch();
   const [postInput, setPostInput] = useState("");
@@ -76,7 +76,7 @@ const CreatePost = () => {
 
   return (
     <div className="flex items-center justify-between">
-      <ProfileImg w={10} buttonStyle={`mr-3`} />
+      <ProfileImg w={10} buttonStyle={`mr-3`} profileURL={user?.profilePic} />
       <div className="w-full">
         <input
           type="text"
@@ -91,7 +91,11 @@ const CreatePost = () => {
           <div className="bg-white dark:bg-p-dark p-6 rounded-lg w-[650px]">
             <div className="flex items-center justify-between w-full mb-3">
               <div className="flex items-center">
-                <ProfileImg w={10} buttonStyle={`mr-3`} />
+                <ProfileImg
+                  w={10}
+                  buttonStyle={`mr-3`}
+                  profileURL={user?.profilePic}
+                />
                 <div>
                   <h2 className="text-sm">Username</h2>
                   <p className="text-xs text-blue-gray-300">Posting to Feed</p>

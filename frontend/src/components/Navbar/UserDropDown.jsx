@@ -28,7 +28,12 @@ const UserDropDown = () => {
         <div className="text-left min-w-[280px]">
           <Link to={`/${user?.username}`}>
             <div className="flex items-center justify-between hover:bg-s-light dark:hover:bg-p-dark rounded-lg p-2">
-              <ProfileImg w={10} buttonStyle={`mr-3`} name={user?.name} />
+              <ProfileImg
+                w={10}
+                buttonStyle={`mr-3`}
+                name={user?.name}
+                profileURL={user?.profilePic}
+              />
               <div className="w-full">
                 <h4 className="font-semibold text-sm">{user?.name}</h4>
                 <p className=" text-gray-500">View Profile</p>

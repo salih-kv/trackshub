@@ -20,7 +20,12 @@ const ProfileCard = () => {
       <div className="p-6 flex flex-col items-start w-full">
         <Link to={`/${user?.username}`}>
           <header className="flex items-center pb-4 w-full">
-            <ProfileImg w={12} buttonStyle={`mr-4`} name={user?.name} />
+            <ProfileImg
+              w={12}
+              buttonStyle={`mr-4`}
+              name={user?.name}
+              profileURL={user?.profilePic}
+            />
             <div>
               <h4 className="font-bold">{user?.name}</h4>
               <p className="text-xs font-semibold text-gray-500">{`@${user?.username}`}</p>

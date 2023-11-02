@@ -144,6 +144,7 @@ export const PrivateHeader = () => {
             buttonStyle="px-2 md:pl-2 md:px-0 relative"
             onClick={() => toggleDropdown("user")}
             name={user?.name}
+            profileURL={user?.profilePic}
           >
             <Transition show={activeDropdown === "user"} {...transitionProps}>
               {activeDropdown === "user" && <UserDropDown />}
