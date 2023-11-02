@@ -94,3 +94,41 @@ export const logoutUser = async (req, res, next) => {
     next(err);
   }
 };
+
+// Google OAuth
+export const google = async (req, res, next) => {
+  const { email, name, profilePic } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (user) {
+      const token = generateToken(user._id);
+
+      res.status(200).json({
+        status: true,
+        message: "login successfully",
+        token,
+        data: user,
+      });
+    } else {
+      const generatedPassword = Math.random().toString(36).slice(-8);
+      const generatedUsername =
+        name.split(" ").join("").toLowerCase() +
+        Math.round(Math.random() * 1000).toString();
+
+      const newUser = await User.create({
+        name,
+        email,
+        username: generatedUsername,
+        password: generatedPassword,
+        profilePic,
+      });
+
+      res.status(200).json({
+        status: true,
+        message: "User created successfully",
+      });
+    }
+  } catch (err) {
+    next(err);
+  }
+};

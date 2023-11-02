@@ -1,4 +1,3 @@
-import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Formik } from "formik";
 import { InputField } from "../components/InputField";
@@ -7,7 +6,8 @@ import instance from "../axios/instance";
 import { useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../Redux/auth/authSlice";
+import { login } from "../Redux/slices/authSlice";
+import OAuth from "../components/OAuth";
 
 export default function Login() {
   const { isLoggedIn } = useSelector((state) => state.auth);
@@ -89,10 +89,7 @@ export default function Login() {
               <p className="text-center text-sm">OR</p>
               <hr className="border-gray-500" />
             </div>
-            <button className="bg-white dark:bg-p-dark dark:text-white border dark:border-p-dark py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300 ">
-              <FcGoogle className="text-2xl" />
-              <span className="ml-4">Login with Google</span>
-            </button>
+            <OAuth buttonText="Login with Google" />
             <div className="text-sm flex justify-between items-center mt-3">
               <p>Don&apos;t have an account?</p>
               <Link

@@ -1,12 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import { FcGoogle } from "react-icons/fc";
 import { InputField } from "../components/InputField";
 import instance from "../axios/instance";
+import OAuth from "../components/OAuth";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 export default function Register() {
   const navigate = useNavigate();
+  const { isLoggedIn } = useSelector((state) => state.auth);
 
   // Form Validation
   const initialValues = {
@@ -48,6 +51,10 @@ export default function Register() {
       console.log("Error: ", err.response.data);
     }
   };
+
+  useEffect(() => {
+    isLoggedIn && navigate("/feed");
+  }, [isLoggedIn, navigate]);
 
   return (
     <div className="p-20 min-h-screen w-screen flex flex-col-reverse gap-8 md:flex-row items-center justify-center bg-gray-200 dark:bg-p-dark">
@@ -122,10 +129,7 @@ export default function Register() {
               <p className="text-center text-sm">OR</p>
               <hr className="border-gray-500" />
             </div>
-            <button className="bg-white dark:bg-p-dark border dark:border-p-dark py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300 ">
-              <FcGoogle className="text-2xl" />
-              <span className="ml-4">SignUp with Google</span>
-            </button>
+            <OAuth buttonText="SignUp with Google" />
             <div className="text-sm flex justify-between items-center mt-3">
               <p>Already have an account?</p>
               <Link
