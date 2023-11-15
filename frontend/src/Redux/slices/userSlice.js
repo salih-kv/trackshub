@@ -1,19 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import instance from "../../axios/instance";
 
+// ✅
 export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
   const response = await instance.get("/api/v1/user/");
   return response.data;
 });
 
+// ✅
 export const fetchUserByUsername = createAsyncThunk(
   "user/fetchUserByUsername",
   async (username) => {
-    const response = await instance.get(`/api/v1/user${username}`);
+    const response = await instance.get(`/api/v1/user/${username}`);
     return response.data;
   }
 );
 
+// ✅
 export const updateUser = createAsyncThunk(
   "user/updateUser",
   async (userData) => {
@@ -22,6 +25,7 @@ export const updateUser = createAsyncThunk(
   }
 );
 
+// ✅
 export const resetPassword = createAsyncThunk(
   "user/resetPassword",
   async (newPassword) => {
@@ -33,18 +37,21 @@ export const resetPassword = createAsyncThunk(
   }
 );
 
+// ✅
 export const deleteUser = createAsyncThunk("user/deleteUser", async () => {
   const response = await instance.delete("/api/v1/user/");
+  console.log(response.data);
   return response.data;
 });
 
+// ✅
 export const followUser = createAsyncThunk(
   "user/followUser",
   async (followedId) => {
     const response = await instance.post("/api/v1/user/follow", {
       followedId,
     });
-    return response.data;
+    return response.data.user;
   }
 );
 
@@ -84,9 +91,10 @@ const userSlice = createSlice({
     handleAsyncAction(builder, updateUser, "user");
     handleAsyncAction(builder, resetPassword, "user");
     handleAsyncAction(builder, deleteUser, "user");
-    handleAsyncAction(builder, followUser, "user");
+    handleAsyncAction(builder, followUser, "userProfile");
   },
 });
 
 export const selectUser = (state) => state.user;
+export const { setIsCurrentUser } = userSlice.actions;
 export default userSlice.reducer;

@@ -79,29 +79,24 @@ export const PrivateHeader = () => {
   };
 
   return (
-    <header className="bg-white py-2 dark:bg-p-dark dark:text-white fixed top-0 left-0 right-0 z-50 border-b dark:border-s-dark">
-      <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-2xl">
-        {/* Left */}
+    <header className="header-container">
+      <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+        {/* Logo */}
         <div className="pl-4 md:mr-8">
-          {/* <Link to="/" className="flex items-center">
-        <div className="w-40">
-          <img src={logo} classNaFme="w-full" alt="TracksHub Logo" />
-        </div>
-      </Link> */}
           <Link
             to="/"
-            className="logo-img flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
+            className="logo-img flex font-medium items-center text-gray-900"
           >
-            <h2 className="text-2xl leading-6 text-black dark:text-white">
+            <span className=" lg:text-2xl font-semibold leading-6 text-black dark:text-white">
               TracksHub
-            </h2>
+            </span>
           </Link>
         </div>
-        {/* Middle */}
+        {/* Nav */}
         <div className="hidden sm:block order-2 lg:order-1 mt-4 lg:mt-0 border dark:border-s-dark lg:border-none w-full lg:w-auto">
           <Nav />
         </div>
-        {/* Right */}
+        {/* Nav Icons */}
         <div className="flex items-center space-x-3 lg:space-x-4 pr-4 order-1 lg:order-2">
           <form className="relative">
             <input
@@ -112,9 +107,9 @@ export const PrivateHeader = () => {
                 setSearchQuery(e.target.value);
                 searchUsers();
               }}
-              className="relative hidden md:block px-2 lg:px-4 lg:pl-10 max-w-xs py-1 rounded-3xl bg-s-light dark:bg-s-dark outline-none placeholder:text-xs placeholder:text-gray-500"
+              className="hidden md:block px-4 pl-10 max-w-xs py-1 rounded-3xl bg-s-light dark:bg-s-dark outline-none placeholder:text-xs placeholder:text-gray-500"
             />
-            <RiSearch2Line className="absolute top-1/4 left-4 text-gray-500" />
+            <RiSearch2Line className="text-xl md:absolute top-1/4 left-4 text-gray-500" />
             {searchResults?.length > 0 && <SearchResults />}
           </form>
           <DarkThemeToggle />
@@ -140,7 +135,7 @@ export const PrivateHeader = () => {
             </Transition>
           </button>
           <ProfileImg
-            w={9}
+            w={7}
             buttonStyle="px-2 md:pl-2 md:px-0 relative"
             onClick={() => toggleDropdown("user")}
             name={user?.name}

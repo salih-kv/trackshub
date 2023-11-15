@@ -7,10 +7,12 @@ import { fetchProjectsByUserId } from "./Redux/slices/projectSlice";
 import { fetchPosts } from "./Redux/slices/postSlice";
 import { selectAuth } from "./Redux/slices/authSlice";
 import Loading from "./components/Loading";
+import PostPage from "./pages/PostPage";
 
 const Welcome = lazy(() => import("./pages/Welcome"));
 const Register = lazy(() => import("./pages/Register"));
 const Login = lazy(() => import("./pages/Login"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 
 const Layout = lazy(() => import("./components/Layout"));
 const Feed = lazy(() => import("./pages/Feed"));
@@ -65,6 +67,7 @@ const App = () => {
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           {/* dynamic user🤖 route */}
           <Route
             path="/:username"
@@ -75,7 +78,7 @@ const App = () => {
             <Route path="playlists" element={<NotAvailable />} />
           </Route>
           {/* dynamic post route */}
-          <Route path="/:username/post/:postId" element={<NotAvailable />} />
+          <Route path="/:username/post/:postId" element={<PostPage />} />
           {/* protected🔒 route  */}
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Layout />}>
@@ -84,8 +87,6 @@ const App = () => {
                 <Route path="following" element={<Following />} />
                 <Route path="trending" element={<Trending />} />
               </Route>
-              {/* Explore */}
-              <Route path="/explore" element={<NotAvailable />} />
               {/* Projects */}
               <Route path="/projects" element={<Projects />}>
                 <Route path="collab" element={<CollabProjects />} />

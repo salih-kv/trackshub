@@ -4,7 +4,11 @@ import { ToastContainer, toast } from "react-toastify";
 import instance from "../../axios/instance";
 import { logout } from "../../Redux/slices/authSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUser, updateUser } from "../../Redux/slices/userSlice";
+import {
+  deleteUser,
+  fetchUser,
+  updateUser,
+} from "../../Redux/slices/userSlice";
 import Loading from "../Loading";
 
 const Account = () => {
@@ -155,13 +159,9 @@ const DeleteAccount = ({ dispatch }) => {
   const navigate = useNavigate();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const deleteAccount = async () => {
-    setShowDeleteConfirm(true);
-  };
-
   const confirmDelete = async () => {
     try {
-      await instance.delete("/api/v1/user/account");
+      await dispatch(deleteUser());
       dispatch(logout());
       navigate("/welcome");
     } catch (err) {
@@ -171,7 +171,7 @@ const DeleteAccount = ({ dispatch }) => {
   return (
     <>
       <button
-        onClick={deleteAccount}
+        onClick={() => setShowDeleteConfirm(true)}
         className="btn btn-secondary py-2 px-6 rounded-3xl"
       >
         Delete My Account

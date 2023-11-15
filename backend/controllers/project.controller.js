@@ -1,18 +1,7 @@
 import { Project } from "../models/project.model.js";
 import { errorHandler } from "../utils/errorHandler.js";
 
-// get a project
-export const getProjectById = async (req, res, next) => {
-  const { projectId } = req.params;
-  try {
-    const project = await Project.findOne({ projectId });
-    res.status(200).json(project);
-  } catch (err) {
-    next(err);
-  }
-};
-
-// create new project
+// create new project ✅
 export const createProject = async (req, res, next) => {
   const userId = req.user.id;
   const { title } = req.body;
@@ -27,7 +16,19 @@ export const createProject = async (req, res, next) => {
     return res.status(200).json({
       status: true,
       message: "Project created successfully",
+      data: project,
     });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// get a project
+export const getProjectById = async (req, res, next) => {
+  const { projectId } = req.params;
+  try {
+    const project = await Project.findOne({ projectId });
+    res.status(200).json(project);
   } catch (err) {
     next(err);
   }

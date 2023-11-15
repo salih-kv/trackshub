@@ -2,7 +2,7 @@ import { CgMusicNote } from "react-icons/cg";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { MdAudiotrack } from "react-icons/md";
 import ProjectCard from "./ProjectCard";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   fetchProjectsByUserId,
   createNewProject,
@@ -21,44 +21,38 @@ const MyProjects = () => {
   const [toggle, setToggle] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
-  useEffect(() => {
-    if (!loading) {
-      dispatch(fetchProjectsByUserId());
-    }
-  }, [dispatch]);
-
   if (loading) {
     return <Loading />;
   }
 
   return (
-    <div className="flex w-full gap-8">
-      <div className="w-1/4">
-        <header className="font-semibold mb-4">
-          <h2>Filter by:</h2>
+    <div className="flex flex-col lg:flex-row w-full gap-6 lg:gap-8">
+      <div className="lg:w-1/4 w-full">
+        <header className="font-medium text-sm mb-4">
+          <h4>Filter by:</h4>
         </header>
-        <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+        <div className="grid grid-cols-3 gap-x-2 lg:grid-cols-2 lg:gap-x-4 gap-y-2">
           {items?.map((item) => (
             <button
               key={item}
-              className="py-2 text-center rounded-xl bg-s-light dark:bg-s-dark"
+              className="py-2 text-xs lg:text-sm text-center rounded-xl bg-s-light dark:bg-s-dark"
             >
               {item}
             </button>
           ))}
         </div>
       </div>
-      <div className="w-3/4">
-        <header className="flex justify-between">
+      <div className="w-full">
+        <header className="flex justify-between items-center">
           <div>
-            <p className="text-lg font-medium">Projects Created by you</p>
+            <p className="text-sm lg:text-lg font-medium">Projects Created by you</p>
           </div>
           <div>
             <button
-              className="btn btn-fill px-3 py-2 text-sm rounded-xl flex items-center gap-2"
+              className="btn btn-fill px-3 py-2 text-xs rounded-xl flex items-center gap-2"
               onClick={() => setToggle(true)}
             >
-              <BiSolidLayerPlus className="text-lg" />
+              <BiSolidLayerPlus className="text-sm lg:text-lg" />
               New
             </button>
           </div>

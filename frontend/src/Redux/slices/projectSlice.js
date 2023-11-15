@@ -78,8 +78,8 @@ const projectSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    handleAsyncAction(builder, fetchProjectsByUserId, "projects");
     handleAsyncAction(builder, createNewProject, "projects");
+    handleAsyncAction(builder, fetchProjectsByUserId, "projects");
     handleAsyncAction(builder, getProjectById, "project");
     handleAsyncAction(builder, updateProject, "project");
     handleAsyncAction(builder, deleteProject, "projects");

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ProfileCard from "../components/Feed/ProfileCard";
 import ProjectsCard from "../components/Feed/ProjectsCard";
@@ -28,7 +28,7 @@ const Feed = () => {
   }, [dispatch]);
   return (
     <div className="flex justify-between w-full gap-12 py-0 sm:py-8 lg:py-4 mx-4 lg:mx-0">
-      <section className="md:w-1/3 lg:w-1/4 hidden md:flex flex-col justify-start items-center">
+      <section className="w-[260px] hidden md:flex flex-col justify-start items-center">
         <ProfileCard />
         {latestProjects.length > 0 && (
           <div className="w-full mt-8">
@@ -36,7 +36,7 @@ const Feed = () => {
               <h4 className="font-semibold">Projects</h4>
               <Link
                 to={`/projects/my-projects`}
-                className="text-gray-500 text-sm"
+                className="text-gray-500 text-xs"
               >
                 View All
               </Link>
@@ -68,12 +68,12 @@ const Middle = () => {
       <header className="flex gap-8">
         {NavLinks?.map(({ to, label }) => (
           <div key={to} className="group/link hover:bg-slate-100">
-            <Link
+            <NavLink
               to={to}
               className="text-gray-500 font-medium hover:text-black"
             >
               {label}
-            </Link>
+            </NavLink>
             <div className="w-8 h-[3px] bg-black invisible group-hover/link:visible"></div>
           </div>
         ))}

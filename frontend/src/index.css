@@ -6,8 +6,18 @@ body {
   @apply font-body bg-p-light text-black dark:bg-p-dark dark:text-white;
 }
 
+/* Header Start */
+.header-container {
+  @apply bg-white py-2 dark:bg-p-dark dark:text-white fixed top-0 left-0 right-0 z-50;
+}
 .fixed-header {
   @apply fixed top-0 left-0 w-full bg-white z-50;
+}
+
+/* Header End */
+
+.active {
+  @apply text-primary-500;
 }
 
 .btn {

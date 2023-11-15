@@ -11,7 +11,7 @@ import {
 
 const router = express();
 
-router.post("/create", verifyToken, createProject);
+router.post("/create", verifyToken, createProject); // ✅
 router.get("/:projectId", verifyToken, getProjectById);
 router.patch("/:projectId", verifyToken, updateProject);
 router.delete("/:projectId", verifyToken, deleteProject);

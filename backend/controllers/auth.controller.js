@@ -1,13 +1,6 @@
-import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 import { errorHandler } from "../utils/errorHandler.js";
-
-// Generate Token
-const generateToken = function (id) {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
-  });
-};
+import { generateToken } from "../utils/tokenGenerator.js";
 
 // Signup
 export const signupUser = async (req, res, next) => {
@@ -30,8 +23,6 @@ export const signupUser = async (req, res, next) => {
       username,
       password,
     });
-
-    // write code to set cookie
 
     res.status(200).json({
       status: true,
@@ -60,9 +51,6 @@ export const loginUser = async (req, res, next) => {
     }
 
     const token = generateToken(user._id);
-
-    // write code to set cookie
-
     res.status(200).json({
       status: true,
       message: "login successfully",
@@ -123,9 +111,14 @@ export const google = async (req, res, next) => {
         profilePic,
       });
 
+      const user = await User.findOne({ email });
+      const token = generateToken(user._id);
+
       res.status(200).json({
         status: true,
         message: "User created successfully",
+        token,
+        data: newUser,
       });
     }
   } catch (err) {

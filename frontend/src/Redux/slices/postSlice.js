@@ -14,13 +14,19 @@ export const fetchPosts = createAsyncThunk("post/fetchPosts", async () => {
   return response.data;
 });
 
+export const fetchPostById = createAsyncThunk(
+  "post/fetchPostById",
+  async (postId) => {
+    const response = await instance.post(`/api/v1/post/${postId}`);
+    return response.data;
+  }
+);
+
 export const fetchPostsByUsername = createAsyncThunk(
   "post/fetchPostsByUsername",
   async (username) => {
-    if (username) {
-      const response = await instance.post(`/api/v1/post/${username}`);
-      return response.data;
-    }
+    const response = await instance.get(`/api/v1/post/${username}`);
+    return response.data;
   }
 );
 
@@ -36,13 +42,24 @@ export const likePost = createAsyncThunk("post/likePost", async (postId) => {
   const response = await instance.post(`/api/v1/post/like`, {
     postId,
   });
-  return response.data.posts;
+  return response.data;
 });
+
+export const commentToPost = createAsyncThunk(
+  "post/commentToPost",
+  async ({ postId, text }) => {
+    const response = await instance.post(`/api/v1/post/comment/${postId}`, {
+      text,
+    });
+    return response.data;
+  }
+);
 
 const postSlice = createSlice({
   name: "post",
   initialState: {
     posts: [],
+    post: {},
     userPosts: [],
     loading: false,
   },
@@ -54,6 +71,13 @@ const postSlice = createSlice({
       })
       .addCase(createNewPost.fulfilled, (state, action) => {
         state.posts.push(action.payload);
+        state.loading = false;
+      })
+      .addCase(fetchPostById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchPostById.fulfilled, (state, action) => {
+        state.post = action.payload;
         state.loading = false;
       })
       .addCase(fetchPosts.pending, (state) => {
@@ -81,7 +105,16 @@ const postSlice = createSlice({
         state.loading = true;
       })
       .addCase(likePost.fulfilled, (state, action) => {
-        state.posts = action.payload;
+        state.post = action.payload.post;
+        state.posts = action.payload.posts;
+        state.loading = false;
+      })
+      .addCase(commentToPost.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(commentToPost.fulfilled, (state, action) => {
+        state.post = action.payload.post;
+        state.posts = action.payload.posts;
         state.loading = false;
       });
   },

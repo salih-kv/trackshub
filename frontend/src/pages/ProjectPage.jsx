@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
+import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom";
 import { IoIosShareAlt } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjectById, selectProject } from "../Redux/slices/projectSlice";
@@ -39,12 +39,16 @@ const Overview = () => {
 
   useEffect(() => {
     dispatch(getProjectById(projectId));
-  }, [dispatch]);
+  }, [dispatch, projectId]);
 
   return (
     <div className="flex items-center gap-6 w-full bg-primary-400 rounded-lg p-6 mb-8">
       <div className="w-44 h-48 bg-primary-500 rounded-lg ">
-        <img src="https://picsum.photos/id/304/400/400" alt="project_img" className="w-full h-full rounded-lg" />
+        <img
+          src="https://picsum.photos/id/304/400/400"
+          alt="project_img"
+          className="w-full h-full rounded-lg"
+        />
       </div>
       <div className="w-full">
         <div className="flex gap-4 items-center mb-2">
@@ -123,12 +127,12 @@ const Workspace = () => {
       <header className="flex gap-8 mb-8">
         {NavLinks?.map(({ to, label }) => (
           <div key={to} className="group/link hover:bg-slate-100">
-            <Link
+            <NavLink
               to={to}
               className="text-gray-500 font-medium hover:text-black"
             >
               {label}
-            </Link>
+            </NavLink>
             <div className="w-8 h-[3px] bg-black invisible group-hover/link:visible"></div>
           </div>
         ))}

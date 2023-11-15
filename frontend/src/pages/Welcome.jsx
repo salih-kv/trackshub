@@ -4,6 +4,8 @@ import { FiArrowRight, FiChevronRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
+import sample from "../assets/sample.png";
+
 export default function Welcome() {
   return (
     <main className="overflow-hidden">
@@ -114,9 +116,12 @@ const HeroLeft = () => {
       </h1>
       <p className="mb-8 leading-relaxed text-gray-400">Sync your sound</p>
       <div className="flex justify-center">
-        <button className="inline-flex text-white bg-primary-500 py-2 px-4 focus:outline-none hover:bg-opacity-80 rounded text-sm">
+        <Link
+          to="/register"
+          className="inline-flex text-white bg-primary-500 py-2 px-4 focus:outline-none hover:bg-opacity-80 rounded text-sm"
+        >
           Get started
-        </button>
+        </Link>
       </div>
     </div>
   );
@@ -128,9 +133,9 @@ const HeroRight = () => {
       id="pattern"
       className="w-32 sm:w-40 lg:max-w-xl lg:w-full md:w-32 xl:w-5/6 bg-contain bg-no-repeat md:ml-48 xl:mr-16"
     >
-      <div className="w-full flex gap-3 justify-center ">
+      <div className="w-full flex gap-3 justify-center">
         <img
-          className="object-cover object-center rounded-xl "
+          className="object-cover object-center rounded-xl w-full"
           alt="hero"
           src="https://placehold.co/175x115"
         />

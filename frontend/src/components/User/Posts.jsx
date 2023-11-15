@@ -21,9 +21,21 @@ const Posts = () => {
 
   return (
     <div>
-      {latestPosts?.map((post) => (
-        <Post key={post._id} user={userProfile} post={post} />
-      ))}
+      {latestPosts.length > 0 ? (
+        latestPosts?.map((post) => (
+          <Post key={post._id} user={userProfile} post={post} />
+        ))
+      ) : (
+        <div className="py-4 flex gap-4 flex-wrap">
+          <div className="flex items-center justify-center w-full mt-32">
+            <div className="flex flex-col items-center justify-center max-w-[240px]">
+              <p className="text-gray-500 text-center text-xs font-medium">
+                There are no more posts to show right now.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

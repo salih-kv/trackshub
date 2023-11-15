@@ -5,6 +5,7 @@ export default withMt({
   theme: {
     extend: {
       colors: {
+        black: "#282C32",
         primary: {
           50: "#f4f2ff",
           100: "#eae8ff",
@@ -17,21 +18,20 @@ export default withMt({
           800: "#4d18bf",
           900: "#40169c",
           950: "#260b6a",
-        }, // primary color
+        },
         // bg
         "p-light": "#FFFFFF",
-        "s-light": "#F1F4F6",
+        "s-light": "#F7F8FB",
         "p-dark": "#1C1C26",
         "s-dark": "#262831",
         // text
         "b-dark": "#52576F",
         "t-dark": "#B1B1C7",
-        "gray-500": "#7E8999",
-        black: "#282C32",
+        "gray-500": "#697078",
       },
       fontFamily: {
         display: ["Pacifico", "cursive"],
-        body: ["Poppins", "sans-serif"],
+        body: ["Inter", "sans-serif"],
       },
     },
   },

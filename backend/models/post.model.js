@@ -12,6 +12,8 @@ const postSchema = Schema(
       required: true,
       ref: "Users",
     },
+    username: { type: String, required: true, ref: "Users" },
+    name: { type: String, required: true, ref: "Users" },
     text: {
       type: String,
       maxLength: 400,

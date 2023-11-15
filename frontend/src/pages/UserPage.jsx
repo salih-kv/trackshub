@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { BsInstagram, BsSpotify, BsThreeDots } from "react-icons/bs";
 import { IoChatbubblesSharp } from "react-icons/io5";
@@ -10,6 +10,7 @@ import {
   fetchUserByUsername,
   followUser,
   selectUser,
+  setIsCurrentUser,
 } from "../Redux/slices/userSlice";
 import WelcomeHeader from "../components/Welcome/WelcomeHeader";
 import ProfileImg from "../components/ProfileImg";
@@ -17,23 +18,33 @@ import PageNotFound from "../components/Error/PageNotFound";
 import { fetchPostsByUsername } from "../Redux/slices/postSlice";
 
 const UserPage = ({ userProfile }) => {
+  const { username } = useParams();
   const dispatch = useDispatch();
   const { isLoggedIn } = useSelector((state) => state.auth);
-  const { user, isCurrentUser } = useSelector(selectUser);
+  const { user, isCurrentUser, loading } = useSelector(selectUser);
   const [isFollowing, setIsFollowing] = useState(false);
-  const path = window.location.pathname;
+  const isCurrentUserProfile = user?._id === userProfile?._id;
 
   useEffect(() => {
+    const fetchData = async () => {
+      await dispatch(fetchUserByUsername(username));
+      await dispatch(fetchPostsByUsername(username));
+    };
+    fetchData();
+  }, [dispatch, username]);
+
+  useEffect(() => {
+    dispatch(setIsCurrentUser(isCurrentUserProfile));
     setIsFollowing(userProfile?.followers?.includes(user._id));
   }, [userProfile.followers, user._id]);
 
-  useEffect(() => {
-    dispatch(fetchUserByUsername(path));
-    dispatch(fetchPostsByUsername(path));
-  }, [dispatch, path]);
-
   const followersCount = userProfile?.followers?.length || 0;
   const followingCount = userProfile?.following?.length || 0;
+
+  const handleFollowButtonClick = async () => {
+    await dispatch(followUser(userProfile?._id));
+    setIsFollowing(userProfile?.followers?.includes(user?._id));
+  };
 
   return (
     <div className="relative min-h-screen dark:bg-p-dark dark:text-white">
@@ -43,8 +54,8 @@ const UserPage = ({ userProfile }) => {
           (Object.keys(userProfile).length === 0 && <PageNotFound />)}
       </div>
       {Object.keys(userProfile).length > 0 && (
-        <div className="flex gap-4 w-full justify-between mx-auto max-w-screen-2xl">
-          <div className="w-1/4 relative z-10">
+        <div className="flex gap-6 w-full justify-center mx-auto max-w-screen-2xl">
+          <div className="relative z-10">
             <div className="bg-primary-50 dark:bg-primary-300 w-36 h-36 rounded-full absolute top-100 left-1/2 transform translate-x-[-50%] translate-y-[-50%]">
               <ProfileImg name={userProfile?.name} bg={`09ce82`} />
             </div>
@@ -87,16 +98,18 @@ const UserPage = ({ userProfile }) => {
                       <IoChatbubblesSharp className="mr-1" />
                       Chat
                     </Link>
-                    <button
-                      onClick={() => {
-                        dispatch(followUser(userProfile?._id));
-                      }}
-                      className={`btn py-1.5 px-4 rounded-2xl ${
-                        isFollowing ? "btn-outlined" : "btn-fill"
-                      }`}
-                    >
-                      {isFollowing ? "Following" : "Follow"}
-                    </button>
+                    {loading ? (
+                      <span>...</span>
+                    ) : (
+                      <button
+                        onClick={handleFollowButtonClick}
+                        className={`btn py-1.5 px-4 rounded-2xl ${
+                          isFollowing ? "btn-outlined" : "btn-fill"
+                        }`}
+                      >
+                        {isFollowing ? "Following" : "Follow"}
+                      </button>
+                    )}
                     <button className="btn bg-s-light dark:bg-s-dark px-4 rounded-2xl">
                       <BsThreeDots />
                     </button>
@@ -119,9 +132,7 @@ const UserPage = ({ userProfile }) => {
               </div>
             </div>
           </div>
-
           <Middle />
-          <Right />
         </div>
       )}
     </div>
@@ -150,12 +161,9 @@ const Middle = () => {
       <header className="flex gap-8 pt-12">
         {NavLinks?.map(({ to, label }) => (
           <div key={to} className="group/link hover:bg-slate-100">
-            <Link
-              to={to}
-              className="text-gray-500 font-medium hover:text-black"
-            >
+            <NavLink to={to} className="font-medium">
               {label}
-            </Link>
+            </NavLink>
             <div className="w-8 h-[3px] bg-black invisible group-hover/link:visible"></div>
           </div>
         ))}
@@ -163,14 +171,6 @@ const Middle = () => {
       <div>
         <Outlet />
       </div>
-    </div>
-  );
-};
-
-const Right = () => {
-  return (
-    <div className="w-1/4">
-      <header className="pt-12"></header>
     </div>
   );
 };

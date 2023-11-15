@@ -1,4 +1,4 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 const NavLinks = [
@@ -29,22 +29,22 @@ export default function Projects() {
   return (
     <div className="flex flex-col w-full py-0 sm:py-8 lg:py-4 mx-4 lg:mx-0">
       <div className="flex w-full gap-8">
-        <div className="w-1/4 h-auto"></div>
-        <header className="w-3/4 flex gap-8">
+        <div className="w-1/4 h-auto hidden lg:block"></div>
+        <header className="w-full flex justify-center lg:justify-start gap-3 lg:gap-8 pb-2 lg:pb-4">
           {NavLinks?.map(({ to, label }) => (
             <div key={to} className="group/link hover:bg-slate-100">
-              <Link
+              <NavLink
                 to={to}
-                className="text-gray-500 font-medium hover:text-white"
+                className="text-gray-500 text-xs lg:text-sm font-medium"
               >
                 {label}
-              </Link>
-              <div className="w-8 h-[3px] bg-black invisible group-hover/link:visible"></div>
+              </NavLink>
+              <div className="w-8 h-[3px] bg-black dark:bg-white invisible group-hover/link:visible"></div>
             </div>
           ))}
         </header>
       </div>
-      <div className="mt-8 w-full">
+      <div className=" w-full">
         <Outlet />
       </div>
     </div>

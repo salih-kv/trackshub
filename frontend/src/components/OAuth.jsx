@@ -27,7 +27,7 @@ const OAuth = ({ buttonText }) => {
     <button
       type="button"
       onClick={handleGoogleClick}
-      className="bg-white dark:bg-p-dark dark:text-white border dark:border-p-dark py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300 "
+      className="bg-white dark:bg-s-dark dark:text-white border dark:border-s-dark py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300 "
     >
       <FcGoogle className="text-2xl" />
       <span className="ml-4">{buttonText}</span>

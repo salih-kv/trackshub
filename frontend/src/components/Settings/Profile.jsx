@@ -3,6 +3,8 @@ import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser, updateUser } from "../../Redux/slices/userSlice";
 import Loading from "../Loading";
+import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
+import { storageRef } from "../../firebase/firebase.config";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -10,6 +12,7 @@ const Profile = () => {
 
   const [userInput, setUserInput] = useState(user);
   const [isDirty, setIsDirty] = useState(false);
+  const [imageUrls, setImageUrls] = useState([]);
 
   const inputRef = useRef(null);
 
@@ -29,6 +32,33 @@ const Profile = () => {
   const onButtonClick = () => {
     inputRef.current.click();
   };
+
+  const uploadFile = () => {
+    if (inputRef.current.files.length > 0) {
+      const img = inputRef.current.files[0];
+      const imageRef = ref(storageRef, `images/${img.name}`);
+      uploadBytes(imageRef, img)
+        .then((snapshot) => {
+          getDownloadURL(snapshot.ref)
+            .then((url) => {
+              setImageUrls([url]);
+            })
+            .catch((error) => {
+              console.error("Error getting download URL:", error);
+            });
+        })
+        .catch((error) => {
+          console.error("Error uploading image:", error);
+        });
+    }
+  };
+
+  const uploadedImage =
+    imageUrls.length > 0 ? (
+      <img src={imageUrls[0]} alt="Uploaded Image" />
+    ) : null;
+
+  console.log(imageUrls[0]);
 
   useEffect(() => {
     dispatch(fetchUser());
@@ -51,14 +81,34 @@ const Profile = () => {
         <form className="flex flex-col w-full gap-8">
           <div className="flex gap-12">
             <div>
+              <input
+                type="file"
+                id="img"
+                accept="image/*"
+                ref={inputRef}
+                style={{ display: "none" }}
+                onChange={uploadFile}
+              />
               <div className={`flex items-center justify-center w-40 h-40`}>
-                <img
-                  className="w-full h-auto rounded-full"
-                  src={`https://ui-avatars.com/api/?name=${
-                    user?.name
-                  }&length=1&bold=true&background=${"B73D0D"}&color=fff&size=256`}
-                  alt="user photo"
-                />
+                <label htmlFor="img">
+                  <div
+                    id="imagePreview"
+                    onClick={onButtonClick}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {uploadedImage ? (
+                      uploadedImage
+                    ) : (
+                      <img
+                        className="w-full h-auto rounded-full"
+                        src={`https://ui-avatars.com/api/?name=${
+                          user?.name
+                        }&length=1&bold=true&background=${"B73D0D"}&color=fff&size=256`}
+                        alt="user photo"
+                      />
+                    )}
+                  </div>
+                </label>
               </div>
             </div>
 

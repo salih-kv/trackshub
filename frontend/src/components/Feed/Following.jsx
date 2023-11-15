@@ -80,7 +80,7 @@ const CreatePost = ({ user }) => {
       <div className="w-full">
         <input
           type="text"
-          className="bg-s-light dark:bg-s-dark w-full py-3 px-6 rounded-3xl placeholder:text-gray-500 outline-none"
+          className="bg-s-light dark:bg-s-dark w-full py-2 px-6 rounded-3xl placeholder:text-gray-500 outline-none"
           placeholder="What's new?"
           readOnly={true}
           onClick={() => setPostToggle((prev) => !prev)}

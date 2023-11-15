@@ -12,16 +12,16 @@ function WelcomeHeader({ isShow }) {
             to="/"
             className="logo-img flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
           >
-            <h2 className="font-display text-2xl leading-6 text-gray-800">
+            <h2 className="text-2xl font-semibold leading-6 text-gray-800">
               TracksHub
             </h2>
           </Link>
         </div>
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
-          <NavLinkItem to="/" text="About" />
-          <NavLinkItem to="/" text="Integration" />
-          <NavLinkItem to="/" text="Features" />
-          <NavLinkItem to="/" text="Docs" />
+          <NavLinkItem to="/about" text="About" />
+          <NavLinkItem to="/pricing" text="Pricing" />
+          <NavLinkItem to="/features" text="Features" />
+          <NavLinkItem to="/docs" text="Docs" />
         </nav>
         {show && (
           <nav>
@@ -43,7 +43,7 @@ function NavLinkItem({ to, text }) {
   return (
     <Link
       to={to}
-      className="mr-5 hover:text-gray-900 text-black cursor-pointer"
+      className="mx-5 hover:text-gray-900 text-black cursor-pointer"
     >
       {text}
     </Link>

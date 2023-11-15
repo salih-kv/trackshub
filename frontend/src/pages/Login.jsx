@@ -37,12 +37,12 @@ export default function Login() {
   }, [isLoggedIn, navigate]);
 
   return (
-    <div className="p-20 min-h-screen w-screen flex flex-col-reverse gap-8 md:flex-row items-center justify-center bg-gray-200 dark:bg-p-dark relative">
+    <div className="px-20 min-h-screen w-screen flex flex-col-reverse gap-8 md:flex-row items-center justify-center bg-gray-200 dark:bg-p-dark relative">
       {/* Left */}
-      <div className="text-3xl text-center md:text-left">
+      <div className="text-3xl text-center md:text-left min-w-[400px]">
         <Link
           to="/welcome"
-          className="text-5xl text-primary-500 font-bold font-display mb-4"
+          className="text-5xl text-primary-500 font-bold  mb-4"
         >
           TracksHub
         </Link>
@@ -52,11 +52,8 @@ export default function Login() {
       </div>
       {/* Right */}
       <div className="mx-auto">
-        <div className="bg-gray-100 dark:bg-s-dark p-5 flex rounded-2xl ">
-          <div className="px-5 w-[400px]">
-            <h2 className="text-2xl font-bold text-primary-700 text-center">
-              Login
-            </h2>
+        <div className="flex rounded-2xl ">
+          <div className="w-[420px]">
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -76,6 +73,12 @@ export default function Login() {
                   name="password"
                   placeholder="Password"
                 />
+                <Link
+                  to="/forgot-password"
+                  className="text-xs text-gray-700 hover:text-primary-500 flex justify-end mt-2"
+                >
+                  Forgot password?
+                </Link>
                 <button
                   type="submit"
                   className="w-full block btn btn-fill text-white font-semibold rounded-lg px-4 py-3 mt-6"
@@ -94,7 +97,7 @@ export default function Login() {
               <p>Don&apos;t have an account?</p>
               <Link
                 to="/register"
-                className="py-2 px-5 ml-3 bg-white dark:bg-p-dark dark:text-white border dark:border-p-dark rounded-xl hover:scale-110 duration-300 border-primary-400  "
+                className="py-2 px-5 ml-3 bg-white dark:bg-s-dark dark:text-white border dark:border-s-dark rounded-xl hover:scale-105 duration-300 border-primary-400  dark:hover:text-primary-500"
               >
                 Register
               </Link>

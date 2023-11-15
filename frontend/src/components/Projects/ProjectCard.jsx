@@ -11,7 +11,7 @@ const ProjectCard = ({ projectId, title, createdAt, collaborators }) => {
   const [toggle, setToggle] = useState(false);
 
   return (
-    <div className="w-60 h-40 rounded-xl shadow-xl overflow-hidden bg-s-light dark:bg-s-dark p-6">
+    <div className="w-60 h-36 rounded-lg overflow-hidden bg-s-light dark:bg-s-dark p-4">
       <div className="flex items-center justify-between">
         <SiOpenlayers />
         <button className="p-2" onClick={() => setToggle(!toggle)}>
@@ -19,8 +19,8 @@ const ProjectCard = ({ projectId, title, createdAt, collaborators }) => {
         </button>
       </div>
       <Link to={`/project/${projectId}`}>
-        <div className="w-full h-1/3 my-2">
-          <h4 className="font-semibold">{title}</h4>
+        <div className="w-full h-1/3 my-1">
+          <h4 className="font-semibold text-sm">{title}</h4>
           <p className="text-xs text-gray-500">{formattedTime}</p>
         </div>
         <div className="w-full h-1/3 overflow-hidden flex items-center justify-between my-2">

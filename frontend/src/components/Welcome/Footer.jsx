@@ -4,7 +4,6 @@ const Footer = () => {
       <div className="container mx-auto w-full p-4 md:py-8">
         <div className="sm:flex sm:items-center sm:justify-between">
           <a href="" className="flex items-center mb-4 sm:mb-0">
-            {/* <img src="" className="h-8 mr-3" alt="TracksHub Logo" /> */}
             <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
               TracksHub
             </span>

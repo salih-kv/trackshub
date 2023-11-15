@@ -11,14 +11,10 @@ const ProjectsCard = ({ projectId, title, createdAt }) => {
     >
       <div className="flex items-center justify-between">
         <div className="w-10 h-10 mr-4">
-          <img
-            src="https://picsum.photos/id/304/100/100"
-            alt=""
-            className="w-full h-full rounded-xl"
-          />
+          {/* <img src="" alt="" className="w-full h-full rounded-xl" /> */}
         </div>
         <div className="mr-auto">
-          <h4 className="font-semibold text-base">{title}</h4>
+          <h4 className="font-medium">{title}</h4>
           <p className="text-gray-500 text-xs">{formattedTime}</p>
         </div>
         <div>

@@ -2,11 +2,12 @@ import { Post } from "../models/post.model.js";
 import { User } from "../models/user.model.js";
 import { errorHandler } from "../utils/errorHandler.js";
 
+// function for controllers
 const getUserPosts = async (userId) => {
   try {
     let user = await User.findOne({ _id: userId });
     if (!user) {
-      console.log("User not found");
+      return res.status(400).json("User not found");
     }
     const posts = await Post.find({ userId });
     return posts;
@@ -20,15 +21,26 @@ export const createNewPost = async (req, res, next) => {
   const { text, file } = req.body;
 
   try {
-    const user = User.findOne({ _id: userId });
+    const user = await User.findOne({ _id: userId });
+    const { username, name } = user;
     if (user) {
-      const newPost = await Post.create({ userId, text, file });
+      const newPost = await Post.create({ userId, username, name, text, file });
       res.status(200).json({
         status: true,
         message: "New post created successfully",
         data: newPost,
       });
     }
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getPostById = async (req, res, next) => {
+  const { postId } = req.params;
+  try {
+    const post = await Post.findOne({ _id: postId });
+    res.json(post);
   } catch (err) {
     next(err);
   }
@@ -54,30 +66,27 @@ export const deletePost = async (req, res, next) => {
   }
 };
 
-export const getPostById = async (req, res, next) => {
+export const getAllPosts = async (req, res, next) => {
   const userId = req.user.id;
-  const { postId } = req.params;
+  const { username } = req.params;
   try {
-    let user = await User.findOne({ _id: userId });
-    if (!user) {
-      return res.status(400).send("User not found");
+    if (username) {
+      let user = await User.findOne({ username });
+      if (!user) {
+        return res.status(400).send("User not found");
+      }
+      const posts = await Post.find({ userId: user?._id });
+      res.json(posts);
     }
-    const posts = await Post.find({ postId });
-    res.json(posts);
-  } catch (err) {
-    next(err);
-  }
-};
 
-export const getPosts = async (req, res, next) => {
-  const userId = req.user.id;
-  try {
-    let user = await User.findOne({ _id: userId });
-    if (!user) {
-      return res.status(400).json("User not found");
+    if (userId) {
+      let user = await User.findOne({ _id: userId });
+      if (!user) {
+        return res.status(400).json("User not found");
+      }
+      const posts = await Post.find({ userId });
+      res.json(posts);
     }
-    const posts = await Post.find({ userId });
-    res.json(posts);
   } catch (err) {
     next(err);
   }
@@ -94,18 +103,22 @@ export const likeUnlikePost = async (req, res, next) => {
     if (userLikedPost) {
       // Unlike post
       await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
+      const updatedPost = await Post.findById(postId);
       const posts = await getUserPosts(userId);
       res.status(200).json({
         message: "Post unliked successfully",
+        post: updatedPost,
         posts,
       });
     } else {
       // Like post
       post.likes.push(userId);
       await post.save();
+      const updatedPost = await Post.findById(postId);
       const posts = await getUserPosts(userId);
       res.status(200).json({
         message: "Post liked successfully",
+        post: updatedPost,
         posts,
       });
     }
@@ -114,13 +127,15 @@ export const likeUnlikePost = async (req, res, next) => {
   }
 };
 
-export const replyToPost = async (req, res, next) => {
+export const commentToPost = async (req, res, next) => {
+  const userId = req.user.id;
+  const { text } = req.body;
+  const { postId } = req.params;
+
   try {
-    const { text } = req.body;
-    const postId = req.params.id;
-    const userId = req.user._id;
-    const userProfilePic = req.user.profilePic;
-    const username = req.user.username;
+    const user = await User.findById({ _id: userId });
+    const userProfilePic = user.profilePic;
+    const username = user.username;
 
     if (!text) {
       return res.status(400).json({ error: "Text field is required" });
@@ -131,51 +146,40 @@ export const replyToPost = async (req, res, next) => {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    const reply = { userId, text, userProfilePic, username };
+    const comment = { userId, text, userProfilePic, username };
 
-    post.replies.push(reply);
+    post.comments.push(comment);
     await post.save();
 
-    res.status(200).json(reply);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+    const updatedPost = await Post.findById(postId);
+    const posts = await getUserPosts(userId);
 
-export const getFeedPosts = async (req, res, next) => {
-  try {
-    const userId = req.user._id;
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    const following = user.following;
-
-    const feedPosts = await Post.find({ postedBy: { $in: following } }).sort({
-      createdAt: -1,
+    res.status(200).json({
+      message: "commented successfully",
+      post: updatedPost,
+      posts,
     });
-
-    res.status(200).json(feedPosts);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-// export const getUserPosts = async (req, res, next) => {
-//   const { username } = req.params;
+// export const getFeedPosts = async (req, res, next) => {
 //   try {
-//     const user = await User.findOne({ username });
+//     const userId = req.user._id;
+//     const user = await User.findById(userId);
 //     if (!user) {
 //       return res.status(404).json({ error: "User not found" });
 //     }
 
-//     const posts = await Post.find({ postedBy: user._id }).sort({
+//     const following = user.following;
+
+//     const feedPosts = await Post.find({ postedBy: { $in: following } }).sort({
 //       createdAt: -1,
 //     });
 
-//     res.status(200).json(posts);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
+//     res.status(200).json(feedPosts);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
 //   }
 // };
