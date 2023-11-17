@@ -8,6 +8,12 @@ const ProfileImg = ({
   bg,
   ...rest
 }) => {
+  const src = profileURL
+    ? profileURL
+    : `https://ui-avatars.com/api/?name=${name}&length=1&bold=true&background=${
+        bg || "B73D0D"
+      }&color=fff&size=256`;
+
   return (
     <div className={`${buttonStyle}`} {...rest}>
       <button
@@ -15,12 +21,7 @@ const ProfileImg = ({
       >
         <img
           className={`w-full h-auto rounded-full ${imageStyle}`}
-          src={
-            profileURL ||
-            `https://ui-avatars.com/api/?name=${name}&length=1&bold=true&background=${
-              bg || "B73D0D"
-            }&color=fff&size=256`
-          }
+          src={src}
           alt="🤖"
         />
       </button>

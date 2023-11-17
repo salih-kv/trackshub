@@ -42,11 +42,19 @@ export const Post = ({ user, post }) => {
   return (
     <div className="border-b dark:border-s-dark pb-6">
       <header className="flex items-center justify-between py-4">
-        <ProfileImg w={10} buttonStyle={`mr-3`} />
+        <Link to={`/${post.username}`}>
+          <ProfileImg
+            profileURL={post?.profilePic}
+            w={10}
+            buttonStyle={`mr-3`}
+          />
+        </Link>
         <div className="mr-auto w-full">
           <div className="flex items-center gap-1">
             <h4 className="font-semibold text-base">{post?.name}</h4>
-            <span className="text-gray-500 text-xs font-medium">{`@${post?.username}`}</span>
+            <Link to={`/${post.username}`}>
+              <span className="text-gray-500 text-xs font-medium hover:underline underline-offset-2">{`@${post?.username}`}</span>
+            </Link>
           </div>
           <p className="text-gray-500 text-xs">{formattedTime}</p>
         </div>
@@ -85,11 +93,14 @@ export const Post = ({ user, post }) => {
         <div className="mr-auto w-full">{post?.text}</div>
       </Link>
       {/* count */}
-      <div className="text-gray-600 text-xs flex items-center gap-2 py-3">
+      <Link
+        to={`/${user?.username}/post/${post?._id}`}
+        className="text-gray-600 text-xs flex items-center gap-2 py-3"
+      >
         <p>{post?.comments?.length || 0} comments</p>
         <div className="font-extrabold w-1 h-1 bg-gray-600 rounded-full"></div>
         <p>{post?.likes?.length || 0} likes</p>
-      </div>
+      </Link>
       {/* comment */}
       <div className="w-full flex gap-2">
         <div>

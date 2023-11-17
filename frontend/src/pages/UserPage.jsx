@@ -26,38 +26,41 @@ const UserPage = ({ userProfile }) => {
   const isCurrentUserProfile = user?._id === userProfile?._id;
 
   useEffect(() => {
-    const fetchData = async () => {
-      await dispatch(fetchUserByUsername(username));
-      await dispatch(fetchPostsByUsername(username));
-    };
-    fetchData();
+    dispatch(fetchUserByUsername(username));
+    dispatch(fetchPostsByUsername(username));
   }, [dispatch, username]);
 
   useEffect(() => {
+    setIsFollowing(userProfile?.followers?.includes(user?._id));
+  }, [userProfile, user._id]);
+
+  useEffect(() => {
     dispatch(setIsCurrentUser(isCurrentUserProfile));
-    setIsFollowing(userProfile?.followers?.includes(user._id));
-  }, [userProfile.followers, user._id]);
+  }, [dispatch, isCurrentUserProfile]);
 
   const followersCount = userProfile?.followers?.length || 0;
   const followingCount = userProfile?.following?.length || 0;
 
   const handleFollowButtonClick = async () => {
-    await dispatch(followUser(userProfile?._id));
-    setIsFollowing(userProfile?.followers?.includes(user?._id));
+    dispatch(followUser(userProfile?._id));
   };
 
   return (
     <div className="relative min-h-screen dark:bg-p-dark dark:text-white">
       {isLoggedIn ? <PrivateHeader /> : <WelcomeHeader isShow={true} />}
-      <div className="w-full h-60 bg-gradient-to-r from-primary-300 via-primary-500 to-primary-400">
+      <div className="w-full h-44 sm:h-60 lg:h-52 bg-gradient-to-r from-primary-300 via-primary-500 to-primary-400">
         {!userProfile ||
           (Object.keys(userProfile).length === 0 && <PageNotFound />)}
       </div>
       {Object.keys(userProfile).length > 0 && (
-        <div className="flex gap-6 w-full justify-center mx-auto max-w-screen-2xl">
+        <div className="flex flex-col md:flex-row gap-6 w-full justify-center mx-auto max-w-screen-2xl px-4">
           <div className="relative z-10">
             <div className="bg-primary-50 dark:bg-primary-300 w-36 h-36 rounded-full absolute top-100 left-1/2 transform translate-x-[-50%] translate-y-[-50%]">
-              <ProfileImg name={userProfile?.name} bg={`09ce82`} />
+              <ProfileImg
+                w={`full`}
+                profileURL={userProfile?.profilePic}
+                name={userProfile?.name}
+              />
             </div>
             <div>
               <div className="pt-20 pb-4 px-4 flex flex-col items-center">
@@ -93,8 +96,8 @@ const UserPage = ({ userProfile }) => {
                     </Link>
                   </div>
                 ) : (
-                  <div className="flex gap-2 mt-5">
-                    <Link className="btn py-1.5 px-4 rounded-2xl bg-primary-200  text-primary-500">
+                  <div className="grid grid-cols-[120px,120px,50px] mt-5">
+                    <Link className="btn w-28 h-10 rounded-2xl bg-primary-200  text-primary-500">
                       <IoChatbubblesSharp className="mr-1" />
                       Chat
                     </Link>
@@ -103,7 +106,7 @@ const UserPage = ({ userProfile }) => {
                     ) : (
                       <button
                         onClick={handleFollowButtonClick}
-                        className={`btn py-1.5 px-4 rounded-2xl ${
+                        className={`btn w-28 h-10 rounded-2xl ${
                           isFollowing ? "btn-outlined" : "btn-fill"
                         }`}
                       >
@@ -157,8 +160,8 @@ const Middle = () => {
     },
   ];
   return (
-    <div className="w-2/4">
-      <header className="flex gap-8 pt-12">
+    <div className="w-full lg:w-2/4">
+      <header className="flex gap-8 md:pt-12">
         {NavLinks?.map(({ to, label }) => (
           <div key={to} className="group/link hover:bg-slate-100">
             <NavLink to={to} className="font-medium">

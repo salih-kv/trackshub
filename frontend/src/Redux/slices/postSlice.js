@@ -14,6 +14,14 @@ export const fetchPosts = createAsyncThunk("post/fetchPosts", async () => {
   return response.data;
 });
 
+export const fetchFollowingPosts = createAsyncThunk(
+  "post/fetchFollowingPosts",
+  async () => {
+    const response = await instance.post("/api/v1/post/following");
+    return response.data;
+  }
+);
+
 export const fetchPostById = createAsyncThunk(
   "post/fetchPostById",
   async (postId) => {
@@ -61,6 +69,7 @@ const postSlice = createSlice({
     posts: [],
     post: {},
     userPosts: [],
+    followingPosts: [],
     loading: false,
   },
   reducers: {},
@@ -85,6 +94,13 @@ const postSlice = createSlice({
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.posts = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchFollowingPosts.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchFollowingPosts.fulfilled, (state, action) => {
+        state.followingPosts = action.payload;
         state.loading = false;
       })
       .addCase(fetchPostsByUsername.pending, (state) => {

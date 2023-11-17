@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
 body {
   @apply font-body bg-p-light text-black dark:bg-p-dark dark:text-white;
 }
@@ -21,7 +33,7 @@ body {
 }
 
 .btn {
-  @apply inline-flex justify-center items-center focus:outline-none outline-none font-medium;
+  @apply inline-flex justify-center items-center focus:outline-none outline-none font-medium text-sm lg:text-base;
 }
 
 .btn-secondary {
@@ -33,7 +45,7 @@ body {
 }
 
 .btn-outlined {
-  @apply border  border-primary-700 text-primary-700 dark:text-white hover:bg-primary-500 active:bg-primary-700 disabled:opacity-90;
+  @apply border  border-primary-700 text-primary-700 dark:text-white hover:ring-1 ring-primary-500 active:bg-primary-700 disabled:opacity-90;
 }
 
 .btn-gradient {

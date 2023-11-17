@@ -28,7 +28,7 @@ export const PrivateHeader = () => {
   const searchUsers = async () => {
     try {
       const response = await instance.get(
-        `/api/v1/user/searchUser?q=${searchQuery}`
+        `/api/v1/user/search?q=${searchQuery}`
       );
       setSearchResults(response.data);
     } catch (err) {
@@ -82,7 +82,7 @@ export const PrivateHeader = () => {
     <header className="header-container">
       <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
         {/* Logo */}
-        <div className="pl-4 md:mr-8">
+        <div className="md:mr-8 ml-4 xl:ml-0">
           <Link
             to="/"
             className="logo-img flex font-medium items-center text-gray-900"
@@ -97,7 +97,7 @@ export const PrivateHeader = () => {
           <Nav />
         </div>
         {/* Nav Icons */}
-        <div className="flex items-center space-x-3 lg:space-x-4 pr-4 order-1 lg:order-2">
+        <div className="flex items-center space-x-3 lg:space-x-4 order-1 lg:order-2 mr-4 xl:mr-0">
           <form className="relative">
             <input
               type="text"
@@ -109,7 +109,7 @@ export const PrivateHeader = () => {
               }}
               className="hidden md:block px-4 pl-10 max-w-xs py-1 rounded-3xl bg-s-light dark:bg-s-dark outline-none placeholder:text-xs placeholder:text-gray-500"
             />
-            <RiSearch2Line className="text-xl md:absolute top-1/4 left-4 text-gray-500" />
+            <RiSearch2Line className="text-xl lg:text-base md:absolute top-1/4 left-4 text-gray-500" />
             {searchResults?.length > 0 && <SearchResults />}
           </form>
           <DarkThemeToggle />

@@ -55,6 +55,11 @@ export const followUser = createAsyncThunk(
   }
 );
 
+export const suggestUser = createAsyncThunk("user/suggestUser", async () => {
+  const response = await instance.post("/api/v1/user/suggest");
+  return response.data;
+});
+
 const handleAsyncAction = (builder, action, stateKey) => {
   builder
     .addCase(action.fulfilled, (state, action) => {
@@ -78,6 +83,7 @@ const userSlice = createSlice({
     user: {},
     userProfile: {},
     isCurrentUser: false,
+    userSuggestions: [],
     loading: false,
   },
   reducers: {
@@ -92,6 +98,7 @@ const userSlice = createSlice({
     handleAsyncAction(builder, resetPassword, "user");
     handleAsyncAction(builder, deleteUser, "user");
     handleAsyncAction(builder, followUser, "userProfile");
+    handleAsyncAction(builder, suggestUser, "userSuggestions");
   },
 });
 

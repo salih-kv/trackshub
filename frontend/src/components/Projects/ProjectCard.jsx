@@ -11,7 +11,7 @@ const ProjectCard = ({ projectId, title, createdAt, collaborators }) => {
   const [toggle, setToggle] = useState(false);
 
   return (
-    <div className="w-60 h-36 rounded-lg overflow-hidden bg-s-light dark:bg-s-dark p-4">
+    <div className="w-full rounded-md overflow-hidden bg-s-light dark:bg-s-dark p-4">
       <div className="flex items-center justify-between">
         <SiOpenlayers />
         <button className="p-2" onClick={() => setToggle(!toggle)}>

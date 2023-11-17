@@ -5,6 +5,7 @@ import nodemailer from "nodemailer";
 // get account details ✅
 export const getUserDetails = async (req, res, next) => {
   const { username } = req.params;
+
   try {
     if (username && username !== "undefined") {
       const user = await User.findOne({ username });
@@ -194,7 +195,7 @@ export const toggleFollowUser = async (req, res, next) => {
 // search users
 export const searchUser = async (req, res, next) => {
   const searchQuery = req.query.q;
-  console.log(searchQuery);
+  console.log("searchQuery");
 
   if (!searchQuery) {
     return res.json([]);
@@ -205,6 +206,33 @@ export const searchUser = async (req, res, next) => {
       username: { $regex: new RegExp(searchQuery, "i") }, // case-insensitive regex search
     }).select("username name profilePic");
     res.json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const suggestUser = async (req, res, next) => {
+  const userId = req.user.id;
+  try {
+    const currentUser = await User.findById({ _id: userId });
+
+    const suggestedUsers = await User.find({
+      $and: [
+        {
+          $or: [
+            { location: { $regex: new RegExp(currentUser.location, "i") } }, // Users in the same location & Case-insensitive regex
+            { skills: { $in: currentUser.skills } }, // $in - value includes in the array, bcz skills is an array
+            { genres: { $in: currentUser.genres } },
+            { instruments: { $in: currentUser.instruments } },
+            { tools: { $in: currentUser.tools } },
+            { languages: { $in: currentUser.languages } },
+          ],
+        },
+        { _id: { $nin: [...currentUser.following, userId] } }, // $nin - not include, Exclude already following users & current user from recommendations
+      ],
+    }).limit(4);
+
+    res.status(200).json(suggestedUsers);
   } catch (err) {
     next(err);
   }

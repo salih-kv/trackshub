@@ -7,13 +7,14 @@ const postSchema = Schema(
       type: String,
       default: () => uuidv4().slice(0, 6),
     },
-    userId: {
+    postedBy: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "Users",
     },
     username: { type: String, required: true, ref: "Users" },
     name: { type: String, required: true, ref: "Users" },
+    profilePic: { type: String, required: true, ref: "Users" },
     text: {
       type: String,
       maxLength: 400,

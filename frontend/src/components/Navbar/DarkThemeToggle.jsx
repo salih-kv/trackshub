@@ -1,18 +1,8 @@
-import { useEffect, useState } from "react";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
+import { useTheme } from "../../context/ThemeContext";
 
 const DarkThemeToggle = () => {
-  const [theme, setTheme] = useState(localStorage.theme);
-
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", theme);
-    } else {
-      localStorage.setItem("theme", theme);
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
+  const { theme, setTheme } = useTheme();
 
   const toggleDarkMode = () => {
     setTheme((prevDark) => {

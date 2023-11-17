@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  getProjectById,
   updateProject,
   deleteProject,
+  selectProject,
 } from "../../Redux/slices/projectSlice";
 import { useDispatch, useSelector } from "react-redux";
-import Loading from "../Loading";
 
 const ProjectSettings = () => {
   const { projectId } = useParams();
-  const { project, loading } = useSelector((state) => state.project);
+  const { project, loading } = useSelector(selectProject);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -28,16 +27,10 @@ const ProjectSettings = () => {
     setIsDirty(true);
   };
 
-  useEffect(() => {
-    dispatch(getProjectById(projectId));
-    setInput(project);
-  }, [projectId, dispatch]);
-
   const update = async (e) => {
     e.preventDefault();
     await dispatch(updateProject({ projectId, updateData: input }));
     setIsDirty(false);
-    dispatch(getProjectById(projectId));
   };
 
   useEffect(() => {
@@ -46,20 +39,18 @@ const ProjectSettings = () => {
     }
   }, [project, loading]);
 
-  if (loading) return <Loading />;
-
   return (
     <div className="flex flex-col gap-12 mb-12 max-w-screen-md">
       <section>
         <h1 className="font-semibold mb-4 text-xl">Project information</h1>
-        <div className="flex w-full gap-16">
-          <div className="w-1/4">
+        <div className="flex flex-col md:flex-row w-full gap-6 lg:gap-8">
+          <div className="">
             <p>Cover</p>
-            <div className="w-52 mt-3 h-52 border-2 border-dashed border-s-light dark:border-s-dark rounded-sm">
+            <div className="w-full h-36 md:aspect-square mt-3 border-2 border-dashed border-primary-400 rounded-sm">
               {/* Project cover image */}
             </div>
           </div>
-          <div className="w-3/4">
+          <div className="w-full">
             <label htmlFor="title">Project Title</label>
             <input
               type="text"
@@ -95,8 +86,8 @@ const ProjectSettings = () => {
       </section>
       <section>
         <h1 className="font-semibold mb-4 text-xl">Project metadata</h1>
-        <div className="flex gap-8">
-          <div>
+        <div className="flex flex-col justify-between md:flex-row gap-2 md:gap-8">
+          <div className="w-full">
             <label htmlFor="songTitle">Song title</label>
             <input
               id="songTitle"
@@ -107,7 +98,7 @@ const ProjectSettings = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div>
+          <div className="w-full">
             <label htmlFor="description">Description</label>
             <input
               id="description"
@@ -135,21 +126,19 @@ const ProjectSettings = () => {
       </section>
       <section>
         <h1 className="font-semibold mb-4 text-xl">Actions</h1>
-        <div className="flex items-center gap-8 mb-8">
-          <div className="max-w-lg">
+        <div className="flex flex-col md:flex-row md:items-center gap-4 lg:gap-8 mb-8">
+          <div className="">
             <h6>Close project</h6>
             <p className="text-sm text-gray-400">
               All files, comments and settings are saved when a project is
               closed. The content will be read-only unless it is re-opened.
             </p>
           </div>
-          <div>
-            <button className="btn border border-gray-500 py-1.5 px-4 rounded-md">
-              Close project
-            </button>
-          </div>
+          <button className="btn  border border-gray-500 py-1.5 px-4 rounded-md">
+            Close project
+          </button>
         </div>
-        <div className="flex items-center gap-8">
+        <div className="flex flex-col md:flex-row md:items-center gap-4 lg:gap-8">
           <div className="max-w-lg">
             <h6>Delete project</h6>
             <p className="text-sm text-gray-400">
@@ -157,14 +146,12 @@ const ProjectSettings = () => {
               if a project is deleted.
             </p>
           </div>
-          <div>
-            <button
-              className="btn btn-secondary py-1.5 px-4 rounded-md"
-              onClick={confirmDelete}
-            >
-              Delete project
-            </button>
-          </div>
+          <button
+            className="btn btn-secondary py-1.5 px-4 rounded-md"
+            onClick={confirmDelete}
+          >
+            Delete project
+          </button>
         </div>
       </section>
       {showDeleteConfirmation && (

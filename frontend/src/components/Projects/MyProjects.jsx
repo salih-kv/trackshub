@@ -45,7 +45,9 @@ const MyProjects = () => {
       <div className="w-full">
         <header className="flex justify-between items-center">
           <div>
-            <p className="text-sm lg:text-lg font-medium">Projects Created by you</p>
+            <p className="text-sm lg:text-lg font-medium">
+              Projects Created by you
+            </p>
           </div>
           <div>
             <button
@@ -78,6 +80,7 @@ const MyProjects = () => {
                   type="text"
                   className="input !pl-10"
                   placeholder="Project Name"
+                  maxLength={14}
                   value={inputValue}
                   onClick={(e) => e.stopPropagation()}
                   onChange={(e) => setInputValue(e.target.value)}
@@ -100,7 +103,7 @@ const MyProjects = () => {
         )}
         {/* project input modal ^ */}
 
-        <div className="py-4 flex gap-4 flex-wrap">
+        <div className="py-4 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {projects.length > 0 ? (
             projects?.map((project) => (
               <ProjectCard {...project} key={project.title} />

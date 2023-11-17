@@ -8,10 +8,11 @@ import {
   fetchProjectsByUserId,
   selectProject,
 } from "../Redux/slices/projectSlice";
-import { fetchUser } from "../Redux/slices/userSlice";
+import { fetchUser, selectUser, suggestUser } from "../Redux/slices/userSlice";
 
 const Feed = () => {
   const { projects, loading } = useSelector(selectProject);
+  const { userSuggestions } = useSelector(selectUser);
   const dispatch = useDispatch();
   const latestProjects = projects
     ? projects
@@ -24,10 +25,11 @@ const Feed = () => {
     if (!projects || !loading) {
       dispatch(fetchUser());
       dispatch(fetchProjectsByUserId());
+      dispatch(suggestUser());
     }
   }, [dispatch]);
   return (
-    <div className="flex justify-between w-full gap-12 py-0 sm:py-8 lg:py-4 mx-4 lg:mx-0">
+    <div className="flex justify-between w-full gap-12 py-0 sm:py-8 lg:py-4">
       <section className="w-[260px] hidden md:flex flex-col justify-start items-center">
         <ProfileCard />
         {latestProjects.length > 0 && (
@@ -49,7 +51,7 @@ const Feed = () => {
       </section>
       <Middle />
       <section className="w-1/4 hidden lg:block">
-        <UsersCard />
+        <UsersCard userSuggestions={userSuggestions} />
       </section>
     </div>
   );
@@ -60,7 +62,7 @@ export default Feed;
 const Middle = () => {
   const NavLinks = [
     { to: "following", label: "Following" },
-    { to: "trending", label: "Trending" },
+    // { to: "trending", label: "Trending" },
   ];
 
   return (

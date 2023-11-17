@@ -5,9 +5,10 @@ import { errorHandler } from "../utils/errorHandler.js";
 // function for controllers
 const getUserPosts = async (userId) => {
   try {
+    console.log("1");
     let user = await User.findOne({ _id: userId });
     if (!user) {
-      return res.status(400).json("User not found");
+      return res.status(404).json("User not found");
     }
     const posts = await Post.find({ userId });
     return posts;
@@ -17,18 +18,27 @@ const getUserPosts = async (userId) => {
 };
 
 export const createNewPost = async (req, res, next) => {
+  console.log("2");
   const userId = req.user.id;
   const { text, file } = req.body;
 
   try {
     const user = await User.findOne({ _id: userId });
-    const { username, name } = user;
+    const { username, name, profilePic } = user;
     if (user) {
-      const newPost = await Post.create({ userId, username, name, text, file });
+      const newPost = await Post.create({
+        postedBy: userId,
+        username,
+        name,
+        profilePic,
+        text,
+        file,
+      });
+
       res.status(200).json({
         status: true,
         message: "New post created successfully",
-        data: newPost,
+        newPost,
       });
     }
   } catch (err) {
@@ -37,6 +47,8 @@ export const createNewPost = async (req, res, next) => {
 };
 
 export const getPostById = async (req, res, next) => {
+  console.log("3");
+
   const { postId } = req.params;
   try {
     const post = await Post.findOne({ _id: postId });
@@ -48,6 +60,8 @@ export const getPostById = async (req, res, next) => {
 
 export const deletePost = async (req, res, next) => {
   const userId = req.user.id;
+  console.log("4");
+
   const { postId } = req.params;
   try {
     const user = User.findOne({ _id: userId });
@@ -67,24 +81,26 @@ export const deletePost = async (req, res, next) => {
 };
 
 export const getAllPosts = async (req, res, next) => {
+  // console.log("5");
+
   const userId = req.user.id;
   const { username } = req.params;
   try {
     if (username) {
       let user = await User.findOne({ username });
       if (!user) {
-        return res.status(400).send("User not found");
+        return res.status(404).send("User not found");
       }
-      const posts = await Post.find({ userId: user?._id });
+      const posts = await Post.find({ postedBy: user?._id });
       res.json(posts);
     }
 
     if (userId) {
       let user = await User.findOne({ _id: userId });
       if (!user) {
-        return res.status(400).json("User not found");
+        return res.status(404).json("User not found");
       }
-      const posts = await Post.find({ userId });
+      const posts = await Post.find({ postedBy: userId });
       res.json(posts);
     }
   } catch (err) {
@@ -93,6 +109,8 @@ export const getAllPosts = async (req, res, next) => {
 };
 
 export const likeUnlikePost = async (req, res, next) => {
+  console.log("6");
+
   const userId = req.user.id;
   const { postId } = req.body;
   try {
@@ -128,6 +146,8 @@ export const likeUnlikePost = async (req, res, next) => {
 };
 
 export const commentToPost = async (req, res, next) => {
+  console.log("7");
+
   const userId = req.user.id;
   const { text } = req.body;
   const { postId } = req.params;
@@ -164,22 +184,20 @@ export const commentToPost = async (req, res, next) => {
   }
 };
 
-// export const getFeedPosts = async (req, res, next) => {
-//   try {
-//     const userId = req.user._id;
-//     const user = await User.findById(userId);
-//     if (!user) {
-//       return res.status(404).json({ error: "User not found" });
-//     }
+export const getFeedPosts = async (req, res, next) => {
+  const userId = req.user.id;
 
-//     const following = user.following;
+  try {
+    const user = await User.findById(userId);
+    const following = user.following;
 
-//     const feedPosts = await Post.find({ postedBy: { $in: following } }).sort({
-//       createdAt: -1,
-//     });
+    // Find latest posts of following users
+    const feedPosts = await Post.find({ postedBy: { $in: following } })
+      .sort({ createdAt: -1 })
+      .limit(20);
 
-//     res.status(200).json(feedPosts);
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
+    res.status(200).json(feedPosts);
+  } catch (err) {
+    next(err);
+  }
+};

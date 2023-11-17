@@ -31,7 +31,7 @@ const ProfileCard = () => {
           </div>
         </header>
       </Link>
-      <div className="flex justify-around items-center w-full border-t-2 dark:border-s-dark p-2">
+      <div className="flex justify-around items-center w-full border-t-2 dark:border-s-dark p-4">
         <CardCounter count={followersCount} label="Followers" />
         <CardCounter count={followingCount} label="Following" />
       </div>

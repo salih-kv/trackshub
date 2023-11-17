@@ -6,6 +6,7 @@ import {
   getUserDetails,
   resetPassword,
   searchUser,
+  suggestUser,
   toggleFollowUser,
   updateUser,
 } from "../controllers/user.controller.js";
@@ -15,9 +16,9 @@ router.get("/:username?", verifyToken, getUserDetails); // ✅
 router.post("/", verifyToken, updateUser); // ✅
 router.delete("/", verifyToken, deleteUser); // ✅
 router.post("/reset-password", verifyToken, resetPassword); // ✅
-router.post("/forgot-password", forgotPassword); // ! pending
-
 router.post("/follow", verifyToken, toggleFollowUser); // ✅
-router.get("/searchUser", searchUser);
+router.post("/suggest", verifyToken, suggestUser);
+router.get("/search", searchUser);
+router.post("/forgot-password", forgotPassword); // ! pending
 
 export default router;

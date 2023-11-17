@@ -11,7 +11,11 @@ const ProjectsCard = ({ projectId, title, createdAt }) => {
     >
       <div className="flex items-center justify-between">
         <div className="w-10 h-10 mr-4">
-          {/* <img src="" alt="" className="w-full h-full rounded-xl" /> */}
+          <img
+            src={`https://ui-avatars.com/api/?name=${title}&length=1&bold=true&background=${"B73D0D"}&color=fff&size=256`}
+            alt=""
+            className="w-full h-full rounded-xl"
+          />
         </div>
         <div className="mr-auto">
           <h4 className="font-medium">{title}</h4>

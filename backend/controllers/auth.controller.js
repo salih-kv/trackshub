@@ -1,6 +1,7 @@
 import { User } from "../models/user.model.js";
 import { errorHandler } from "../utils/errorHandler.js";
 import { generateToken } from "../utils/tokenGenerator.js";
+import { v4 as uuidv4 } from "uuid";
 
 // Signup
 export const signupUser = async (req, res, next) => {
@@ -22,6 +23,7 @@ export const signupUser = async (req, res, next) => {
       email,
       username,
       password,
+      profilePic: `https://api.multiavatar.com/${uuidv4().slice(0, 6)}.png`,
     });
 
     res.status(200).json({

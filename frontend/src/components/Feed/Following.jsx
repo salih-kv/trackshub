@@ -1,23 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ProfileImg from "../ProfileImg";
 import { IoMdCloseCircleOutline } from "react-icons/io";
-import { createNewPost, selectPost } from "../../Redux/slices/postSlice";
+import {
+  createNewPost,
+  fetchFollowingPosts,
+  selectPost,
+} from "../../Redux/slices/postSlice";
 import { selectUser } from "../../Redux/slices/userSlice";
 import { storageRef } from "../../firebase/firebase.config";
-import { AudioPlayer } from "react-audio-player-component";
 import { Post } from "../Post";
+import WaveSurferPlayer from "../AudioPlayer/WaveSurferPlayer";
 
 const Following = () => {
+  const dispatch = useDispatch();
   const { user } = useSelector(selectUser);
-  const { posts } = useSelector(selectPost);
+  const { posts, followingPosts } = useSelector(selectPost);
+  const [latestPosts, setLatestPosts] = useState();
 
-  const latestPosts = posts
-    ? posts
-        .slice()
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-        .slice(0, 1)
-    : [];
+  useEffect(() => {
+    dispatch(fetchFollowingPosts());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setLatestPosts(
+      posts
+        ? posts
+            .slice()
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 1)
+        : []
+    );
+  }, [posts]);
+
+  let sortedFollowingPosts = followingPosts
+    .slice()
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   return (
     <div className="flex flex-col gap-6">
@@ -25,7 +43,11 @@ const Following = () => {
       {latestPosts?.map((post, index) => (
         <Post key={index} user={user} post={post} />
       ))}
-      <div>{/* render following users posts */}</div>
+      <div>
+        {sortedFollowingPosts?.map((post) => (
+          <Post key={post._id} post={post} />
+        ))}
+      </div>
     </div>
   );
 };
@@ -120,19 +142,7 @@ const CreatePost = ({ user }) => {
                 {audioFile && audioLoading ? (
                   <>...</>
                 ) : (
-                  audioFile && (
-                    <AudioPlayer
-                      src={audioURL}
-                      minimal={true}
-                      width={570}
-                      trackHeight={35}
-                      backgroundColor="#1C1C26"
-                      barColor="#262831"
-                      barPlayedColor="#774EFF"
-                      seekBarColor="#774EFF"
-                      hideSeekBar={true}
-                    />
-                  )
+                  audioFile && <WaveSurferPlayer />
                 )}
               </div>
             </div>
