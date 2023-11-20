@@ -25,7 +25,7 @@ const UserDropDown = () => {
       className={`absolute top-8 right-0 z-20 rounded-lg shadow-lg bg-p-light dark:bg-s-dark`}
     >
       <div className="p-4">
-        <div className="text-left min-w-[280px]">
+        <div className="text-left min-w-[240px]">
           <Link to={`/${user?.username}`}>
             <div className="flex items-center justify-between hover:bg-s-light dark:hover:bg-p-dark rounded-lg p-2">
               <ProfileImg
@@ -36,11 +36,11 @@ const UserDropDown = () => {
               />
               <div className="w-full">
                 <h4 className="font-semibold text-sm">{user?.name}</h4>
-                <p className=" text-gray-500">View Profile</p>
+                <p className="text-sm text-gray-500">View Profile</p>
               </div>
             </div>
           </Link>
-          <div className="bg-s-light dark:bg-s-dark h-[1px] my-2"></div>
+          <div className="bg-s-light dark:bg-p-dark h-[1px] my-2"></div>
           <div className="flex flex-col gap-2">
             <DropDownLink
               to="/settings"

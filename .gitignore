@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 *.env
+/Issues.md
 
 
 # Editor directories and files

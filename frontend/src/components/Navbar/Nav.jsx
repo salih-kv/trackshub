@@ -1,11 +1,13 @@
 import { PiHouseBold } from "react-icons/pi";
 import { TbMusicPlus } from "react-icons/tb";
+import { GoTasklist } from "react-icons/go";
 import { RiFolderMusicLine } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 
 const NavLinks = [
   { to: "/feed", label: "Feed", icon: <PiHouseBold /> },
   { to: "/projects", label: "Projects", icon: <TbMusicPlus /> },
+  { to: "/tasks", label: "Tasks", icon: <GoTasklist /> },
   { to: "/library", label: "Library", icon: <RiFolderMusicLine /> },
 ];
 

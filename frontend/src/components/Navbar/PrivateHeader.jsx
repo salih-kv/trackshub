@@ -1,5 +1,9 @@
-import { IoNotificationsOutline } from "react-icons/io5";
-import { AiOutlineComment } from "react-icons/ai";
+import {
+  IoChatbubbleEllipsesOutline,
+  IoChatbubbleEllipsesSharp,
+  IoNotifications,
+  IoNotificationsOutline,
+} from "react-icons/io5";
 import DarkThemeToggle from "./DarkThemeToggle";
 import { Link } from "react-router-dom";
 import Nav from "./Nav";
@@ -57,7 +61,12 @@ export const PrivateHeader = () => {
         {searchResults?.map((result) => (
           <Link to={`/${result.username}`} key={result._id}>
             <header className="flex items-center p-4 w-full rounded-md hover:bg-s-light dark:hover:bg-p-dark">
-              <ProfileImg w={10} buttonStyle={`mr-4`} name={result?.name} />
+              <ProfileImg
+                w={10}
+                profileURL={result.profilePic}
+                buttonStyle={`mr-4`}
+                name={result?.name}
+              />
               <div>
                 <h4 className="font-bold">{result?.name}</h4>
                 <p className="text-xs font-semibold text-gray-500">{`@${result?.username}`}</p>
@@ -107,17 +116,21 @@ export const PrivateHeader = () => {
                 setSearchQuery(e.target.value);
                 searchUsers();
               }}
-              className="hidden md:block px-4 pl-10 max-w-xs py-1 rounded-3xl bg-s-light dark:bg-s-dark outline-none placeholder:text-xs placeholder:text-gray-500"
+              className="search-input"
             />
             <RiSearch2Line className="text-xl lg:text-base md:absolute top-1/4 left-4 text-gray-500" />
             {searchResults?.length > 0 && <SearchResults />}
           </form>
           <DarkThemeToggle />
           <button
-            className="header-btn"
+            className="header-btn text-xl"
             onClick={() => toggleDropdown("notification")}
           >
-            <IoNotificationsOutline className="text-xl" />
+            {activeDropdown === "notification" ? (
+              <IoNotifications />
+            ) : (
+              <IoNotificationsOutline />
+            )}
             <Transition
               show={activeDropdown === "notification"}
               {...transitionProps}
@@ -126,10 +139,14 @@ export const PrivateHeader = () => {
             </Transition>
           </button>
           <button
-            className="header-btn hidden sm:block"
+            className="header-btn hidden sm:block text-xl"
             onClick={() => toggleDropdown("chat")}
           >
-            <AiOutlineComment className="text-xl" />
+            {activeDropdown === "chat" ? (
+              <IoChatbubbleEllipsesSharp />
+            ) : (
+              <IoChatbubbleEllipsesOutline />
+            )}
             <Transition show={activeDropdown === "chat"} {...transitionProps}>
               {activeDropdown === "chat" && <ChatDropDown />}
             </Transition>
