@@ -29,14 +29,24 @@ const CollabProjects = lazy(() =>
 );
 
 const ProjectPage = lazy(() => import("./pages/ProjectPage"));
-const Files = lazy(() => import("./components/Project/Files"));
-const Collaborators = lazy(() => import("./components/Project/Collaborators"));
-const Messages = lazy(() => import("./components/Project/Messages"));
-const Tasks = lazy(() => import("./components/Project/Tasks"));
+const ProjectFiles = lazy(() => import("./components/Project/ProjectFiles"));
+const ProjectCollaborators = lazy(() =>
+  import("./components/Project/ProjectCollaborators")
+);
+const ProjectMessages = lazy(() =>
+  import("./components/Project/ProjectMessages")
+);
+const ProjectTasks = lazy(() => import("./components/Project/ProjectTasks"));
 const ProjectSettings = lazy(() =>
   import("./components/Project/ProjectSettings")
 );
-const Comments = lazy(() => import("./components/Project/Comments"));
+const ProjectComments = lazy(() =>
+  import("./components/Project/ProjectComments")
+);
+
+const Tasks = lazy(() => import("./pages/Tasks"));
+
+const Chats = lazy(() => import("./pages/Chats"));
 
 const Settings = lazy(() => import("./pages/Settings"));
 const Profile = lazy(() => import("./components/Settings/Profile"));
@@ -95,15 +105,22 @@ const App = () => {
               </Route>
               {/* dynamic project route */}
               <Route path="/project/:projectId" element={<ProjectPage />}>
-                <Route path="files" element={<Files />} />
-                <Route path="collaborators" element={<Collaborators />} />
-                <Route path="messages" element={<Messages />} />
-                <Route path="tasks" element={<Tasks />} />
+                <Route path="files" element={<ProjectFiles />} />
+                <Route
+                  path="collaborators"
+                  element={<ProjectCollaborators />}
+                />
+                <Route path="messages" element={<ProjectMessages />} />
+                <Route path="tasks" element={<ProjectTasks />} />
                 <Route path="settings" element={<ProjectSettings />} />
-                <Route path="comments" element={<Comments />} />
+                <Route path="comments" element={<ProjectComments />} />
               </Route>
-              {/*  */}
+              {/* Tasks */}
+              <Route path="/tasks" element={<Tasks />} />
+              {/* Library */}
               <Route path="/library" element={<NotAvailable />} />
+              {/* Chats */}
+              <Route path="/chats" element={<Chats />} />
               {/* Settings⚙️ */}
               <Route path="/settings" element={<Settings />}>
                 <Route path="profile" element={<Profile />} />

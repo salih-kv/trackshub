@@ -51,7 +51,7 @@ const MyProjects = () => {
           </div>
           <div>
             <button
-              className="btn btn-fill px-3 py-2 text-xs rounded-xl flex items-center gap-2"
+              className="btn btn-fill px-3 py-2 text-xs rounded-3xl flex items-center gap-2"
               onClick={() => setToggle(true)}
             >
               <BiSolidLayerPlus className="text-sm lg:text-lg" />
@@ -103,22 +103,22 @@ const MyProjects = () => {
         )}
         {/* project input modal ^ */}
 
-        <div className="py-4 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {projects.length > 0 ? (
-            projects?.map((project) => (
+        {projects.length > 0 ? (
+          <div className="py-4 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {projects?.map((project) => (
               <ProjectCard {...project} key={project.title} />
-            ))
-          ) : (
-            <div className="flex items-center justify-center w-full mt-32">
-              <div className="flex flex-col items-center justify-center max-w-[240px]">
-                <CgMusicNote className="text-4xl mb-4" />
-                <p className="text-gray-500 text-center text-xs font-medium">
-                  It Looks Like You Haven't Started Any Projects Yet.
-                </p>
-              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex items-center justify-center w-full mt-32">
+            <div className="flex flex-col items-center justify-center max-w-[240px]">
+              <CgMusicNote className="text-4xl mb-4" />
+              <p className="text-gray-500 text-center text-xs font-medium">
+                It Looks Like You Haven't Started Any Projects Yet.
+              </p>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

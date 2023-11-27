@@ -126,20 +126,20 @@ const ProjectSettings = () => {
       </section>
       <section>
         <h1 className="font-semibold mb-4 text-xl">Actions</h1>
-        <div className="flex flex-col md:flex-row md:items-center gap-4 lg:gap-8 mb-8">
-          <div className="">
+        <div className="flex flex-col justify-between md:flex-row md:items-center gap-4 lg:gap-8 mb-8">
+          <div className="w-3/4">
             <h6>Close project</h6>
             <p className="text-sm text-gray-400">
               All files, comments and settings are saved when a project is
               closed. The content will be read-only unless it is re-opened.
             </p>
           </div>
-          <button className="btn  border border-gray-500 py-1.5 px-4 rounded-md">
+          <button className="btn border border-gray-500  py-1.5 px-3 rounded-md">
             Close project
           </button>
         </div>
-        <div className="flex flex-col md:flex-row md:items-center gap-4 lg:gap-8">
-          <div className="max-w-lg">
+        <div className="flex flex-col justify-between md:flex-row md:items-center gap-4 lg:gap-8">
+          <div className="w-3/4">
             <h6>Delete project</h6>
             <p className="text-sm text-gray-400">
               Warning: All files, comments and settings are permanently deleted
@@ -147,7 +147,7 @@ const ProjectSettings = () => {
             </p>
           </div>
           <button
-            className="btn btn-secondary py-1.5 px-4 rounded-md"
+            className="btn btn-secondary py-1.5 px-3 rounded-md"
             onClick={confirmDelete}
           >
             Delete project

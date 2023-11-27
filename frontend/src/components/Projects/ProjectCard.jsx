@@ -24,19 +24,23 @@ const ProjectCard = ({ projectId, title, createdAt, collaborators }) => {
           <p className="text-xs text-gray-500">{formattedTime}</p>
         </div>
         <div className="w-full h-1/3 overflow-hidden flex items-center justify-between my-2">
-          <div className="flex items-center -space-x-3">
+          <Link
+            to={`/project/${projectId}/collaborators`}
+            className="flex items-center -space-x-3"
+          >
             {collaborators?.map((collaborator) => (
               <ProfileImg
+                profileURL={collaborator.userProfile}
                 key={collaborator}
-                w={6}
+                w={7}
                 imageStyle={`border-2 border-white`}
               />
             ))}
 
-            <div className="w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center">
+            <div className="w-7 h-7 bg-[#efeffe] dark:bg-gray-500 rounded-full flex items-center justify-center">
               <BiPlus className="text-xs font-semibold text-s-dark dark:text-s-light" />
             </div>
-          </div>
+          </Link>
         </div>
       </Link>
     </div>

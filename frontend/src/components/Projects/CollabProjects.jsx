@@ -40,7 +40,7 @@ const CollabProjects = () => {
           </div>
           <div>
             <button
-              className="btn btn-fill px-3 py-2 text-xs rounded-xl flex items-center gap-2"
+              className="btn btn-fill px-3 py-2 text-xs rounded-3xl flex items-center gap-2"
               onClick={() => setToggle(true)}
             >
               <BiSolidLayerPlus className="text-sm lg:text-lg" />
