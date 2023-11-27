@@ -36,8 +36,22 @@ const projectSchema = mongoose.Schema(
     },
     collaborators: [
       {
-        type: String,
-        ref: "Users",
+        collaborator: {
+          type: String,
+          ref: "Users",
+        },
+        role: {
+          type: String,
+          default: "Unassigned",
+        },
+        username: {
+          type: String,
+          ref: "Users",
+        },
+        userProfile: {
+          type: String,
+          ref: "Users",
+        },
       },
     ],
     files: {

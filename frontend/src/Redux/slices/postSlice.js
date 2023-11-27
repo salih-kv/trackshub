@@ -42,7 +42,7 @@ export const deletePost = createAsyncThunk(
   "post/deletePost",
   async (postId) => {
     const response = await instance.delete(`/api/v1/post/${postId}`);
-    return response.data;
+    return response.data.postId;
   }
 );
 
@@ -115,6 +115,9 @@ const postSlice = createSlice({
       })
       .addCase(deletePost.fulfilled, (state, action) => {
         state.posts = state.posts.filter((post) => post._id !== action.payload);
+        state.userPosts = state.userPosts.filter(
+          (post) => post._id !== action.payload
+        );
         state.loading = false;
       })
       .addCase(likePost.pending, (state) => {

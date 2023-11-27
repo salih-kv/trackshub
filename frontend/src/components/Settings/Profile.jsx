@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
+import Select from "react-dropdown-select";
 import { fetchUser, updateUser } from "../../Redux/slices/userSlice";
 import Loading from "../Loading";
 import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
@@ -148,6 +149,8 @@ const Profile = () => {
         </form>
       </section>
       <div className="w-full h-[1px] my-12 bg-s-light dark:bg-s-dark"></div>
+      <Links />
+      <div className="w-full h-[1px] my-12 bg-s-light dark:bg-s-dark"></div>
       <Interests />
       <div className="w-full h-[1px] my-12 bg-s-light dark:bg-s-dark"></div>
       <div>
@@ -166,13 +169,107 @@ const Profile = () => {
 
 export default Profile;
 
+const Links = () => {
+  return (
+    <section>
+      <header className="pb-8">
+        <h1 className="text-2xl">Links</h1>
+      </header>
+      <div>
+        <label>Spotify</label>
+        <input type="text" placeholder="Add profile URL" className="input" />
+        <label>Instagram</label>
+        <input type="text" placeholder="Add profile URL" className="input" />
+        <label>YouTube</label>
+        <input type="text" placeholder="Add profile URL" className="input" />
+        <label>Website</label>
+        <input type="text" placeholder="Add profile URL" className="input" />
+      </div>
+    </section>
+  );
+};
+
 const Interests = () => {
+  const genres = [
+    {
+      value: 1,
+      label: "Rock",
+    },
+    {
+      value: 2,
+      label: "Pop",
+    },
+    {
+      value: 3,
+      label: "Hip Hop",
+    },
+    {
+      value: 4,
+      label: "Electronic",
+    },
+    {
+      value: 5,
+      label: "Jazz",
+    },
+    {
+      value: 6,
+      label: "Folk",
+    },
+    {
+      value: 7,
+      label: "Latin",
+    },
+    {
+      value: 8,
+      label: "Classical",
+    },
+    {
+      value: 9,
+      label: "Punk",
+    },
+    {
+      value: 10,
+      label: "Blues",
+    },
+    {
+      value: 11,
+      label: "Metal",
+    },
+    {
+      value: 12,
+      label: "K-Pop",
+    },
+    {
+      value: 13,
+      label: "Lo-fi",
+    },
+    {
+      value: 14,
+      label: "Dance & EDM",
+    },
+    {
+      value: 15,
+      label: "Country",
+    },
+    {
+      value: 16,
+      label: "Other",
+    },
+  ];
   return (
     <section className="w-full">
       <header className="pb-8">
         <h1 className="text-2xl">Music Interests</h1>
       </header>
-      <input placeholder="enter your musical interests..." className="input" />
+      <Select
+        placeholder="enter your musical interests..."
+        multi
+        create
+        dropdownPosition="auto"
+        options={genres}
+        onChange={(values) => this.onChange(values)}
+        className="input dark:text-black !border-none !ring-0 !px-2 !py-3 !rounded-lg"
+      />
     </section>
   );
 };

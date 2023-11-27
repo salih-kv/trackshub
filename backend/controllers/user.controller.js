@@ -195,7 +195,6 @@ export const toggleFollowUser = async (req, res, next) => {
 // search users
 export const searchUser = async (req, res, next) => {
   const searchQuery = req.query.q;
-  console.log("searchQuery");
 
   if (!searchQuery) {
     return res.json([]);

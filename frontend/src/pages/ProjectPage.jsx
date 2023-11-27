@@ -1,14 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjectById, selectProject } from "../Redux/slices/projectSlice";
 import WaveSurferPlayer from "../components/AudioPlayer/WaveSurferPlayer";
 import { usePlayer } from "../context/PlayerContext";
-
 import { FaPause, FaPlay } from "react-icons/fa";
 import { IoIosShareAlt } from "react-icons/io";
-
 import NumbFrozen from "../assets/Icy Narco - Numb & Frozen.mp3";
+import { Transition } from "@headlessui/react";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 const options = {
   container: "#waveform",
@@ -37,9 +37,19 @@ const options = {
   sampleRate: 8000,
 };
 
+const transitionProps = {
+  enter: `transition ease-out duration-100`,
+  enterFrom: `transform opacity-0 scale-95`,
+  enterTo: `transform opacity-100 scale-100`,
+  leave: `transition ease-out duration-75`,
+  leaveFrom: `transform opacity-100 scale-100`,
+  leaveTo: `transform opacity-0 scale-95`,
+};
+
 const ProjectPage = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
+  const [showOverview, setShowOverview] = useState(true);
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -50,8 +60,13 @@ const ProjectPage = () => {
 
   return (
     <div className="w-full sm:pt-9 lg:pt-0">
-      <Overview />
-      <Workspace />
+      <Transition show={showOverview} {...transitionProps}>
+        <Overview />
+      </Transition>
+      <Workspace
+        showOverview={showOverview}
+        setShowOverview={setShowOverview}
+      />
     </div>
   );
 };
@@ -74,7 +89,7 @@ const Overview = () => {
   }, [dispatch, projectId]);
 
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-4 lg:gap-6 w-full bg-primary-400 rounded-lg  lg:p-6 mb-8 overflow-hidden">
+    <div className="flex flex-col sm:flex-row items-center gap-4 lg:gap-6 w-full bg-primary-400 rounded-lg lg:p-6 mb-8 overflow-hidden">
       <div className="w-full sm:w-44 h-36 md:h-full bg-primary-500 rounded-lg relative">
         <img
           src="https://picsum.photos/id/304/1600/1600"
@@ -116,7 +131,7 @@ const Overview = () => {
   );
 };
 
-const Workspace = () => {
+const Workspace = ({ showOverview, setShowOverview }) => {
   const NavLinks = [
     {
       to: "files",
@@ -146,18 +161,23 @@ const Workspace = () => {
 
   return (
     <div>
-      <header className="flex gap-8 mb-8 overflow-x-scroll no-scrollbar">
-        {NavLinks?.map(({ to, label }) => (
-          <div key={to} className="group/link hover:bg-slate-100">
-            <NavLink
-              to={to}
-              className="text-gray-500 font-medium hover:text-black"
-            >
-              {label}
-            </NavLink>
-            {/* <div className="w-8 h-[3px] bg-black invisible group-hover/link:visible"></div> */}
-          </div>
-        ))}
+      <header className="flex items-center justify-between mb-8">
+        <nav className="flex gap-8 overflow-x-scroll no-scrollbar">
+          {NavLinks?.map(({ to, label }) => (
+            <div key={to} className="group/link hover:bg-slate-100">
+              <NavLink to={to} className="text-gray-500 font-medium">
+                {label}
+              </NavLink>
+              <div className="w-8 h-[1px] bg-black dark:bg-white rounded-full invisible group-hover/link:visible"></div>
+            </div>
+          ))}
+        </nav>
+        <button
+          onClick={() => setShowOverview((prev) => !prev)}
+          className="w-7 flex items-center justify-center text-xl dark:text-gray-500 hover:text-primary-500"
+        >
+          {showOverview ? <IoIosArrowUp /> : <IoIosArrowDown />}
+        </button>
       </header>
       <div>
         <Outlet />

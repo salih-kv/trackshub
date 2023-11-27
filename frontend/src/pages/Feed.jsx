@@ -22,11 +22,9 @@ const Feed = () => {
     : [];
 
   useEffect(() => {
-    if (!projects || !loading) {
-      dispatch(fetchUser());
-      dispatch(fetchProjectsByUserId());
-      dispatch(suggestUser());
-    }
+    dispatch(fetchUser());
+    dispatch(fetchProjectsByUserId());
+    dispatch(suggestUser());
   }, [dispatch]);
   return (
     <div className="flex justify-between w-full gap-12 py-0 sm:py-8 lg:py-4">
@@ -51,7 +49,9 @@ const Feed = () => {
       </section>
       <Middle />
       <section className="w-1/4 hidden lg:block">
-        <UsersCard userSuggestions={userSuggestions} />
+        {userSuggestions.length > 0 && (
+          <UsersCard userSuggestions={userSuggestions} />
+        )}
       </section>
     </div>
   );

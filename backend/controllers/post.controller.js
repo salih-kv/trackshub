@@ -59,21 +59,16 @@ export const getPostById = async (req, res, next) => {
 };
 
 export const deletePost = async (req, res, next) => {
-  const userId = req.user.id;
-  console.log("4");
-
   const { postId } = req.params;
   try {
-    const user = User.findOne({ _id: userId });
-    if (user) {
-      const post = await Post.findById({ _id: postId });
-      if (post._id === postId) {
-        await post.deleteOne();
-        res.status(200).json({
-          status: true,
-          message: "Post deleted successully",
-        });
-      }
+    const result = await Post.findByIdAndDelete(postId);
+
+    if (result) {
+      res.status(200).json({
+        status: true,
+        message: "Post deleted successfully",
+        postId: result._id,
+      });
     }
   } catch (err) {
     next(err);
@@ -81,8 +76,6 @@ export const deletePost = async (req, res, next) => {
 };
 
 export const getAllPosts = async (req, res, next) => {
-  // console.log("5");
-
   const userId = req.user.id;
   const { username } = req.params;
   try {

@@ -39,7 +39,7 @@ export default function Projects() {
               >
                 {label}
               </NavLink>
-              <div className="w-8 h-[3px] bg-black dark:bg-white invisible group-hover/link:visible"></div>
+              <div className="w-8 h-[2px] bg-black dark:bg-white rounded-full invisible group-hover/link:visible"></div>
             </div>
           ))}
         </header>

@@ -1,4 +1,5 @@
 import { Project } from "../models/project.model.js";
+import { User } from "../models/user.model.js";
 import { errorHandler } from "../utils/errorHandler.js";
 
 // create new project ✅
@@ -87,15 +88,28 @@ export const getProjectsByUserId = async (req, res, next) => {
 export const addCollaborator = async (req, res, next) => {
   const { projectId, collaboratorId } = req.body;
   try {
+    const user = await User.findById(collaboratorId);
+
     const project = await Project.findOneAndUpdate(
       { projectId: projectId },
-      { $addToSet: { collaborators: collaboratorId } },
+      {
+        $addToSet: {
+          collaborators: {
+            collaborator: collaboratorId,
+            role: user.role,
+            username: user.username,
+            userProfile: user.profilePic,
+          },
+        },
+      },
       {
         upsert: true,
         new: true,
       }
     );
-    res.status(200).json({ message: "Collaborator added successfully" });
+    res
+      .status(200)
+      .json({ message: "Collaborator added successfully", project });
   } catch (err) {
     next(err);
   }
