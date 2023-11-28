@@ -59,8 +59,6 @@ const Profile = () => {
       <img src={imageUrls[0]} alt="Uploaded Image" />
     ) : null;
 
-  console.log(imageUrls[0]);
-
   useEffect(() => {
     dispatch(fetchUser());
   }, [dispatch]);
@@ -256,6 +254,9 @@ const Interests = () => {
       label: "Other",
     },
   ];
+
+  const [selectedGenres, setSelectedGenres] = useState([]);
+
   return (
     <section className="w-full">
       <header className="pb-8">
@@ -265,10 +266,12 @@ const Interests = () => {
         placeholder="enter your musical interests..."
         multi
         create
+        color="#774eff"
         dropdownPosition="auto"
         options={genres}
-        onChange={(values) => this.onChange(values)}
-        className="input dark:text-black !border-none !ring-0 !px-2 !py-3 !rounded-lg"
+        value={selectedGenres}
+        onChange={(values) => setSelectedGenres(values)}
+        className="my-dropdown input dark:text-black !border-none !ring-0 !px-2 !py-3 !rounded-lg"
       />
     </section>
   );

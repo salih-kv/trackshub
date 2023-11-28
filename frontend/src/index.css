@@ -59,3 +59,18 @@ body {
 .input {
   @apply w-full px-4 py-3 mb-6 mt-2 rounded-lg bg-s-light dark:bg-s-dark focus:border focus:border-primary-500 outline-none placeholder:text-sm;
 }
+
+/* my-dropdown */
+.my-dropdown .react-dropdown-select-option {
+  @apply rounded-3xl px-3 py-1.5 border-none;
+}
+.my-dropdown .react-dropdown-select-item,
+.my-dropdown .react-dropdown-select-item-selected {
+  @apply !border-none;
+}
+.my-dropdown .react-dropdown-select-dropdown {
+  @apply rounded-lg bg-s-light dark:bg-s-dark dark:text-white border-none overflow-y-auto;
+}
+.my-dropdown .react-dropdown-select-dropdown-handle {
+  @apply dark:text-white;
+}

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { MdAccessTime } from "react-icons/md";
 
-const Task = ({ item, provided, snapshot }) => (
+const Task = ({ task, provided, snapshot }) => (
   <div
     ref={provided.innerRef}
     {...provided.draggableProps}
@@ -10,28 +11,58 @@ const Task = ({ item, provided, snapshot }) => (
       snapshot.isDragging ? "bg-[#263B4A]" : "bg-[#383b4c]"
     }`}
   >
-    {item.content}
+    <h1 className="mb-2">{task.content}</h1>
+    <p className="mb-4 text-gray-400 h-12 overflow-hidden">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum, velit.
+    </p>
+    <div className="flex items-center justify-between">
+      <div className="text-xs inline-flex items-center gap-1 bg-red-500 rounded-xl px-2 py-1">
+        <MdAccessTime className="text-base" />
+        <span>Nov 20</span>
+      </div>
+      <span>projectname</span>
+    </div>
   </div>
 );
 
+const tasks = [
+  { id: "1", content: "Task 1" },
+  { id: "2", content: "Task 2" },
+  { id: "3", content: "Task 3" },
+  { id: "4", content: "Task 4" },
+  { id: "5", content: "Task 5" },
+  { id: "6", content: "Task 6" },
+];
+
 const Tasks = () => {
-  const [tasks, setTasks] = useState({
-    todo: [],
-    inProgress: [],
-    done: [],
+  const [columns, setColumns] = useState({
+    todo: {
+      id: "todo",
+      title: "To Do",
+      tasks: tasks,
+    },
+    inProgress: {
+      id: "inProgress",
+      title: "In Progress",
+      tasks: [],
+    },
+    done: {
+      id: "done",
+      title: "Done",
+      tasks: [],
+    },
   });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("");
-        const data = await response.json();
-
-        setTasks({
-          todo: data.todo || [],
-          inProgress: data.inProgress || [],
-          done: data.done || [],
-        });
+        // const response = await fetch("");
+        // const data = await response.json();
+        // setTasks({
+        //   todo: data.todo || [],
+        //   inProgress: data.inProgress || [],
+        //   done: data.done || [],
+        // });
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
@@ -40,63 +71,25 @@ const Tasks = () => {
     fetchData();
   }, []);
 
-  const items = [
-    { id: "1", content: "Task 1" },
-    { id: "2", content: "Task 2" },
-    { id: "3", content: "Task 3" },
-    { id: "4", content: "Task 4" },
-    { id: "6", content: "Task 5" },
-    { id: "7", content: "Task 7" },
-  ];
-
-  const columns = {
-    todo: {
-      id: "todo",
-      title: "To Do",
-      items: items,
-    },
-    inProgress: {
-      id: "inProgress",
-      title: "In Progress",
-      items: [],
-    },
-    done: {
-      id: "done",
-      title: "Done",
-      items: [],
-    },
-  };
-
   const onDragEnd = (result) => {
-    const { source, destination, draggableId } = result;
+    const { source, destination } = result;
 
-    if (!destination) {
+    // Check if there is no destination or if the destination is the same as the source
+    if (!destination || destination.droppableId === source.droppableId) {
       return;
     }
 
-    if (source.droppableId === destination.droppableId) {
-      // Reorder within the same column
-      const column = columns[source.droppableId];
-      const newItems = Array.from(column.items);
-      newItems.splice(source.index, 1);
-      newItems.splice(
-        destination.index,
-        0,
-        items.find((item) => item.id === draggableId)
-      );
-      columns[source.droppableId].items = newItems;
-    } else {
-      // Move between columns
-      const sourceColumn = columns[source.droppableId];
-      const destinationColumn = columns[destination.droppableId];
-      const sourceItems = Array.from(sourceColumn.items);
-      const destinationItems = Array.from(destinationColumn.items);
-      const [movedItem] = sourceItems.splice(source.index, 1);
-      destinationItems.splice(destination.index, 0, movedItem);
+    // Move between columns
+    const sourceColumn = columns[source.droppableId];
+    const destinationColumn = columns[destination.droppableId];
+    const sourceTasks = Array.from(sourceColumn.tasks);
+    const destinationTasks = Array.from(destinationColumn.tasks);
 
-      columns[source.droppableId].items = sourceItems;
-      columns[destination.droppableId].items = destinationItems;
-    }
+    const [movedItem] = sourceTasks.splice(source.index, 1);
+    destinationTasks.splice(destination.index, 0, movedItem);
+
+    columns[source.droppableId].tasks = sourceTasks;
+    columns[destination.droppableId].tasks = destinationTasks;
   };
 
   return (
@@ -114,6 +107,7 @@ const Tasks = () => {
                 <Droppable droppableId={columnId} key={columnId}>
                   {(provided, snapshot) => (
                     <div
+                      {...provided.droppableProps}
                       ref={provided.innerRef}
                       className={`p-4 border dark:border-gray-800 rounded-md w-full h-full ${
                         snapshot.isDraggingOver
@@ -121,15 +115,15 @@ const Tasks = () => {
                           : "bg-s-light dark:bg-s-dark"
                       }`}
                     >
-                      {column.items.map((item, index) => (
+                      {column.tasks.map((task, index) => (
                         <Draggable
-                          key={item.id}
-                          draggableId={item.id}
+                          key={task.id}
+                          draggableId={task.id}
                           index={index}
                         >
                           {(provided, snapshot) => (
                             <Task
-                              item={item}
+                              task={task}
                               provided={provided}
                               snapshot={snapshot}
                             />

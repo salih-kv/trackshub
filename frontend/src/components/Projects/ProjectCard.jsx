@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { TimeStamp } from "../../utils/TimeStamp";
 import ProfileImg from "../ProfileImg";
-import { SiOpenlayers } from "react-icons/si";
+import { IoMdMusicalNote } from "react-icons/io";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiPlus } from "react-icons/bi";
 import { useState } from "react";
@@ -13,7 +13,7 @@ const ProjectCard = ({ projectId, title, createdAt, collaborators }) => {
   return (
     <div className="w-full rounded-md overflow-hidden bg-s-light dark:bg-s-dark p-4">
       <div className="flex items-center justify-between">
-        <SiOpenlayers />
+        <IoMdMusicalNote />
         <button className="p-2" onClick={() => setToggle(!toggle)}>
           <BsThreeDotsVertical />
         </button>
