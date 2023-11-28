@@ -11,6 +11,7 @@ import { selectUser } from "../../Redux/slices/userSlice";
 import { storageRef } from "../../firebase/firebase.config";
 import { Post } from "../Post";
 import WaveSurferPlayer from "../AudioPlayer/WaveSurferPlayer";
+import { Link } from "react-router-dom";
 
 const Following = () => {
   const dispatch = useDispatch();
@@ -98,7 +99,9 @@ const CreatePost = ({ user }) => {
 
   return (
     <div className="flex items-center justify-between">
-      <ProfileImg w={10} buttonStyle={`mr-3`} profileURL={user?.profilePic} />
+      <Link to={`/${user?.username}`}>
+        <ProfileImg w={10} buttonStyle={`mr-3`} profileURL={user?.profilePic} />
+      </Link>
       <div className="w-full">
         <input
           type="text"

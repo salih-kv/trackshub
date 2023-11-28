@@ -17,7 +17,7 @@ const CollabProjects = () => {
   return (
     <div className="flex flex-col lg:flex-row w-full gap-6 lg:gap-8">
       <div className="lg:w-1/4 w-full">
-        <header className="font-medium text-sm mb-4">
+        <header className="font-medium text-sm mb-4 h-[40px] flex items-center">
           <h4>Filter by:</h4>
         </header>
         <div className="grid grid-cols-3 gap-x-2 lg:grid-cols-2 lg:gap-x-4 gap-y-2">
