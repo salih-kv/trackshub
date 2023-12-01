@@ -55,6 +55,14 @@ export const addCollaborator = createAsyncThunk(
   }
 );
 
+export const fetchCollabProjects = createAsyncThunk(
+  "project/fetchCollabProjects",
+  async () => {
+    const response = await instance.get(`/api/v1/project/collab`);
+    return response.data;
+  }
+);
+
 const handleAsyncAction = (builder, action, stateKey) => {
   builder
     .addCase(action.fulfilled, (state, action) => {
@@ -74,6 +82,7 @@ const projectSlice = createSlice({
   initialState: {
     projects: [],
     project: {},
+    collabProjects: [],
     loading: false,
   },
   reducers: {},
@@ -84,6 +93,7 @@ const projectSlice = createSlice({
     handleAsyncAction(builder, updateProject, "project");
     handleAsyncAction(builder, deleteProject, "projects");
     handleAsyncAction(builder, addCollaborator, "project");
+    handleAsyncAction(builder, fetchCollabProjects, "collabProjects");
   },
 });
 

@@ -84,11 +84,15 @@ const userSlice = createSlice({
     userProfile: {},
     isCurrentUser: false,
     userSuggestions: [],
+    isOwner: false,
     loading: false,
   },
   reducers: {
     setIsCurrentUser: (state, action) => {
       state.isCurrentUser = action.payload;
+    },
+    setIsOwner: (state, action) => {
+      state.isOwner = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -103,5 +107,5 @@ const userSlice = createSlice({
 });
 
 export const selectUser = (state) => state.user;
-export const { setIsCurrentUser } = userSlice.actions;
+export const { setIsCurrentUser, setIsOwner } = userSlice.actions;
 export default userSlice.reducer;

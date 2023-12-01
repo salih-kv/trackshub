@@ -1,45 +1,17 @@
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { MdAccessTime } from "react-icons/md";
-
-const Task = ({ task, provided, snapshot }) => (
-  <div
-    ref={provided.innerRef}
-    {...provided.draggableProps}
-    {...provided.dragHandleProps}
-    className={`select-none p-3 mb-3 min-h-[60px] rounded-lg text-sm text-white ${
-      snapshot.isDragging ? "bg-[#263B4A]" : "bg-[#383b4c]"
-    }`}
-  >
-    <h1 className="mb-2">{task.content}</h1>
-    <p className="mb-4 text-gray-400 h-12 overflow-hidden">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum, velit.
-    </p>
-    <div className="flex items-center justify-between">
-      <div className="text-xs inline-flex items-center gap-1 bg-red-500 rounded-xl px-2 py-1">
-        <MdAccessTime className="text-base" />
-        <span>Nov 20</span>
-      </div>
-      <span>projectname</span>
-    </div>
-  </div>
-);
-
-const tasks = [
-  { id: "1", content: "Task 1" },
-  { id: "2", content: "Task 2" },
-  { id: "3", content: "Task 3" },
-  { id: "4", content: "Task 4" },
-  { id: "5", content: "Task 5" },
-  { id: "6", content: "Task 6" },
-];
+import { Task } from "../components/Tasks/Task";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTasksByUserId, selectTask } from "../Redux/slices/taskSlice";
 
 const Tasks = () => {
+  const dispatch = useDispatch();
+  const { tasks } = useSelector(selectTask);
   const [columns, setColumns] = useState({
     todo: {
       id: "todo",
       title: "To Do",
-      tasks: tasks,
+      tasks: [],
     },
     inProgress: {
       id: "inProgress",
@@ -54,22 +26,17 @@ const Tasks = () => {
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // const response = await fetch("");
-        // const data = await response.json();
-        // setTasks({
-        //   todo: data.todo || [],
-        //   inProgress: data.inProgress || [],
-        //   done: data.done || [],
-        // });
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-      }
-    };
+    dispatch(fetchTasksByUserId());
+  }, [dispatch]);
 
-    fetchData();
-  }, []);
+  useEffect(() => {
+    setColumns((prevColumns) => ({
+      ...prevColumns,
+      todo: { ...prevColumns.todo, tasks: tasks.todo || [] },
+      inProgress: { ...prevColumns.inProgress, tasks: tasks.inProgress || [] },
+      done: { ...prevColumns.done, tasks: tasks.done || [] },
+    }));
+  }, [tasks]);
 
   const onDragEnd = (result) => {
     const { source, destination } = result;
@@ -115,15 +82,16 @@ const Tasks = () => {
                           : "bg-s-light dark:bg-s-dark"
                       }`}
                     >
-                      {column.tasks.map((task, index) => (
+                      {column?.tasks?.map((task, index) => (
                         <Draggable
-                          key={task.id}
-                          draggableId={task.id}
+                          key={index}
+                          draggableId={task._id}
                           index={index}
                         >
                           {(provided, snapshot) => (
                             <Task
                               task={task}
+                              showProjectTitle={true}
                               provided={provided}
                               snapshot={snapshot}
                             />
