@@ -13,7 +13,7 @@ const WaveSurferPlayer = ({ options }) => {
     return () => {
       wavesurfer.destroy();
     };
-  }, []);
+  }, [options]);
 
   useEffect(() => {
     if (wavesurferRef.current) {

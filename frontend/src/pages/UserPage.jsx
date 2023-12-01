@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, Outlet, useParams } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { BsInstagram, BsSpotify, BsThreeDots } from "react-icons/bs";
 import { IoChatbubblesSharp } from "react-icons/io5";
@@ -18,12 +24,20 @@ import PageNotFound from "../components/Error/PageNotFound";
 import { fetchPostsByUsername } from "../Redux/slices/postSlice";
 
 const UserPage = ({ userProfile }) => {
+  const navigate = useNavigate();
   const { username } = useParams();
   const dispatch = useDispatch();
   const { isLoggedIn } = useSelector((state) => state.auth);
   const { user, isCurrentUser, loading } = useSelector(selectUser);
   const [isFollowing, setIsFollowing] = useState(false);
   const isCurrentUserProfile = user?._id === userProfile?._id;
+
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path === `/${username}`) {
+      navigate(`/${username}/posts`);
+    }
+  }, [navigate, username]);
 
   useEffect(() => {
     dispatch(fetchUserByUsername(username));
@@ -147,12 +161,16 @@ export default UserPage;
 const Middle = () => {
   const NavLinks = [
     {
-      to: "",
+      to: "posts",
       label: "Posts",
     },
     {
       to: "tracks",
       label: "Tracks",
+    },
+    {
+      to: "albums",
+      label: "Albums",
     },
     {
       to: "playlists",
@@ -167,7 +185,7 @@ const Middle = () => {
             <NavLink to={to} className="font-medium">
               {label}
             </NavLink>
-            <div className="w-8 h-[3px] bg-black invisible group-hover/link:visible"></div>
+            <div className="w-8 h-[2px] bg-black invisible group-hover/link:visible"></div>
           </div>
         ))}
       </header>

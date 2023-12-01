@@ -20,7 +20,7 @@ const Layout = () => {
         <Outlet />
       </div>
       {/* Bottom Nav */}
-      <div className="fixed bottom-0 z-40 w-full shadow rounded-t-xl sm:hidden dark:bg-s-dark">
+      <div className="fixed bottom-0 z-40 w-full drop-shadow-2xl sm:hidden bg-white dark:bg-p-dark">
         <Nav />
       </div>
     </div>

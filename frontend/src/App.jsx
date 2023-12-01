@@ -8,6 +8,7 @@ import { fetchPosts } from "./Redux/slices/postSlice";
 import { selectAuth } from "./Redux/slices/authSlice";
 import Loading from "./components/Loading";
 import PostPage from "./pages/PostPage";
+import { Protected } from "./components/Project/Protected";
 
 const Welcome = lazy(() => import("./pages/Welcome"));
 const Register = lazy(() => import("./pages/Register"));
@@ -46,6 +47,10 @@ const ProjectComments = lazy(() =>
 
 const Tasks = lazy(() => import("./pages/Tasks"));
 
+const Library = lazy(() => import("./pages/Library"));
+const Albums = lazy(() => import("./components/Library/Albums"));
+const Playlists = lazy(() => import("./components/Library/Playlists"));
+
 const Chats = lazy(() => import("./pages/Chats"));
 
 const Settings = lazy(() => import("./pages/Settings"));
@@ -83,8 +88,9 @@ const App = () => {
             path="/:username"
             element={<UserPage userProfile={userProfile} />}
           >
-            <Route index element={<Posts />} />
+            <Route path="posts" element={<Posts />} />
             <Route path="tracks" element={<NotAvailable />} />
+            <Route path="albums" element={<NotAvailable />} />
             <Route path="playlists" element={<NotAvailable />} />
           </Route>
           {/* dynamic post route */}
@@ -112,13 +118,18 @@ const App = () => {
                 />
                 <Route path="messages" element={<ProjectMessages />} />
                 <Route path="tasks" element={<ProjectTasks />} />
-                <Route path="settings" element={<ProjectSettings />} />
+                <Route element={<Protected />}>
+                  <Route path="settings" element={<ProjectSettings />} />
+                </Route>
                 <Route path="comments" element={<ProjectComments />} />
               </Route>
               {/* Tasks */}
               <Route path="/tasks" element={<Tasks />} />
               {/* Library */}
-              <Route path="/library" element={<NotAvailable />} />
+              <Route path="/library" element={<Library />}>
+                <Route path="albums" element={<Albums />}></Route>
+                <Route path="playlists" element={<Playlists />}></Route>
+              </Route>
               {/* Chats */}
               <Route path="/chats" element={<Chats />} />
               {/* Settings⚙️ */}
