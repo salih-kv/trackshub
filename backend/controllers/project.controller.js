@@ -7,9 +7,16 @@ export const createProject = async (req, res, next) => {
   const userId = req.user.id;
   const { title } = req.body;
   try {
+    const user = await User.findOne({ _id: userId });
     const project = await Project.create({
       title,
       owner: userId,
+      collaborators: {
+        collaborator: userId,
+        role: "owner",
+        username: user.username,
+        userProfile: user.profilePic,
+      },
       isClosed: false,
       isPrivate: true,
     });
@@ -110,6 +117,20 @@ export const addCollaborator = async (req, res, next) => {
     res
       .status(200)
       .json({ message: "Collaborator added successfully", project });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getCollabProjects = async (req, res, next) => {
+  const userId = req.user.id;
+  console.log("e", userId);
+  try {
+    const projects = await Project.find({
+      "collaborators.collaborator": userId,
+      owner: { $ne: userId }, // exclude own projects
+    });
+    return res.status(200).json(projects);
   } catch (err) {
     next(err);
   }

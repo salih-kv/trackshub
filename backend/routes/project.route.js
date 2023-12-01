@@ -4,6 +4,7 @@ import {
   addCollaborator,
   createProject,
   deleteProject,
+  getCollabProjects,
   getProjectById,
   getProjectsByUserId,
   updateProject,
@@ -12,11 +13,11 @@ import {
 const router = express();
 
 router.post("/create", verifyToken, createProject); // ✅
-router.get("/:projectId", verifyToken, getProjectById);
 router.patch("/:projectId", verifyToken, updateProject);
 router.delete("/:projectId", verifyToken, deleteProject);
-
 router.get("/", verifyToken, getProjectsByUserId);
 router.post("/collaborator", verifyToken, addCollaborator);
+router.get("/collab", verifyToken, getCollabProjects);
+router.get("/:projectId", verifyToken, getProjectById);
 
 export default router;

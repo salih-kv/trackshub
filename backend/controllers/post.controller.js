@@ -18,7 +18,6 @@ const getUserPosts = async (userId) => {
 };
 
 export const createNewPost = async (req, res, next) => {
-  console.log("2");
   const userId = req.user.id;
   const { text, file } = req.body;
 
