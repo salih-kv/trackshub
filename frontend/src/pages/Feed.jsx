@@ -76,7 +76,7 @@ const Middle = () => {
             >
               {label}
             </NavLink>
-            <div className="w-8 h-[3px] bg-black invisible group-hover/link:visible"></div>
+            <div className="w-8 h-[2px] bg-black invisible group-hover/link:visible"></div>
           </div>
         ))}
       </header>

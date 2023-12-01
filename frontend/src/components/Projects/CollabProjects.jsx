@@ -1,18 +1,28 @@
 import { CgMusicNote } from "react-icons/cg";
 import { BiSolidLayerPlus } from "react-icons/bi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { MdAudiotrack } from "react-icons/md";
-import { createNewProject } from "../../Redux/slices/projectSlice";
-import { useDispatch } from "react-redux";
+import {
+  createNewProject,
+  fetchCollabProjects,
+  selectProject,
+} from "../../Redux/slices/projectSlice";
+import { useDispatch, useSelector } from "react-redux";
+import ProjectCard from "./ProjectCard";
 
 const items = ["All", "Active", "Closed"];
 
 const CollabProjects = () => {
   const dispatch = useDispatch();
+  const { collabProjects } = useSelector(selectProject);
 
   const [toggle, setToggle] = useState(false);
   const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    dispatch(fetchCollabProjects());
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col lg:flex-row w-full gap-6 lg:gap-8">
@@ -88,16 +98,23 @@ const CollabProjects = () => {
           </div>
         )}
         {/* project input modal ^ */}
-        <div className="py-4 flex gap-4 flex-wrap">
+
+        {collabProjects.length > 0 ? (
+          <div className="py-4 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {collabProjects?.map((project) => (
+              <ProjectCard {...project} key={project.title} />
+            ))}
+          </div>
+        ) : (
           <div className="flex items-center justify-center w-full mt-32">
             <div className="flex flex-col items-center justify-center max-w-[240px]">
               <CgMusicNote className="text-4xl mb-4" />
               <p className="text-gray-500 text-center text-xs font-medium">
-                It Looks Like You Don't Have Any Projects.
+                It Looks Like You Don&apos;t Have Any Projects.
               </p>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

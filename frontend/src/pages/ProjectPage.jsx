@@ -9,6 +9,7 @@ import { IoIosShareAlt } from "react-icons/io";
 import NumbFrozen from "../assets/Icy Narco - Numb & Frozen.mp3";
 import { Transition } from "@headlessui/react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { selectUser, setIsOwner } from "../Redux/slices/userSlice";
 
 const options = {
   container: "#waveform",
@@ -48,8 +49,20 @@ const transitionProps = {
 
 const ProjectPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { projectId } = useParams();
   const [showOverview, setShowOverview] = useState(true);
+
+  const { project } = useSelector(selectProject);
+  const { user } = useSelector(selectUser);
+
+  useEffect(() => {
+    if (project.owner === user._id) {
+      dispatch(setIsOwner(true));
+    } else {
+      dispatch(setIsOwner(false));
+    }
+  }, [dispatch, projectId, project.owner, user._id]);
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -61,7 +74,7 @@ const ProjectPage = () => {
   return (
     <div className="w-full sm:pt-9 lg:pt-0">
       <Transition show={showOverview} {...transitionProps}>
-        <Overview />
+        <Overview project={project} />
       </Transition>
       <Workspace
         showOverview={showOverview}
@@ -73,10 +86,9 @@ const ProjectPage = () => {
 
 export default ProjectPage;
 
-const Overview = () => {
+const Overview = ({ project }) => {
   const { projectId } = useParams();
   const dispatch = useDispatch();
-  const { project } = useSelector(selectProject);
 
   const { isPlaying, togglePlayPause } = usePlayer();
 
@@ -87,6 +99,8 @@ const Overview = () => {
   useEffect(() => {
     dispatch(getProjectById(projectId));
   }, [dispatch, projectId]);
+
+  const { isOwner } = useSelector(selectUser);
 
   return (
     <div className="flex flex-col sm:flex-row items-center gap-4 lg:gap-6 w-full bg-primary-400 rounded-lg lg:p-6 mb-8 overflow-hidden">
@@ -113,7 +127,7 @@ const Overview = () => {
           </span>
         </div>
         <div className="flex gap-4 items-center text-xs lg:text-sm">
-          <h1>Owner</h1>
+          {isOwner && <h1>Owner</h1>}
           <h1>{formattedDate || ""}</h1>
         </div>
         {/* //! */}
@@ -132,6 +146,7 @@ const Overview = () => {
 };
 
 const Workspace = ({ showOverview, setShowOverview }) => {
+  const { isOwner } = useSelector(selectUser);
   const NavLinks = [
     {
       to: "files",
@@ -160,17 +175,20 @@ const Workspace = ({ showOverview, setShowOverview }) => {
   ];
 
   return (
-    <div>
+    <div className="mb-12">
       <header className="flex items-center justify-between mb-8">
         <nav className="flex gap-8 overflow-x-scroll no-scrollbar">
-          {NavLinks?.map(({ to, label }) => (
-            <div key={to} className="group/link hover:bg-slate-100">
-              <NavLink to={to} className="text-gray-500 font-medium">
-                {label}
-              </NavLink>
-              <div className="w-8 h-[1px] bg-black dark:bg-white rounded-full invisible group-hover/link:visible"></div>
-            </div>
-          ))}
+          {NavLinks?.map(
+            ({ to, label }) =>
+              (to !== "settings" || isOwner) && (
+                <div key={to} className="group/link hover:bg-slate-100">
+                  <NavLink to={to} className="text-gray-500 font-medium">
+                    {label}
+                  </NavLink>
+                  <div className="w-8 h-[1px] bg-black dark:bg-white rounded-full invisible group-hover/link:visible"></div>
+                </div>
+              )
+          )}
         </nav>
         <button
           onClick={() => setShowOverview((prev) => !prev)}

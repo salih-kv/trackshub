@@ -10,20 +10,15 @@ import {
 } from "../../Redux/slices/projectSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { BiSolidLayerPlus } from "react-icons/bi";
-import Loading from "../Loading";
 
 const items = ["All", "Active", "Closed"];
 
 const MyProjects = () => {
   const dispatch = useDispatch();
-  const { projects, loading } = useSelector(selectProject);
+  const { projects } = useSelector(selectProject);
 
   const [toggle, setToggle] = useState(false);
   const [inputValue, setInputValue] = useState("");
-
-  if (loading) {
-    return <Loading />;
-  }
 
   return (
     <div className="flex flex-col lg:flex-row w-full gap-6 lg:gap-8">
@@ -114,7 +109,7 @@ const MyProjects = () => {
             <div className="flex flex-col items-center justify-center max-w-[240px]">
               <CgMusicNote className="text-4xl mb-4" />
               <p className="text-gray-500 text-center text-xs font-medium">
-                It Looks Like You Haven't Started Any Projects Yet.
+                It Looks Like You Haven&apos;t Started Any Projects Yet.
               </p>
             </div>
           </div>
