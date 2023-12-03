@@ -3,6 +3,7 @@ import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-dropdown-select";
 import { fetchUser, updateUser } from "../../Redux/slices/userSlice";
+import { FaCamera } from "react-icons/fa";
 import Loading from "../Loading";
 import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
 import { storageRef } from "../../firebase/firebase.config";
@@ -13,25 +14,22 @@ const Profile = () => {
 
   const [userInput, setUserInput] = useState(user);
   const [isDirty, setIsDirty] = useState(false);
-  const [imageUrls, setImageUrls] = useState([]);
 
   const inputRef = useRef(null);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, files } = e.target;
+
+    if (name === "profilePic") {
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUserInput((prev) => ({ ...prev, profilePic: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
     setUserInput((prev) => ({ ...prev, [name]: value }));
     setIsDirty(true);
-  };
-
-  const update = async (e) => {
-    e.preventDefault();
-    await dispatch(updateUser(userInput));
-    setIsDirty(false);
-    dispatch(fetchUser());
-  };
-
-  const onButtonClick = () => {
-    inputRef.current.click();
   };
 
   const uploadFile = () => {
@@ -42,7 +40,7 @@ const Profile = () => {
         .then((snapshot) => {
           getDownloadURL(snapshot.ref)
             .then((url) => {
-              setImageUrls([url]);
+              setUserInput((prev) => ({ ...prev, profilePic: url }));
             })
             .catch((error) => {
               console.error("Error getting download URL:", error);
@@ -54,10 +52,13 @@ const Profile = () => {
     }
   };
 
-  const uploadedImage =
-    imageUrls.length > 0 ? (
-      <img src={imageUrls[0]} alt="Uploaded Image" />
-    ) : null;
+  const update = async (e) => {
+    e.preventDefault();
+    uploadFile();
+    await dispatch(updateUser(userInput));
+    setIsDirty(false);
+    dispatch(fetchUser());
+  };
 
   useEffect(() => {
     dispatch(fetchUser());
@@ -82,32 +83,25 @@ const Profile = () => {
             <div>
               <input
                 type="file"
-                id="img"
                 accept="image/*"
                 ref={inputRef}
-                style={{ display: "none" }}
-                onChange={uploadFile}
+                name="profilePic"
+                onChange={handleChange}
+                hidden
               />
-              <div className={`flex items-center justify-center w-40 h-40`}>
-                <label htmlFor="img">
-                  <div
-                    id="imagePreview"
-                    onClick={onButtonClick}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {uploadedImage ? (
-                      uploadedImage
-                    ) : (
-                      <img
-                        className="w-full h-auto rounded-full"
-                        src={`https://ui-avatars.com/api/?name=${
-                          user?.name
-                        }&length=1&bold=true&background=${"B73D0D"}&color=fff&size=256`}
-                        alt="user photo"
-                      />
-                    )}
-                  </div>
-                </label>
+              <div
+                id="imagePreview"
+                onClick={() => inputRef.current.click()}
+                className="flex items-center justify-center w-40 h-40 rounded-full cursor-pointer relative group"
+              >
+                <img
+                  className="w-full h-auto rounded-full object-cover"
+                  src={userInput?.profilePic}
+                  alt="user photo"
+                />
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 invisible group-hover:visible bg-black bg-opacity-60 w-full h-full rounded-full flex items-center justify-center">
+                  <FaCamera className="text-3xl text-gray-200" />
+                </div>
               </div>
             </div>
 

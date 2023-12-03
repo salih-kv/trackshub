@@ -18,6 +18,8 @@ import { Transition } from "@headlessui/react";
 import { selectUser } from "../../Redux/slices/userSlice";
 import { RiSearch2Line } from "react-icons/ri";
 
+import Logo from "../../assets/trackshub-logo-c.png";
+
 export const PrivateHeader = () => {
   const { user } = useSelector(selectUser);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -89,14 +91,15 @@ export const PrivateHeader = () => {
 
   return (
     <header className="header-container">
-      <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+      <div className="flex justify-between items-center mx-auto max-w-screen-2xl xl:px-4">
         {/* Logo */}
         <div className="md:mr-8 ml-4 xl:ml-0">
           <Link
             to="/"
             className="logo-img flex font-medium items-center text-gray-900"
           >
-            <span className=" lg:text-2xl font-semibold leading-6 text-black dark:text-white">
+            <img src={Logo} alt="logo" className="w-12 lg:w-16" />
+            <span className=" lg:text-xl font-semibold leading-6 text-black dark:text-white">
               TracksHub
             </span>
           </Link>

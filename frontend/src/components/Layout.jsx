@@ -16,7 +16,7 @@ const Layout = () => {
   return (
     <div className="relative dark:text-white">
       <PrivateHeader />
-      <div className="flex justify-between items-center mx-auto max-w-screen-xl mt-14 sm:mt-20 lg:mt-16 px-4 xl:px-0">
+      <div className="flex justify-between items-center mx-auto max-w-screen-2xl mt-14 sm:mt-20 lg:mt-16 px-4 xxl:px-0">
         <Outlet />
       </div>
       {/* Bottom Nav */}

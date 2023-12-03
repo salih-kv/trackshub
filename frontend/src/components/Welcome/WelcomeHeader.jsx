@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Logo from "../../assets/trackshub-logo-c.png";
 
 function WelcomeHeader({ isShow }) {
   const [show, setShow] = useState(isShow || false);
@@ -12,9 +13,10 @@ function WelcomeHeader({ isShow }) {
             to="/"
             className="logo-img flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
           >
-            <h2 className="text-2xl font-semibold leading-6 text-gray-800">
+            <img src={Logo} alt="logo" className="w-12 lg:w-16" />
+            <span className=" lg:text-xl font-semibold leading-6 text-black">
               TracksHub
-            </h2>
+            </span>
           </Link>
         </div>
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
